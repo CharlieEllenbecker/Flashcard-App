@@ -7,7 +7,6 @@ const user = require('./mock-user.json');
 let deckCount = 2;    // amount of decks in mock-user.json
 const decks = user.data.decks;
 
-
 /*
     GET - Get all decks
 */

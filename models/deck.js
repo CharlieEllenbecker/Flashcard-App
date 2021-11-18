@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const { cardSchema } = require('./card');
 
-const Deck = mongoose.model('Deck', new mongooseSchema({
+const Deck = mongoose.model('Deck', new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -13,6 +14,11 @@ const Deck = mongoose.model('Deck', new mongooseSchema({
         required: false,
         minLength: 1,
         maxLength: 200
+    },
+    cards: [cardSchema],    // cards can't exist outside of a deck
+    folder: {
+        type: mongoose.Schema.Types.ObjectId,   // document referencing
+        ref: 'Folder'
     }
 }));
 

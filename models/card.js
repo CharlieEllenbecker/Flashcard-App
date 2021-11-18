@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const Card = mongoose.model('Card', new mongooseSchema({
+const cardSchema = new mongoose.Schema({
     front: {
         type: String,
         required: true,
@@ -14,7 +14,9 @@ const Card = mongoose.model('Card', new mongooseSchema({
         minLength: 1,
         maxLength: 200
     }
-}));
+});
+
+const Card = mongoose.model('Card', cardSchema);
 
 function validateCard(card) {
     const schema = Joi.object({
@@ -25,5 +27,6 @@ function validateCard(card) {
     return schema.validate(card);
 }
 
+module.exports.cardSchema = cardSchema;
 module.exports.Card = Card;
 module.exports.validate = validateCard;

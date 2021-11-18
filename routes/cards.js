@@ -7,7 +7,6 @@ const user = require('./mock-user.json');
 let cardCount = 2;    // amount of cards in the Hiragana deck in mock-user.json
 const cards = user.data.decks[0].cards;
 
-
 /*
     GET - Get all cards
 */

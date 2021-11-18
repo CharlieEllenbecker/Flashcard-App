@@ -7,7 +7,6 @@ const user = require('./mock-user.json');
 let folderCount = 2;    // amount of folders in mock-user.json
 const folders = user.data.folders;
 
-
 /*
     GET - Get all folders
 */

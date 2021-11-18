@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-/*
-    Still learning how to implement one to many relationships in mongodb using mongoose
-
-    Business Rules:
-    - Allow the user to add decks to a folder or not have decks in a folder
-*/
-const Folder = mongoose.model('Folder', new mongooseSchema({
+const Folder = mongoose.model('Folder', new mongoose.Schema({
     name: {
         type: String,
         required: true,
