@@ -1,0 +1,52 @@
+{
+    "email" : "john.smith@gmail.com",
+    "password" : "password123",
+    "data" : {
+        "folders" : [
+            {
+                "id" : 1,
+                "name" : "Japanesee"
+            },
+            {
+                "id" : 2,
+                "name" : "Database Systems"
+            }
+        ],
+        "decks" : [
+            {
+                "id" : 1,
+                "name" : "Hiragana",
+                "folderId" : 1,
+                "cards" : [
+                    {
+                        "id" : 1,
+                        "front" : "あ",
+                        "back" : "a"
+                    },
+                    {
+                        "id" : 2,
+                        "front" : "い",
+                        "back" : "i"
+                    }
+                ]
+            },
+            {
+                "id" : 2,
+                "name" : "Foods",
+                "folderId" : null,
+                "cards" : [
+                    {
+                        "id" : 1,
+                        "front" : "Apple",
+                        "back" : "Red fruit, tasty"
+                    },
+                    {
+                        "id" : 2,
+                        "front" : "Pizza",
+                        "back" : "The best food there is"
+                    }
+                ]
+            }
+        ]
+    }
+}

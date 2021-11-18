@@ -1,4 +1,4 @@
-const folders = require('/routes/folders');
+const folders = require('./routes/folders');
 const decks = require('./routes/decks');
 const cards = require('./routes/cards');
 
