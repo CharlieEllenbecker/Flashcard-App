@@ -16,14 +16,14 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
-        return res.status(400).send(error.details[0].message);  // might want to concatinate all of the errors in the details array
+        return res.status(400).send(error.details[0].message);
     }
 
     let deck = new Deck({
         name: req.body.name,
         description: req.body.description,
-        cards: req.body.cards,
-        folder: req.body.folder
+        folder: req.body.folder,
+        cards: req.body.cards
     });
     deck = await deck.save();
 
@@ -55,8 +55,8 @@ router.put('/:id', async (req, res) => {
     const deck = await Deck.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         description: req.body.description,
-        cards: req.body.cards,
-        folder: req.body.folder
+        folder: req.body.folder,
+        cards: req.body.cards
     }, { new: true });
 
     if (!deck) {

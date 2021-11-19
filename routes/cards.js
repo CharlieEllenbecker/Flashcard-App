@@ -2,57 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 
-const user = require('./mock-user.json');
-
-let cardCount = 2;    // amount of cards in the Hiragana deck in mock-user.json
-const cards = user.data.decks[0].cards;
-
 /*
-    GET - Get all cards
+    PUT - Update the card with the given cardId from the deck with the given deckId
+    This would be used to update one card if needed to just update one card and not a whole deck
+    TODO
 */
-router.get('/', (req, res) => {
-    return res.send(cards);
-});
-
-/*
-    POST - Add a new card
-*/
-router.post('/', (req, res) => {
-    const { error } = validateCard(req.body);
-    
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    }
-
-    const card = {
-        id: cardCount + 1,
-        front: req.body.front,
-        back: req.body.back
-    };
-    cardCount++;
-
-    card.push(card);
-
-    return res.send(card);
-});
-
-/*
-    GET - The card with the given id
-*/
-router.get('/:id', (req, res) => {
-    const card = cards.find(c => c.id === parseInt(req.params.id));
-
-    if (!card) {
-        return res.status(404).send(`The card with the given id ${req.params.id} does not exist`);
-    }
-
-    return res.send(card);
-});
-
-/*
-    PUT - Update the card with the given id
-*/
-router.put('/:id', (req, res) => {
+router.put('/:deckId/:cardId', (req, res) => {
     const card = cards.find(c => c.id === parseInt(req.params.id));
 
     if (!card) {
@@ -71,7 +26,9 @@ router.put('/:id', (req, res) => {
 });
 
 /*
-    DELETE - Delete the card with the given id
+    DELETE - Delete the card with the given cardId from the deck with the given deckId
+    Similar to quizlet where if you click the three dots on a card and on a deck...
+    TODO
 */
 router.delete('/:id', (req, res) => {
     const card = cards.find(c => c.id === parseInt(req.params.id));
