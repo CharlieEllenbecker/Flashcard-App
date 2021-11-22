@@ -1,3 +1,5 @@
+const { Card, validate} = require('../models/card');
+const { Deck } = require('../models/deck');
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
@@ -7,22 +9,31 @@ const Joi = require('joi');
     This would be used to update one card if needed to just update one card and not a whole deck
     TODO
 */
-router.put('/:deckId/:cardId', (req, res) => {
-    const card = cards.find(c => c.id === parseInt(req.params.id));
-
-    if (!card) {
-        return res.status(404).send(`The card with the given id ${req.params.id} does not exist`);
-    }
-
-    const { error } = validateCard(req.body);
-
+router.put('/:deckId/:cardId', async (req, res) => {
+    const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
 
-    card.name = req.body.name;
+    const deck = await Deck.findById(req.params.deckId);
+    if (!deck) {
+        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist`);
+    }
 
-    return res.send(card);
+    const card = deck.cards.id(req.params.cardId);
+    if (!card) {
+        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}`);
+    }
+
+    card.set(req.body);
+
+    return await deck.save()    // Not sure if this promise handling is correct
+        .then(deck => {
+            res.send(deck);
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 /*
@@ -30,7 +41,7 @@ router.put('/:deckId/:cardId', (req, res) => {
     Similar to quizlet where if you click the three dots on a card and on a deck...
     TODO
 */
-router.delete('/:id', (req, res) => {
+router.delete('/:deckId/:cardId', (req, res) => {
     const card = cards.find(c => c.id === parseInt(req.params.id));
 
     if (!card) {
@@ -42,14 +53,5 @@ router.delete('/:id', (req, res) => {
 
     return res.send(card);
 });
-
-function validateCard(card) {
-    const schema = Joi.object({
-        front: Joi.string().min(1).max(100).required(),
-        back: Joi.string().min(1).max(100).required()
-    });
-
-    return schema.validate(card);
-}
 
 module.exports = router;
