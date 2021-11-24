@@ -7,7 +7,6 @@ const Joi = require('joi');
 /*
     PUT - Update the card with the given cardId from the deck with the given deckId
     This would be used to update one card if needed to just update one card and not a whole deck
-    TODO
 */
 router.put('/:deckId/:cardId', async (req, res) => {
     const { error } = validate(req.body);
@@ -39,17 +38,20 @@ router.put('/:deckId/:cardId', async (req, res) => {
 /*
     DELETE - Delete the card with the given cardId from the deck with the given deckId
     Similar to quizlet where if you click the three dots on a card and on a deck...
-    TODO
 */
-router.delete('/:deckId/:cardId', (req, res) => {
-    const card = cards.find(c => c.id === parseInt(req.params.id));
-
-    if (!card) {
-        return res.status(404).send(`The card with the given id ${req.params.id} does not exist`);
+router.delete('/:deckId/:cardId', async (req, res) => {
+    const deck = await Deck.findById(req.params.deckId);
+    if (!deck) {
+        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist`);
     }
 
-    const index = cards.indexOf(card);
-    cards.splice(index, 1);
+    const card = deck.cards.id(req.params.cardId);
+    if (!card) {
+        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}`);
+    }
+
+    card.remove();
+    deck.save();
 
     return res.send(card);
 });
