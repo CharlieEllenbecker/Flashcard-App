@@ -1,8 +1,8 @@
 const { Card, validate} = require('../models/card');
 const { Deck } = require('../models/deck');
 const express = require('express');
+require('express-async-errors');
 const router = express.Router();
-const Joi = require('joi');
 
 /*
     PUT - Update the card with the given cardId from the deck with the given deckId
@@ -15,12 +15,12 @@ router.put('/:deckId/:cardId', async (req, res) => {
 
     const deck = await Deck.findById(req.params.deckId);
     if (!deck) {
-        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist`);
+        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
     }
 
     const card = deck.cards.id(req.params.cardId);
     if (!card) {
-        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}`);
+        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}.`);
     }
 
     card.set(req.body);
@@ -40,12 +40,12 @@ router.put('/:deckId/:cardId', async (req, res) => {
 router.delete('/:deckId/:cardId', async (req, res) => {
     const deck = await Deck.findById(req.params.deckId);
     if (!deck) {
-        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist`);
+        return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
     }
 
     const card = deck.cards.id(req.params.cardId);
     if (!card) {
-        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}`);
+        return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}.`);
     }
 
     card.remove();

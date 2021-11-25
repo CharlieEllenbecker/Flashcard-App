@@ -1,8 +1,9 @@
-const config = require('config');
 const folders = require('./routes/folders');
 const decks = require('./routes/decks');
 const cards = require('./routes/cards');
 const users = require('./routes/users');
+const handleError = require('./middleware/error');
+const config = require('config');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
@@ -21,6 +22,8 @@ app.use('/api/folders', folders);
 app.use('/api/decks', decks);
 app.use('/api/cards', cards);
 app.use('/api/users', users);
+
+app.use(handleError);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

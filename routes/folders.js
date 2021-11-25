@@ -1,5 +1,7 @@
 const { Folder, validate } = require('../models/folder');
+const _ = require('lodash');
 const express = require('express');
+require('express-async-errors');
 const router = express.Router();
 
 /*
@@ -19,10 +21,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let folder = new Folder({
-        name: req.body.name,
-        description: req.body.description
-    });
+    let folder = new Folder(_.pick(req.body, ['name', 'description']));
     folder = await folder.save();
 
     return res.send(folder);
@@ -34,7 +33,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const folder = await Folder.findById(req.params.id);
     if (!folder) {
-        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(folder);
@@ -49,13 +48,10 @@ router.put('/:id', async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const folder = await Folder.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        description: req.body.description
-    }, { new: true });
+    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'email']), { new: true });
 
     if (!folder) {
-        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(folder);
@@ -67,7 +63,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const folder = await Folder.findByIdAndDelete(req.params.id);
     if (!folder) {
-        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(folder);

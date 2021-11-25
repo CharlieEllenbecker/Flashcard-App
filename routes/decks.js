@@ -1,5 +1,7 @@
 const { Deck, validate} = require('../models/deck');
+const _ = require('lodash');
 const express = require('express');
+require('express-async-errors');
 const router = express.Router();
 
 /*
@@ -19,12 +21,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let deck = new Deck({
-        name: req.body.name,
-        description: req.body.description,
-        folder: req.body.folder,
-        cards: req.body.cards
-    });
+    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folder', 'cards']));
     deck = await deck.save();
 
     return res.send(deck);
@@ -36,7 +33,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const deck = await Deck.findById(req.params.id);
     if (!deck) {
-        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(deck);
@@ -51,15 +48,10 @@ router.put('/:id', async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const deck = await Deck.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        description: req.body.description,
-        folder: req.body.folder,
-        cards: req.body.cards
-    }, { new: true });
+    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folder', 'cards']), { new: true });
 
     if (!deck) {
-        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(deck);
@@ -71,7 +63,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const deck = await Deck.findByIdAndDelete(req.params.id);
     if (!deck) {
-        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist`);
+        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
     return res.send(deck);
