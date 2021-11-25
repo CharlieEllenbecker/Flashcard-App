@@ -12,7 +12,7 @@ function auth(req, res, next) {
         req.user = decoded;
         next();
     }
-    catch(ex) {
+    catch(error) {
         res.status(400).send('Invalid token.');
     }
 }

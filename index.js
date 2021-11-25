@@ -4,9 +4,27 @@ const cards = require('./routes/cards');
 const users = require('./routes/users');
 const handleError = require('./middleware/error');
 const config = require('config');
+const winston = require('winston');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+
+process.on('uncaughtException', (error) => {
+    console.log('We got an uncaught exception.');
+    winston.error(error.message, error);
+});
+
+const logger = winston.createLogger({   // look for a better way of handling this
+    format: winston.format.combine(     // look into how to log to mongobd using transports
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'logfile.log' })
+    ]
+});
+winston.add(logger);
 
 if(!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');

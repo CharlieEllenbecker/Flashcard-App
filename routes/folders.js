@@ -8,6 +8,7 @@ const router = express.Router();
     GET - Get all folders
 */
 router.get('/', async (req, res) => {
+    throw new Error('Test error.');
     const folders = await Folder.find().sort('name');
     return res.send(folders);
 });
