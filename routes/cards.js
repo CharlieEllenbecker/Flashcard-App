@@ -6,7 +6,6 @@ const Joi = require('joi');
 
 /*
     PUT - Update the card with the given cardId from the deck with the given deckId
-    This would be used to update one card if needed to just update one card and not a whole deck
 */
 router.put('/:deckId/:cardId', async (req, res) => {
     const { error } = validate(req.body);
@@ -37,7 +36,6 @@ router.put('/:deckId/:cardId', async (req, res) => {
 
 /*
     DELETE - Delete the card with the given cardId from the deck with the given deckId
-    Similar to quizlet where if you click the three dots on a card and on a deck...
 */
 router.delete('/:deckId/:cardId', async (req, res) => {
     const deck = await Deck.findById(req.params.deckId);

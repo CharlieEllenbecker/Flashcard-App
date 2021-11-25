@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
 
 /*
     GET - The deck with the given id
-    This might include some deck data and the cards in the deck
 */
 router.get('/:id', async (req, res) => {
     const deck = await Deck.findById(req.params.id);
@@ -68,7 +67,6 @@ router.put('/:id', async (req, res) => {
 
 /*
     DELETE - Delete the deck with the given id
-    This will delete the deck and its cards
 */
 router.delete('/:id', async (req, res) => {
     const deck = await Deck.findByIdAndDelete(req.params.id);

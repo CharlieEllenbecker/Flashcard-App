@@ -30,7 +30,6 @@ router.post('/', async (req, res) => {
 
 /*
     GET - The folder with the given id
-    This might include some folder data and the decks in the folder
 */
 router.get('/:id', async (req, res) => {
     const folder = await Folder.findById(req.params.id);
@@ -64,7 +63,6 @@ router.put('/:id', async (req, res) => {
 
 /*
     DELETE - Delete the folder with the given id
-    This might delete the folder but not the decks inside that folder
 */
 router.delete('/:id', async (req, res) => {
     const folder = await Folder.findByIdAndDelete(req.params.id);
