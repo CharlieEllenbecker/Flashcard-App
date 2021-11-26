@@ -1,7 +1,7 @@
+const { cardSchema } = require('./card');
 const mongoose = require('mongoose');
 const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);    // passing this function to the Joi class
-const { cardSchema } = require('./card');
+// Joi.objectId = require('joi-objectid')(Joi);
 
 const Deck = mongoose.model('Deck', new mongoose.Schema({
     name: {
