@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "set NODE_ENV=development&& node index.js",
+    "start-test": "set NODE_ENV=test&& jest --watchAll --verbose --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -20,5 +21,9 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.0.13",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "jest": "^27.4.0",
+    "supertest": "^6.1.6"
   }
 }

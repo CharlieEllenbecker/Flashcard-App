@@ -1,11 +1,13 @@
 const winston = require('winston');
 const mongoose = require('mongoose');
+const config = require('config');
 
 module.exports = function() {
-    mongoose.connect('mongodb://localhost/flashcard-app')
+    const db = config.get('db');
+    mongoose.connect(db)
         .then(() => {
-            console.log('Connected to MongoDB...');
-            winston.info('Connected to MongoDB...');
+            console.log(`Connected to ${db}...`);
+            winston.info(`Connected to ${db}...`);
         })
-        .catch(() => console.error('Could not connect to MongoDB...'));
+        .catch(() => console.error(`Could not connect to ${db}...`));
 }
