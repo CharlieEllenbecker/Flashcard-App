@@ -1,4 +1,6 @@
 const { Deck, validate} = require('../models/deck');
+const validateObjectIds = require('../middleware/validateObjectIds');
+const auth = require('../middleware/auth');
 const _ = require('lodash');
 const express = require('express');
 require('express-async-errors');
@@ -15,7 +17,7 @@ router.get('/', async (req, res) => {
 /*
     POST - Add a new deck
 */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -30,7 +32,7 @@ router.post('/', async (req, res) => {
 /*
     GET - The deck with the given id
 */
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectIds, async (req, res) => {
     const deck = await Deck.findById(req.params.id);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
@@ -42,7 +44,7 @@ router.get('/:id', async (req, res) => {
 /*
     PUT - Update the deck with the given id
 */
-router.put('/:id', async (req, res) => {
+router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -60,7 +62,7 @@ router.put('/:id', async (req, res) => {
 /*
     DELETE - Delete the deck with the given id
 */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
     const deck = await Deck.findByIdAndDelete(req.params.id);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);

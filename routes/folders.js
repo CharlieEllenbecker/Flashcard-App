@@ -1,6 +1,9 @@
 const { Folder, validate } = require('../models/folder');
+const validateObjectIds = require('../middleware/validateObjectIds');
+const auth = require('../middleware/auth');
 const _ = require('lodash');
 const express = require('express');
+const { Mongoose } = require('mongoose');
 require('express-async-errors');
 const router = express.Router();
 
@@ -15,7 +18,7 @@ router.get('/', async (req, res) => {
 /*
     POST - Add a new folder
 */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -30,7 +33,7 @@ router.post('/', async (req, res) => {
 /*
     GET - The folder with the given id
 */
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectIds, async (req, res) => {
     const folder = await Folder.findById(req.params.id);
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
@@ -42,7 +45,7 @@ router.get('/:id', async (req, res) => {
 /*
     PUT - Update the folder with the given id
 */
-router.put('/:id', async (req, res) => {
+router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -60,7 +63,7 @@ router.put('/:id', async (req, res) => {
 /*
     DELETE - Delete the folder with the given id
 */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
     const folder = await Folder.findByIdAndDelete(req.params.id);
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);

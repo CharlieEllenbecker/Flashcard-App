@@ -1,5 +1,7 @@
 const { Card, validate} = require('../models/card');
 const { Deck } = require('../models/deck');
+const validateObjectIds = require('../middleware/validateObjectIds');
+const auth = require('../middleware/auth');
 const express = require('express');
 require('express-async-errors');
 const router = express.Router();
@@ -7,7 +9,7 @@ const router = express.Router();
 /*
     PUT - Update the card with the given cardId from the deck with the given deckId
 */
-router.put('/:deckId/:cardId', async (req, res) => {
+router.put('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -37,7 +39,7 @@ router.put('/:deckId/:cardId', async (req, res) => {
 /*
     DELETE - Delete the card with the given cardId from the deck with the given deckId
 */
-router.delete('/:deckId/:cardId', async (req, res) => {
+router.delete('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
     const deck = await Deck.findById(req.params.deckId);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
