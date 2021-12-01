@@ -5,21 +5,21 @@ const Folder = mongoose.model('Folder', new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minLength: 1,
+        minLength: 5,
         maxLength: 50
     },
     description: {
         type: String,
         required: false,
-        minLength: 1,
+        minLength: 5,
         maxLength: 200
     }
 }));
 
 function validateFolder(folder) {
     const schema = Joi.object({
-        name: Joi.string().min(1).max(50).required(),
-        description: Joi.string().min(1).max(200)
+        name: Joi.string().min(5).max(50).required(),
+        description: Joi.string().min(5).max(200)
     });
 
     return schema.validate(folder);
