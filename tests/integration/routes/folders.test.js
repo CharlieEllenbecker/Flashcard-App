@@ -27,31 +27,6 @@ describe('/api/folders', () => {
         });
     });
 
-    describe('GET /:id', () => {
-        it('should return a folder if valid id is passed', async () => {
-            const folder = new Folder({ name: 'folder1' });
-            await folder.save();
-
-            const res = await request(server).get('/api/folders/' + folder._id);
-        
-            expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('name', folder.name);
-        });
-
-        it('should return 404 if no folder with the given id exists', async () => {
-            const id = mongoose.Types.ObjectId();
-            const res = await request(server).get('/api/folders/' + id);
-        
-            expect(res.status).toBe(404);
-        });
-
-        it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get('/api/folders/1');
-        
-            expect(res.status).toBe(404);
-        });
-    });
-
     describe('POST /', () => {
         let token;
         let name;
@@ -126,6 +101,32 @@ describe('/api/folders', () => {
             expect(res.body).toHaveProperty('_id');
             expect(res.body).toHaveProperty('name', name);
             expect(res.body).toHaveProperty('description', description);
+        });
+    });
+
+    // TODO:
+    describe('GET /:id', () => {
+        it('should return a folder if valid id is passed', async () => {
+            const folder = new Folder({ name: 'folder1' });
+            await folder.save();
+
+            const res = await request(server).get('/api/folders/' + folder._id);
+        
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('name', folder.name);
+        });
+
+        it('should return 404 if no folder with the given id exists', async () => {
+            const id = mongoose.Types.ObjectId();
+            const res = await request(server).get('/api/folders/' + id);
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            const res = await request(server).get('/api/folders/1');
+        
+            expect(res.status).toBe(404);
         });
     });
     
@@ -231,6 +232,7 @@ describe('/api/folders', () => {
         });
     });
 
+    // TODO:
     describe('DELETE /:id', () => {
         let folder;
         let token;

@@ -1,4 +1,5 @@
 const { Folder, validate } = require('../models/folder');
+const { Deck } = require('../models/deck');
 const validateObjectIds = require('../middleware/validateObjectIds');
 const auth = require('../middleware/auth');
 const _ = require('lodash');
@@ -31,7 +32,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 /*
-    GET - The folder with the given id
+    GET - The decks in the folder with the given id
 */
 router.get('/:id', validateObjectIds, async (req, res) => {
     const folder = await Folder.findById(req.params.id);
@@ -39,7 +40,9 @@ router.get('/:id', validateObjectIds, async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    return res.send(folder);
+    const decks = await Deck.find({ folder: req.params.id });
+
+    return res.send(decks);
 });
 
 /*
@@ -68,6 +71,8 @@ router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
+
+    await Deck.updateMany({ folder: req.params.id }, { $unset: { folder: '' } });
 
     return res.send(folder);
 });
