@@ -1,4 +1,5 @@
 const { Folder } = require('../../../models/folder');
+const { Deck } = require('../../../models/deck');
 const { User } = require('../../../models/user');
 const request = require('supertest');
 const mongoose = require('mongoose');
@@ -9,17 +10,18 @@ describe('/api/folders', () => {
     beforeEach(() => { server  = require('../../../index'); });
     afterEach(async () => {
         await Folder.deleteMany({});
+        await Deck.deleteMany({});
         server.close();
     });
 
     describe('GET /', () => {
-        it('should return all folders', async () => {
+        it('should return all folders', async () => {   // add another case for an empty array?... There is one of these in the get/:id
             await Folder.collection.insertMany([
                 { name: 'folder1' },
                 { name: 'folder2' }
             ]);
 
-            const res = await request(server).get('/api/folders');
+            const res = await request(server).get('/api/folders/');
 
             expect(res.status).toBe(200);
             expect(res.body.some(f => f.name === 'folder1')).toBeTruthy();
@@ -40,12 +42,12 @@ describe('/api/folders', () => {
 
         const exec = async () => {
             return await request(server)
-            .post('/api/folders')
-            .set('x-auth-token', token)
-            .send({
-                name: name,
-                description: description
-            });
+                .post('/api/folders/')
+                .set('x-auth-token', token)
+                .send({
+                    name: name,
+                    description: description
+                });
         }
 
         it('should return 401 if client is not logged in', async () => {
@@ -89,31 +91,77 @@ describe('/api/folders', () => {
         });
 
         it('should save the folder if it is valid', async () => {
-            await exec();
+            const res = await exec();
 
             const folder = await Folder.find({ name: 'folder1' });
+
+            expect(res.status).toBe(200);
             expect(folder).not.toBeNull();
         });
 
         it('should return the folder if it is valid', async () => {
             const res = await exec();
 
+            expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('_id');
             expect(res.body).toHaveProperty('name', name);
             expect(res.body).toHaveProperty('description', description);
         });
     });
 
-    // TODO:
     describe('GET /:id', () => {
-        it('should return a folder if valid id is passed', async () => {
+        it('should return an empty array of decks if valid id is passed', async () => {
             const folder = new Folder({ name: 'folder1' });
             await folder.save();
 
             const res = await request(server).get('/api/folders/' + folder._id);
         
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('name', folder.name);
+            expect(res.body).toEqual([]);
+        });
+
+        it('should return a populated array of decks if valid id is passed', async () => {
+            const folder = new Folder({ name: 'folder1' });
+            await folder.save();
+
+            const decks = [
+                {
+                    name: 'deck1',
+                    folder: folder._id,
+                    cards: [
+                        {
+                            front: '1',
+                            back: 'a'
+                        },
+                        {
+                            front: '2',
+                            back: 'b'
+                        }
+                    ]
+                },
+                {
+                    name: 'deck12',
+                    folder: folder._id,
+                    cards: [
+                        {
+                            front: '2',
+                            back: 'c'
+                        },
+                        {
+                            front: '3',
+                            back: 'd'
+                        }
+                    ]
+                }
+            ];
+            await Deck.collection.insertMany(decks);
+
+            const res = await request(server).get('/api/folders/' + folder._id);
+        
+            expect(res.status).toBe(200);
+            expect(res.body.length).toBe(2);
+            expect(res.body.some(d => d.name === 'deck1'));
+            expect(res.body.some(d => d.name === 'deck2'));
         });
 
         it('should return 404 if no folder with the given id exists', async () => {
@@ -217,22 +265,24 @@ describe('/api/folders', () => {
         });
 
         it('should update the folder if it is valid', async () => {
-            await exec();
+            const res = await exec();
 
             const updatedFolder = await Folder.find({name: 'folder1' });
+            
+            expect(res.status).toBe(200);
             expect(folder).not.toBeNull();
         });
 
         it('should return the updated folder if it is valid', async () => {
             const res = await exec();
 
+            expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('_id');
             expect(res.body).toHaveProperty('name', newName);
             expect(res.body).toHaveProperty('description', newDescription);
         });
     });
 
-    // TODO:
     describe('DELETE /:id', () => {
         let folder;
         let token;
@@ -281,16 +331,36 @@ describe('/api/folders', () => {
         });
 
         it('should delete the folder if input is valid', async () => {
-            await exec();
+            let deck = new Deck({
+                name: 'deck1',
+                folder: folder.id,
+                cards: [
+                    {
+                        front: '1',
+                        back: 'a'
+                    },
+                    {
+                        front: '2',
+                        back: 'b'
+                    }
+                ]
+            });
+            deck = await deck.save();
+
+            const res = await exec();
 
             const folderInDb = await Folder.findById(id);
+            const deckInDb = await Deck.findById(deck._id);
 
+            expect(res.status).toBe(200);
             expect(folderInDb).toBeNull();
+            expect(deckInDb).not.toContain('folder');
         });
 
         it('should return the deleted folder', async () => {
             const res = await exec();
 
+            expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('_id', folder._id.toHexString());
             expect(res.body).toHaveProperty('name', folder.name);
             expect(res.body).toHaveProperty('description', folder.description);

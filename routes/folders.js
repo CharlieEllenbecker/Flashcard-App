@@ -40,7 +40,7 @@ router.get('/:id', validateObjectIds, async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    const decks = await Deck.find({ folder: req.params.id });
+    const decks = await Deck.find({ folder: req.params.id }).sort('name');
 
     return res.send(decks);
 });
