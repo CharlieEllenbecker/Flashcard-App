@@ -51,7 +51,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'email']), { new: true });
+    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description']), { new: true });
 
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);

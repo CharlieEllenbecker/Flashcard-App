@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development&& node index.js",
-    "test": "set NODE_ENV=test&& jest --watchAll --verbose --detectOpenHandles --coverage"
+    "test": "set NODE_ENV=test&& jest --watchAll --verbose --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

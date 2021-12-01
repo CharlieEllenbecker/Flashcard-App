@@ -148,10 +148,10 @@ describe('/api/folders', () => {
             newName = 'updatedName';
             newDescription = 'updatedDescription';
         });
-        
+
         const exec = async () => {
             return await request(server)
-                .put('/api/folders/')
+                .put('/api/folders/' + id)
                 .set('x-auth-token', token)
                 .send({
                     name: newName,
@@ -200,7 +200,7 @@ describe('/api/folders', () => {
         });
 
         it('should return 404 if no folder with the given id exists', async () => {
-            const id = mongoose.Types.ObjectId();
+            id = mongoose.Types.ObjectId();
 
             const res = await exec();
         
@@ -226,11 +226,72 @@ describe('/api/folders', () => {
             const res = await exec();
 
             expect(res.body).toHaveProperty('_id');
-            expect(res.body).toHaveProperty('name', name);
+            expect(res.body).toHaveProperty('name', newName);
+            expect(res.body).toHaveProperty('description', newDescription);
         });
     });
 
     describe('DELETE /:id', () => {
+        let folder;
+        let token;
+        let id;
 
+        beforeEach(async () => {
+            folder = new Folder({
+                name: 'folder1',
+                description: 'description1'
+            });
+            await folder.save();
+
+            id = folder._id;
+            token = new User().generateAuthToken();
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .delete('/api/folders/' + id)
+                .set('x-auth-token', token)
+                .send();
+        }
+
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 404 if no folder with the given id exists', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            id = 1;
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should delete the folder if input is valid', async () => {
+            await exec();
+
+            const folderInDb = await Folder.findById(id);
+
+            expect(folderInDb).toBeNull();
+        });
+
+        it('should return the deleted folder', async () => {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('_id', folder._id.toHexString());
+            expect(res.body).toHaveProperty('name', folder.name);
+            expect(res.body).toHaveProperty('description', folder.description);
+        });
     });
 });
