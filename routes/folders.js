@@ -40,7 +40,7 @@ router.get('/:id', validateObjectIds, async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    const decks = await Deck.find({ folder: req.params.id }).sort('name');
+    const decks = await Deck.find({ folderId: req.params.id }).sort('name');
 
     return res.send(decks);
 });
@@ -72,7 +72,7 @@ router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    await Deck.updateMany({ folder: req.params.id }, { $unset: { folder: '' } });
+    await Deck.updateMany({ folderId: req.params.id }, { $unset: { folder: '' } });
 
     return res.send(folder);
 });

@@ -27,6 +27,13 @@ describe('/api/folders', () => {
             expect(res.body.some(f => f.name === 'folder1')).toBeTruthy();
             expect(res.body.some(f => f.name === 'folder2')).toBeTruthy();
         });
+
+        it('should return an empty array of folders', async () => {
+            const res = await request(server).get('/api/folders/');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual([]);
+        });
     });
 
     describe('POST /', () => {
@@ -111,8 +118,7 @@ describe('/api/folders', () => {
 
     describe('GET /:id', () => {
         it('should return an empty array of decks if valid id is passed', async () => {
-            const folder = new Folder({ name: 'folder1' });
-            await folder.save();
+            const folder = await new Folder({ name: 'folder1' }).save();
 
             const res = await request(server).get('/api/folders/' + folder._id);
         
@@ -121,13 +127,12 @@ describe('/api/folders', () => {
         });
 
         it('should return a populated array of decks if valid id is passed', async () => {
-            const folder = new Folder({ name: 'folder1' });
-            await folder.save();
+            const folder = await new Folder({ name: 'folder1' }).save();
 
             const decks = [
                 {
                     name: 'deck1',
-                    folder: folder._id,
+                    folderId: folder._id,
                     cards: [
                         {
                             front: '1',
@@ -141,7 +146,7 @@ describe('/api/folders', () => {
                 },
                 {
                     name: 'deck12',
-                    folder: folder._id,
+                    folderId: folder._id,
                     cards: [
                         {
                             front: '2',
@@ -186,11 +191,10 @@ describe('/api/folders', () => {
         let newDescription;
 
         beforeEach(async () => {
-            folder = new Folder({
+            folder = await new Folder({
                 name: 'folder1',
                 description: 'description1'
-            });
-            await folder.save();
+            }).save();
 
             token = new User().generateAuthToken();
             id = folder._id;
@@ -267,7 +271,7 @@ describe('/api/folders', () => {
         it('should update the folder if it is valid', async () => {
             const res = await exec();
 
-            const updatedFolder = await Folder.find({name: 'folder1' });
+            const updatedFolder = await Folder.find({name: newName });
             
             expect(res.status).toBe(200);
             expect(folder).not.toBeNull();
@@ -289,14 +293,14 @@ describe('/api/folders', () => {
         let id;
 
         beforeEach(async () => {
-            folder = new Folder({
+            folder = await new Folder({
                 name: 'folder1',
                 description: 'description1'
-            });
-            await folder.save();
+            }).save();
 
-            id = folder._id;
             token = new User().generateAuthToken();
+            id = folder._id;
+            
         });
 
         const exec = async () => {
@@ -331,9 +335,9 @@ describe('/api/folders', () => {
         });
 
         it('should delete the folder if input is valid', async () => {
-            let deck = new Deck({
+            let deck = await new Deck({
                 name: 'deck1',
-                folder: folder.id,
+                folderId: id,
                 cards: [
                     {
                         front: '1',
@@ -344,8 +348,7 @@ describe('/api/folders', () => {
                         back: 'b'
                     }
                 ]
-            });
-            deck = await deck.save();
+            }).save();
 
             const res = await exec();
 

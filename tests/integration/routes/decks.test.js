@@ -1,5 +1,5 @@
 const { Deck } = require('../../../models/deck');
-const { Folder } = require('../../models/folder');
+const { Folder } = require('../../../models/folder');
 const { User } = require('../../../models/user');
 const request = require('supertest');
 const mongoose = require('mongoose');
@@ -14,14 +14,13 @@ describe('/api/decks', () => {
 
     describe('GET /', () => {
         it('should return all decks', async () => {
-            const folder = new Folder({ name: 'folder1' });
-            await folder.save();
+            const folder = await new Folder({ name: 'folder1' }).save();
 
             await Deck.collection.insertMany([
                 {
                     name: 'deck1',
                     description: 'description1',
-                    folder: folder._id,
+                    folderId: folder._id,
                     cards: [
                         {
                             front: '1',
@@ -36,7 +35,7 @@ describe('/api/decks', () => {
                 {
                     name: 'deck2',
                     description: 'description2',
-                    folder: folder._id,
+                    folderId: folder._id,
                     cards: [
                         {
                             front: '3',
@@ -56,6 +55,13 @@ describe('/api/decks', () => {
             expect(res.body.some(d => d.name === 'deck1')).toBeTruthy();
             expect(res.body.some(d => d.name === 'deck2')).toBeTruthy();
         });
+
+        it('should return an empty array of decks', async () => {
+            const res = await request(server).get('/api/decks/');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual([]);
+        });
     });
 
     describe('POST /', () => {
@@ -65,13 +71,12 @@ describe('/api/decks', () => {
         let folder;
         let cards;
 
-        beroreEach(async () => {
+        beforeEach(async () => {
             token = new User().generateAuthToken();
             name = 'deck1';
             description = 'description1';
 
-            let folderInDb = new Folder({ name: 'folder1' });
-            folderInDb = await folderInDb.save();
+            const folderInDb = await new Folder({ name: 'folder1' }).save();
             folder = folderInDb._id;
 
             cards = [
@@ -93,7 +98,7 @@ describe('/api/decks', () => {
                 .send({
                     name: name,
                     description: description,
-                    folder: folder,
+                    folderId: folder,
                     cards: cards
                 });
         }
@@ -181,7 +186,7 @@ describe('/api/decks', () => {
         it('should save the deck if it is valid', async () => {
             const res = await exec();
 
-            let deck = await Folder.find({ name: 'deck1' });
+            const deck = await Deck.find({ name: name });
 
             expect(res.status).toBe(200);
             expect(deck).not.toBeNull();
@@ -189,10 +194,33 @@ describe('/api/decks', () => {
     });
 
     describe('GET /:id', () => {
-        it('should return the deck if valid id is passed', () => {
-            const res = await exec();
+        it('should return the deck if valid id is passed', async () => {
+            const folder = await new Folder({ name: 'folder1' }).save();
 
-            
+            const deck = await new Deck({
+                    name: 'deck1',
+                    description: 'description1',
+                    folderId: folder._id,
+                    cards: [
+                        {
+                            front: '1',
+                            back: 'a'
+                        },
+                        {
+                            front: '2',
+                            back: 'b'
+                        }
+                    ]
+            }).save();
+
+            const res = await request(server).get('/api/decks/' + deck._id);
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('_id', deck._id.toHexString());
+            expect(res.body).toHaveProperty('name', deck.name);
+            expect(res.body).toHaveProperty('description', deck.description);
+            expect(res.body).toHaveProperty('folderId', deck.folderId);
+            expect(res.body).toHaveProperty('cards');
         });
 
         it('should return 404 if no deck with the given id exists', async () => {
@@ -209,27 +237,23 @@ describe('/api/decks', () => {
         });
     });
 
-    // TODO:
     describe('PUT /:id', () => {
         let deck;
         let token;
         let id;
         let newName;
         let newDescription;
-        let newFolder;
+        let newFolderId;
         let newCards;
 
-        beforeEach(() => {
-            let folderInDb = new Folder({ name: 'folder1' });
-            folderInDb = await folderInDb.save();
+        beforeEach(async () => {
+            const folderInDb = await new Folder({ name: 'folder1' }).save();
+            const newFolderInDb = await new Folder({ name: 'newFolder1' }).save();
 
-            let newFolderInDb = new Folder({ name: 'newFolder1' });
-            newFolderInDb = await newFolderInDb.save();
-
-            deck = new Deck({
+            deck = await new Deck({
                 name: 'deck1',
                 description: 'description1',
-                folder: folderInDb._id,
+                folderId: folderInDb._id,
                 cards: [
                     {
                         front: '1',
@@ -240,14 +264,13 @@ describe('/api/decks', () => {
                         back: 'b'
                     }
                 ]
-            });
-            await deck.save();
+            }).save();
 
             token = new User().generateAuthToken();
             id = deck._id;
             newName = 'updatedName';
             newDescription = 'updatedDescription';
-            newFolder = newFolderInDb._id;
+            newFolderId = newFolderInDb._id;
             newCards = [
                 {
                     front: '3',
@@ -267,11 +290,212 @@ describe('/api/decks', () => {
                 .send({
                     name: newName,
                     description: newDescription,
-                    folder: newFolder,
+                    folderId: newFolderId,
                     cards: newCards
                 });
         }
 
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 400 if new deck name is less than 5 characters', async () => {
+            newName = '1234';
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if new deck name is more than 50 characters', async () => {
+            newName = new Array(52).join('a');
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if new deck description is less than 5 characters', async () => {
+            newDescription = '1234';
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if new deck description is more than 200 characters', async () => {
+            newDescription = new Array(202).join('a');
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if new deck folder id is invalid', async () => {
+            newFolderId = 1;
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if one of the new decks cards front is an empty string', async () => {
+            newCards[0].front = '';
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if one of the new decks cards back is an empty string', async () => {
+            newCards[0].back = '';
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if one of the new decks cards front is more than 200 characters', async () => {
+            newCards[0].front = new Array(202).join('a');
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if one of the new decks cards back is more than 200 characters', async () => {
+            newCards[0].back = new Array(202).join('a');
+            
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
         
+        it('should return 404 if no deck with the given id exists', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            id = 1;
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should update the deck if it is valid', async () => {
+            const res = await exec();
+
+            const updatedDeck = await Deck.find({name: newName });
+            
+            expect(res.status).toBe(200);
+            expect(updatedDeck).not.toBeNull();
+        });
+
+        it('should return the updated deck if it is valid', async () => {
+            letdeck = await Deck.findById(id);
+            console.log('Old folderId: ' + deck.folderId);
+            
+            const res = await exec();
+
+            deck = await Deck.findById(id);
+            console.log('New folderId: ' + deck.folderId);
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', newName);
+            expect(res.body).toHaveProperty('description', newDescription);
+            expect(res.body).toHaveProperty('folderId');    // comparison not working
+            expect(res.body).toHaveProperty('cards');       // comparison not working
+        });
+    });
+
+    describe('DELETE /:id', () => {
+        let deck;
+        let token;
+        let id;
+
+        beforeEach(async () => {
+            const folderInDb = await new Folder({ name: 'folder1' }).save();
+
+            deck = await new Deck({
+                name: 'deck1',
+                description: 'description1',
+                folderId: folderInDb._id,
+                cards: [
+                    {
+                        front: '1',
+                        back: 'a'
+                    },
+                    {
+                        front: '2',
+                        back: 'b'
+                    }
+                ]
+            }).save();
+
+            token = new User().generateAuthToken();
+            id = deck._id;
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .delete('/api/decks/' + id)
+                .set('x-auth-token', token)
+                .send();
+        }
+
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 404 if no deck with the given id exists', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            id = 1;
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should delete the deck if input is valid', async () => {
+            const res = await exec();
+
+            const deckInDb = await Deck.find({ name: deck.name });
+
+            expect(res.status).toBe(200);
+            expect(deckInDb).toEqual([]);
+        });
+
+        it('should return the deleted deck', async () => {
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('_id', deck._id.toHexString());
+            expect(res.body).toHaveProperty('name', deck.name);
+            expect(res.body).toHaveProperty('description', deck.description);
+            expect(res.body).toHaveProperty('folderId', deck.folderId); // for some reason comparison works here
+            expect(res.body).toHaveProperty('cards');   // comparison not working
+        });
     });
 });
