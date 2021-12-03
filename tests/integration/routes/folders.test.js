@@ -15,7 +15,7 @@ describe('/api/folders', () => {
     });
 
     describe('GET /', () => {
-        it('should return all folders', async () => {   // add another case for an empty array?... There is one of these in the get/:id
+        it('should return all folders', async () => {
             await Folder.collection.insertMany([
                 { name: 'folder1' },
                 { name: 'folder2' }
@@ -117,10 +117,26 @@ describe('/api/folders', () => {
     });
 
     describe('GET /:id', () => {
+        it('should return 404 if no folder with the given id exists', async () => {
+            const id = mongoose.Types.ObjectId();
+
+            const res = await request(server).get(`/api/folders/${id}`);
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            const id = 1;
+            
+            const res = await request(server).get(`/api/folders/${id}`);
+        
+            expect(res.status).toBe(404);
+        });
+
         it('should return an empty array of decks if valid id is passed', async () => {
             const folder = await new Folder({ name: 'folder1' }).save();
 
-            const res = await request(server).get('/api/folders/' + folder._id);
+            const res = await request(server).get(`/api/folders/${folder._id}`);
         
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -161,25 +177,12 @@ describe('/api/folders', () => {
             ];
             await Deck.collection.insertMany(decks);
 
-            const res = await request(server).get('/api/folders/' + folder._id);
+            const res = await request(server).get(`/api/folders/${folder._id}`);
         
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
             expect(res.body.some(d => d.name === 'deck1'));
             expect(res.body.some(d => d.name === 'deck2'));
-        });
-
-        it('should return 404 if no folder with the given id exists', async () => {
-            const id = mongoose.Types.ObjectId();
-            const res = await request(server).get('/api/folders/' + id);
-        
-            expect(res.status).toBe(404);
-        });
-
-        it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get('/api/folders/1');
-        
-            expect(res.status).toBe(404);
         });
     });
     
@@ -204,7 +207,7 @@ describe('/api/folders', () => {
 
         const exec = async () => {
             return await request(server)
-                .put('/api/folders/' + id)
+                .put(`/api/folders/${id}`)
                 .set('x-auth-token', token)
                 .send({
                     name: newName,
@@ -218,6 +221,22 @@ describe('/api/folders', () => {
             const res = await exec();
 
             expect(res.status).toBe(401);
+        });
+
+        it('should return 404 if no folder with the given id exists', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            id = 1;
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
         });
 
         it('should return 400 if new folder name is less than 5 characters', async () => {
@@ -250,22 +269,6 @@ describe('/api/folders', () => {
             const res = await exec();
 
             expect(res.status).toBe(400);
-        });
-
-        it('should return 404 if no folder with the given id exists', async () => {
-            id = mongoose.Types.ObjectId();
-
-            const res = await exec();
-        
-            expect(res.status).toBe(404);
-        });
-
-        it('should return 404 if invalid id is passed', async () => {
-            id = 1;
-
-            const res = await exec();
-        
-            expect(res.status).toBe(404);
         });
 
         it('should update the folder if it is valid', async () => {
@@ -305,7 +308,7 @@ describe('/api/folders', () => {
 
         const exec = async () => {
             return await request(server)
-                .delete('/api/folders/' + id)
+                .delete(`/api/folders/${id}`)
                 .set('x-auth-token', token)
                 .send();
         }

@@ -15,7 +15,7 @@ const Deck = mongoose.model('Deck', new mongoose.Schema({
         minLength: 5,
         maxLength: 200
     },
-    folder: {
+    folderId: {
         type: mongoose.Schema.Types.ObjectId,   // document referencing
         ref: 'Folder',
         required: false

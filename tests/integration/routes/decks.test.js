@@ -194,6 +194,22 @@ describe('/api/decks', () => {
     });
 
     describe('GET /:id', () => {
+        it('should return 404 if no deck with the given id exists', async () => {
+            const id = mongoose.Types.ObjectId();
+
+            const res = await request(server).get(`/api/decks/${id}`);
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            const id = 1;
+
+            const res = await request(server).get(`/api/decks/${id}`);
+        
+            expect(res.status).toBe(404);
+        });
+
         it('should return the deck if valid id is passed', async () => {
             const folder = await new Folder({ name: 'folder1' }).save();
 
@@ -213,27 +229,14 @@ describe('/api/decks', () => {
                     ]
             }).save();
 
-            const res = await request(server).get('/api/decks/' + deck._id);
+            const res = await request(server).get(`/api/decks/${deck._id}`);
 
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('_id', deck._id.toHexString());
             expect(res.body).toHaveProperty('name', deck.name);
             expect(res.body).toHaveProperty('description', deck.description);
-            expect(res.body).toHaveProperty('folderId', deck.folderId);
+            expect(res.body).toHaveProperty('folderId', deck.folderId.toHexString());
             expect(res.body).toHaveProperty('cards');
-        });
-
-        it('should return 404 if no deck with the given id exists', async () => {
-            const id = mongoose.Types.ObjectId();
-            const res = await request(server).get('/api/decks/' + id);
-        
-            expect(res.status).toBe(404);
-        });
-
-        it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get('/api/decks/1');
-        
-            expect(res.status).toBe(404);
         });
     });
 
@@ -285,7 +288,7 @@ describe('/api/decks', () => {
 
         const exec = async () => {
             return await request(server)
-                .put('/api/decks/' + id)
+                .put(`/api/decks/${id}`)
                 .set('x-auth-token', token)
                 .send({
                     name: newName,
@@ -301,6 +304,22 @@ describe('/api/decks', () => {
             const res = await exec();
 
             expect(res.status).toBe(401);
+        });
+
+        it('should return 404 if no deck with the given id exists', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if invalid id is passed', async () => {
+            id = 1;
+
+            const res = await exec();
+        
+            expect(res.status).toBe(404);
         });
 
         it('should return 400 if new deck name is less than 5 characters', async () => {
@@ -375,47 +394,24 @@ describe('/api/decks', () => {
             expect(res.status).toBe(400);
         });
 
-        
-        it('should return 404 if no deck with the given id exists', async () => {
-            id = mongoose.Types.ObjectId();
-
-            const res = await exec();
-        
-            expect(res.status).toBe(404);
-        });
-
-        it('should return 404 if invalid id is passed', async () => {
-            id = 1;
-
-            const res = await exec();
-        
-            expect(res.status).toBe(404);
-        });
-
         it('should update the deck if it is valid', async () => {
             const res = await exec();
 
-            const updatedDeck = await Deck.find({name: newName });
+            const updatedDeck = await Deck.find({ name: newName });
             
             expect(res.status).toBe(200);
             expect(updatedDeck).not.toBeNull();
         });
 
         it('should return the updated deck if it is valid', async () => {
-            letdeck = await Deck.findById(id);
-            console.log('Old folderId: ' + deck.folderId);
-            
             const res = await exec();
 
-            deck = await Deck.findById(id);
-            console.log('New folderId: ' + deck.folderId);
-
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('_id', id.toHexString());
             expect(res.body).toHaveProperty('name', newName);
             expect(res.body).toHaveProperty('description', newDescription);
-            expect(res.body).toHaveProperty('folderId');    // comparison not working
-            expect(res.body).toHaveProperty('cards');       // comparison not working
+            expect(res.body).toHaveProperty('folderId', newFolderId.toHexString());
+            expect(res.body).toHaveProperty('cards');
         });
     });
 
@@ -449,7 +445,7 @@ describe('/api/decks', () => {
 
         const exec = async () => {
             return await request(server)
-                .delete('/api/decks/' + id)
+                .delete(`/api/decks/${id}`)
                 .set('x-auth-token', token)
                 .send();
         }
@@ -494,8 +490,8 @@ describe('/api/decks', () => {
             expect(res.body).toHaveProperty('_id', deck._id.toHexString());
             expect(res.body).toHaveProperty('name', deck.name);
             expect(res.body).toHaveProperty('description', deck.description);
-            expect(res.body).toHaveProperty('folderId', deck.folderId); // for some reason comparison works here
-            expect(res.body).toHaveProperty('cards');   // comparison not working
+            expect(res.body).toHaveProperty('folderId', deck.folderId.toHexString());
+            expect(res.body).toHaveProperty('cards');
         });
     });
 });

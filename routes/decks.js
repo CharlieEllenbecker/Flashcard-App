@@ -23,7 +23,7 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folder', 'cards']));
+    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards']));
     deck = await deck.save();
 
     return res.send(deck);
@@ -50,7 +50,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folder', 'cards']), { new: true });
+    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folderId', 'cards']), { new: true });
 
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
