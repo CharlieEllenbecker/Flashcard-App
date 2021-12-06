@@ -1,5 +1,11 @@
 # Flashcard-App
 
+MERN stack:
+MongoDB / Mongoose
+Express.js
+React.js
+Node.js
+
 Business Rules:
   - Allow the user to create decks
   - Allow the user to add cards to the decks - embedding of cards in the decks
