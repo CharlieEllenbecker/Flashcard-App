@@ -1,7 +1,11 @@
+import Auth from './Auth';
+
 export default function App() {
   return (
     <div>
-      React App
+      <h1>React App</h1>
+      <br/>
+      <Auth/>
     </div>
   );
 }

@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react';
 
 const Auth = () => {
-    
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
-    async function register(email, password) {
-
+    const handleChangeEmail = (e) => {
+        e.preventDefault();
+        setEmail(e.target.value);
     }
 
-    async function login(email, password) {
+    const handleChangePassword = (e) => {
+        e.preventDefault();
+        setPassword(e.target.value);
+    }
+
+    const register = async (email, password) => {
+        console.log('registering');
+
         
+    }
+
+    const login = async (email, password) => {
+        console.log('logging in');
     }
 
     return(
         <form>
             <label>
                 <p>Email</p>
-                <input type="text" />
+                <input type="email" onChange={handleChangeEmail} />
             </label>
             <label>
                 <p>Password</p>
-                <input type="password" />
+                <input type="password" onChange={handleChangePassword} />
             </label>
             <div>
                 <button type="submit" onClick={register}>Register</button>
@@ -28,3 +41,5 @@ const Auth = () => {
         </form>
     );
 }
+
+export default Auth;
