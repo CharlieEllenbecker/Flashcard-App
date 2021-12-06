@@ -8,15 +8,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 50,
+        maxlength: 256,
     },
     password: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 1024
-    }                       // ad property 'isAdmin' if privileges should be added
-});                         // then add middleware funciton with off chance for 403 status returned
+    }
+});
 
 userSchema.methods.generateAuthToken = function() {
     return jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
@@ -26,7 +26,7 @@ const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
     const schema = Joi.object({
-        email: Joi.string().min(5).max(50).email().required(),
+        email: Joi.string().min(5).max(256).email().required(),
         password: Joi.string().min(5).max(1024).required()      // utilize joi-password-conplexity module
     });
 

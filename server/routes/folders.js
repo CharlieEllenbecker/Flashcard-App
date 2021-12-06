@@ -13,7 +13,7 @@ const router = express.Router();
 */
 router.get('/', async (req, res) => {
     const folders = await Folder.find().sort('name');
-    return res.send(folders);
+    return res.status(200).send(folders);
 });
 
 /*
@@ -28,7 +28,7 @@ router.post('/', auth, async (req, res) => {
     let folder = new Folder(_.pick(req.body, ['name', 'description']));
     folder = await folder.save();
 
-    return res.send(folder);
+    return res.status(200).send(folder);
 });
 
 /*
@@ -42,7 +42,7 @@ router.get('/:id', validateObjectIds, async (req, res) => {
 
     const decks = await Deck.find({ folderId: req.params.id }).sort('name');
 
-    return res.send(decks);
+    return res.status(200).send(decks);
 });
 
 /*
@@ -60,7 +60,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    return res.send(folder);
+    return res.status(200).send(folder);
 });
 
 /*
@@ -74,7 +74,7 @@ router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
 
     await Deck.updateMany({ folderId: req.params.id }, { $unset: { folder: '' } });
 
-    return res.send(folder);
+    return res.status(200).send(folder);
 });
 
 module.exports = router;

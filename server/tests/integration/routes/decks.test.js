@@ -49,7 +49,7 @@ describe('/api/decks', () => {
                 }
             ]);
 
-            const res = await request(server).get('/api/decks/');
+            const res = await request(server).get('/api/decks');
 
             expect(res.status).toBe(200);
             expect(res.body.some(d => d.name === 'deck1')).toBeTruthy();
@@ -57,7 +57,7 @@ describe('/api/decks', () => {
         });
 
         it('should return an empty array of decks', async () => {
-            const res = await request(server).get('/api/decks/');
+            const res = await request(server).get('/api/decks');
 
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -93,7 +93,7 @@ describe('/api/decks', () => {
 
         const exec = async () => {
             return await request(server)
-                .post('/api/decks/')
+                .post('/api/decks')
                 .set('x-auth-token', token)
                 .send({
                     name: name,

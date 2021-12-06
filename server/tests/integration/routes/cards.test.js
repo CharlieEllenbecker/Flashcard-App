@@ -232,8 +232,6 @@ describe('/api/cards', () => {
         it('should return the deleted card ', async () => {
             const res = await exec();
 
-            console.log(res.body);
-
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('front', deck.cards[0].front);
             expect(res.body).toHaveProperty('back', deck.cards[0].back);

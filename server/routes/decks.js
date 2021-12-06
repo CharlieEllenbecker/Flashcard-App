@@ -11,7 +11,7 @@ const router = express.Router();
 */
 router.get('/', async (req, res) => {
     const decks = await Deck.find().sort('name');
-    return res.send(decks);
+    return res.status(200).send(decks);
 });
 
 /*
@@ -26,7 +26,7 @@ router.post('/', auth, async (req, res) => {
     let deck = new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards']));
     deck = await deck.save();
 
-    return res.send(deck);
+    return res.status(200).send(deck);
 });
 
 /*
@@ -38,7 +38,7 @@ router.get('/:id', validateObjectIds, async (req, res) => {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
-    return res.send(deck);
+    return res.status(200).send(deck);
 });
 
 /*
@@ -56,7 +56,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
-    return res.send(deck);
+    return res.status(200).send(deck);
 });
 
 /*
@@ -68,7 +68,7 @@ router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
 
-    return res.send(deck);
+    return res.status(200).send(deck);
 });
 
 module.exports = router;

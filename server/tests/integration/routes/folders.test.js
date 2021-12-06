@@ -21,7 +21,7 @@ describe('/api/folders', () => {
                 { name: 'folder2' }
             ]);
 
-            const res = await request(server).get('/api/folders/');
+            const res = await request(server).get('/api/folders');
 
             expect(res.status).toBe(200);
             expect(res.body.some(f => f.name === 'folder1')).toBeTruthy();
@@ -29,7 +29,7 @@ describe('/api/folders', () => {
         });
 
         it('should return an empty array of folders', async () => {
-            const res = await request(server).get('/api/folders/');
+            const res = await request(server).get('/api/folders');
 
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -49,7 +49,7 @@ describe('/api/folders', () => {
 
         const exec = async () => {
             return await request(server)
-                .post('/api/folders/')
+                .post('/api/folders')
                 .set('x-auth-token', token)
                 .send({
                     name: name,

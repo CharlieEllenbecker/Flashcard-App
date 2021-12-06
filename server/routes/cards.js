@@ -15,7 +15,7 @@ router.put('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    const deck = await Deck.findById(req.params.deckId);
+    let deck = await Deck.findById(req.params.deckId);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
     }
@@ -26,14 +26,9 @@ router.put('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
     }
 
     card.set(req.body);
-
-    return await deck.save()    // Not sure if this promise handling is correct
-        .then(deck => {
-            res.send(deck);
-        })
-        .catch(err => {
-            res.status(500).send(err);
-        });
+    deck = await deck.save();
+    
+    return res.status(200).send(deck);
 });
 
 /*
@@ -51,9 +46,9 @@ router.delete('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) =>
     }
 
     card.remove();
-    deck.save();
+    await deck.save();
 
-    return res.send(card);
+    return res.status(200).send(card);
 });
 
 module.exports = router;

@@ -4,6 +4,7 @@ const folders = require('../routes/folders');
 const decks = require('../routes/decks');
 const cards = require('../routes/cards');
 const users = require('../routes/users');
+const login = require('../routes/login');
 
 module.exports = function(app) {
     app.use(express.json());
@@ -11,5 +12,6 @@ module.exports = function(app) {
     app.use('/api/decks', decks);
     app.use('/api/cards', cards);
     app.use('/api/users', users);
+    app.use('/api/login', login);
     app.use(error);
 }
