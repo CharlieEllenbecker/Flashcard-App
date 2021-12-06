@@ -1,10 +1,6 @@
 # Flashcard-App
 
-MERN stack:
-MongoDB / Mongoose
-Express.js
-React.js
-Node.js
+MERN stack: MongoDB / Mongoose, Express.js, React.js, Node.js
 
 Business Rules:
   - Allow the user to create decks
