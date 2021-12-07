@@ -94,11 +94,11 @@ describe('/api/login', () => {
             expect(res.status).toBe(400);
         });
 
-        it('should return x-auth-token if valid', async () => {
+        it('should return authorization if valid', async () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.header).toHaveProperty('x-auth-token');
+            expect(res.header).toHaveProperty('authorization');
         });
     });
 

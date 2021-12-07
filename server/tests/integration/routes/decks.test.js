@@ -94,7 +94,7 @@ describe('/api/decks', () => {
         const exec = async () => {
             return await request(server)
                 .post('/api/decks')
-                .set('x-auth-token', token)
+                .set('authorization', token)
                 .send({
                     name: name,
                     description: description,
@@ -289,7 +289,7 @@ describe('/api/decks', () => {
         const exec = async () => {
             return await request(server)
                 .put(`/api/decks/${id}`)
-                .set('x-auth-token', token)
+                .set('authorization', token)
                 .send({
                     name: newName,
                     description: newDescription,
@@ -446,7 +446,7 @@ describe('/api/decks', () => {
         const exec = async () => {
             return await request(server)
                 .delete(`/api/decks/${id}`)
-                .set('x-auth-token', token)
+                .set('authorization', token)
                 .send();
         }
 

@@ -20,7 +20,8 @@ router.get('/me', auth, async (req, res) => {
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if(error) {
-        return res.status(400).send(error.details[0].message);
+        res.statusMessage = error.details[0].message;   // this is how to send messages to the front end actually
+        return res.status(400).send();
     }
 
     let user = await User.findOne({ email: req.body.email });
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
     user = await user.save();
 
     const token = user.generateAuthToken();
-    return res.status(200).header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
+    return res.status(200).header('authorization', token).send(_.pick(user, ['_id', 'email']));
 });
 
 module.exports = router;

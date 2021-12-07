@@ -1,38 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Auth = () => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [state, setState] = useState({ email: undefined, password: undefined, token: undefined });
 
-    const handleChangeEmail = (e) => {
+    const handleChange = (e) => {
         e.preventDefault();
-        setEmail(e.target.value);
+        setState({...state, [e.target.name]: e.target.value });
     }
 
-    const handleChangePassword = (e) => {
+    const register = async (e) => {
         e.preventDefault();
-        setPassword(e.target.value);
+
+        await axios
+            .post('/api/users', state)
+            .then(response => {
+                console.log('Response: ', response);
+
+                console.log('authorization: ', response.headers.authorization);
+                setState(prevState => ({...prevState, token: response.headers.authorization }));    // not able to save the token
+            })
+            .catch(error => console.error('Error: ', error));
     }
 
-    const register = async (email, password) => {
-        console.log('registering');
+    const login = async (e) => {
+        e.preventDefault();
 
-        
-    }
-
-    const login = async (email, password) => {
-        console.log('logging in');
+        axios
+            .post('/api/users', state)
+            .then(response => console.log('Result: ', response))
+            .catch(error => console.error('Error: ', error));
     }
 
     return(
         <form>
             <label>
                 <p>Email</p>
-                <input type="email" onChange={handleChangeEmail} />
+                <input type="email" name="email" onChange={handleChange} />
             </label>
             <label>
                 <p>Password</p>
-                <input type="password" onChange={handleChangePassword} />
+                <input type="password" name="password" onChange={handleChange} />
             </label>
             <div>
                 <button type="submit" onClick={register}>Register</button>

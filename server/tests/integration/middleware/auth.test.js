@@ -16,7 +16,7 @@ describe('auth middleware', () => {
     const exec = async () => {
         return await request(server)
             .post('/api/folders')
-            .set('x-auth-token', token)
+            .set('authorization', token)
             .send({ name: 'folder1' });
     }
 
