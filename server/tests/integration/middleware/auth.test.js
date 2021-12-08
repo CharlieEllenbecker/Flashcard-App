@@ -16,7 +16,7 @@ describe('auth middleware', () => {
     const exec = async () => {
         return await request(server)
             .post('/api/folders')
-            .set('authorization', token)
+            .set('Cookie', `token=${token};`)
             .send({ name: 'folder1' });
     }
 

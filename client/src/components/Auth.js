@@ -17,8 +17,8 @@ const Auth = () => {
             .then(response => {
                 console.log('Response: ', response);
 
-                console.log('authorization: ', response.headers.authorization);
-                setState(prevState => ({...prevState, token: response.headers.authorization }));    // not able to save the token
+                console.log('authorization: ', response.data.cookie.token);
+                setState(prevState => ({...prevState, token: response.data.cookie.token }));    // not able to save the token
             })
             .catch(error => console.error('Error: ', error));
     }

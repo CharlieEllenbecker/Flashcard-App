@@ -25,7 +25,16 @@ router.post('/', async (req, res) => {
     }
 
     const token = user.generateAuthToken();
-    return res.status(200).header('authorization', token).send(_.pick(user, ['_id', 'email']));
+
+    return res
+            .status(200)
+            .cookie('token', token, {
+                httpOnly: true
+                // secure: true,
+                // maxAge: 1000000
+                // signed: true
+            })
+            .send(_.pick(user, ['_id', 'email']));
 });
 
 module.exports = router;

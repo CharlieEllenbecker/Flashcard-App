@@ -27,7 +27,7 @@ describe('/api/users', () => {
         const exec = async () => {
             return await request(server)
                 .get('/api/users/me')
-                .set('authorization', token)
+                .set('Cookie', `token=${token};`)
                 .send();
         }
 
@@ -120,7 +120,7 @@ describe('/api/users', () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.header).toHaveProperty('authorization');
+            expect(res.cookie).toHaveProperty('token');
         });
     });
 });

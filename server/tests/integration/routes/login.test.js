@@ -98,7 +98,7 @@ describe('/api/login', () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.header).toHaveProperty('authorization');
+            expect(res.cookie).toHaveProperty('token');
         });
     });
 

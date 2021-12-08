@@ -16,7 +16,9 @@ describe('auth middleware', () => {
 
     const exec = () => {
         req = {
-            header: jest.fn().mockReturnValue(token)
+            cookie: {
+                token: token
+            }
         };
         res = { // is there a better way of handling this?
             send: function(){},

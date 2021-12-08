@@ -46,7 +46,7 @@ describe('/api/cards', () => {
         const exec = async () => {
             return await request(server)
                 .put(`/api/cards/${deckId}/${cardId}`)
-                .set('authorization', token)
+                .set('Cookie', `token=${token};`)
                 .send({
                     front: newFront,
                     back: newBack
