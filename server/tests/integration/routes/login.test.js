@@ -94,11 +94,11 @@ describe('/api/login', () => {
             expect(res.status).toBe(400);
         });
 
-        it('should return authorization if valid', async () => {
+        it('should return token in cookie if valid', async () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.cookie).toHaveProperty('token');
+            expect(res.cookies).toHaveProperty('token');
         });
     });
 

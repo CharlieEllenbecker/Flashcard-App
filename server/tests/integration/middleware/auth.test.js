@@ -33,7 +33,7 @@ describe('auth middleware', () => {
     });
 
     it('should return 400 if token is invalid', async () => {
-        token = 'a';
+        token = 'invalid token';
 
         const res = await exec();
 

@@ -1,9 +1,6 @@
-const cookieParser = require('cookie-parser');
 const winston = require('winston');
 const express = require('express');
 const app = express();
-
-app.use(cookieParser);
 
 require('./startup/logging')(); // call first to log first
 require('./startup/routes')(app);

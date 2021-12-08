@@ -37,13 +37,11 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    console.log('here');
-
     return res
             .status(200)
             .cookie('token', token, {
-                httpOnly: true
-                // secure: true,
+                httpOnly: true,
+                secure: false
                 // maxAge: 1000000
                 // signed: true
             })
