@@ -2,51 +2,45 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Auth = () => {
-    const [state, setState] = useState({ email: undefined, password: undefined, token: undefined });
+    const [state, setState] = useState({ email: undefined, password: undefined });
 
     const handleChange = (e) => {
         e.preventDefault();
         setState({...state, [e.target.name]: e.target.value });
     }
 
-    const register = async (e) => {
-        e.preventDefault();
-
+    const register = async () => {
         await axios
             .post('/api/users', state)
-            .then(response => {
-                console.log('Response: ', response);
-
-                console.log('authorization: ', response.data.cookie.token);
-                setState(prevState => ({...prevState, token: response.data.cookie.token }));    // not able to save the token
-            })
+            .then(response => console.log('Register response: ', response))
             .catch(error => console.error('Error: ', error));
     }
 
-    const login = async (e) => {
-        e.preventDefault();
-
-        axios
+    const login = async () => {
+        await axios
             .post('/api/users', state)
-            .then(response => console.log('Result: ', response))
+            .then(response => console.log('Login Response: ', response))
             .catch(error => console.error('Error: ', error));
     }
 
     return(
-        <form>
-            <label>
-                <p>Email</p>
-                <input type="email" name="email" onChange={handleChange} />
-            </label>
-            <label>
-                <p>Password</p>
-                <input type="password" name="password" onChange={handleChange} />
-            </label>
-            <div>
-                <button type="submit" onClick={register}>Register</button>
-                <button type="submit" onClick={login}>Login</button>
-            </div>
-        </form>
+        <div>
+            <h1>Register/Login</h1>
+            <form>
+                <label>
+                    <p>Email</p>
+                    <input type="email" name="email" onChange={handleChange} />
+                </label>
+                <label>
+                    <p>Password</p>
+                    <input type="password" name="password" onChange={handleChange} />
+                </label>
+                <div>
+                    <button type="submit" onClick={register}>Register</button>
+                    <button type="submit" onClick={login}>Login</button>
+                </div>
+            </form>
+        </div>
     );
 }
 

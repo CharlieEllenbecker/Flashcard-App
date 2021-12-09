@@ -12,7 +12,7 @@ const router = express.Router();
     GET - Get all folders
 */
 router.get('/', async (req, res) => {
-    const folders = await Folder.find().sort('name');
+    const folders = await Folder.find().select('-__v').sort('name');
     return res.status(200).send(folders);
 });
 
@@ -26,7 +26,7 @@ router.post('/', auth, async (req, res) => {
     }
 
     let folder = new Folder(_.pick(req.body, ['name', 'description']));
-    folder = await folder.save();
+    folder = await folder.save().select('-__v');
 
     return res.status(200).send(folder);
 });
@@ -40,7 +40,7 @@ router.get('/:id', validateObjectIds, async (req, res) => {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    const decks = await Deck.find({ folderId: req.params.id }).sort('name');
+    const decks = await Deck.find({ folderId: req.params.id }).select('-__v').sort('name');
 
     return res.status(200).send(decks);
 });
@@ -54,7 +54,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description']), { new: true });
+    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description']), { new: true }).select('-__v');
 
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
@@ -67,7 +67,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     DELETE - Delete the folder with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
-    const folder = await Folder.findByIdAndDelete(req.params.id);
+    const folder = await Folder.findByIdAndDelete(req.params.id).select('-__v');
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
