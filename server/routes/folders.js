@@ -4,7 +4,6 @@ const validateObjectIds = require('../middleware/validateObjectIds');
 const auth = require('../middleware/auth');
 const _ = require('lodash');
 const express = require('express');
-const { Mongoose } = require('mongoose');
 require('express-async-errors');
 const router = express.Router();
 
@@ -25,8 +24,8 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let folder = new Folder(_.pick(req.body, ['name', 'description']));
-    folder = await folder.save().select('-__v');
+    let folder = new Folder(_.pick(req.body, ['name', 'description'])); // make const instead and see if there is no '__v' property
+    folder = await folder.save();
 
     return res.status(200).send(folder);
 });

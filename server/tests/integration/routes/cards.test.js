@@ -46,7 +46,7 @@ describe('/api/cards', () => {
         const exec = async () => {
             return await request(server)
                 .put(`/api/cards/${deckId}/${cardId}`)
-                .set('Cookie', `token=${token};`)
+                .set('x-auth-token', token)
                 .send({
                     front: newFront,
                     back: newBack
@@ -176,7 +176,7 @@ describe('/api/cards', () => {
         const exec = async () => {
             return await request(server)
                 .delete(`/api/cards/${deckId}/${cardId}`)
-                .set('authorization', token)
+                .set('x-auth-token', token)
                 .send();
         }
 

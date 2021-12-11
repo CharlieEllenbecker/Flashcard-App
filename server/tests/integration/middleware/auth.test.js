@@ -13,16 +13,16 @@ describe('auth middleware', () => {
     
     let token;
 
-    const exec = async () => {
-        return await request(server)
-            .post('/api/folders')
-            .set('Cookie', `token=${token};`)
-            .send({ name: 'folder1' });
-    }
-
     beforeEach(() => {
         token = new User().generateAuthToken();
     });
+
+    const exec = async () => {
+        return await request(server)
+            .post('/api/folders')
+            .set('x-auth-token', token)
+            .send({ name: 'folder1' });
+    }
 
     it('should return 401 if no token is provided', async () => {
         token = '';

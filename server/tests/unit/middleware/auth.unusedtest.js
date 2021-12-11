@@ -16,8 +16,8 @@ describe('auth middleware', () => {
 
     const exec = () => {
         req = {
-            cookie: {
-                token: token
+            header: {
+                'x-auth-token': token
             }
         };
         res = { // is there a better way of handling this?

@@ -50,7 +50,7 @@ describe('/api/folders', () => {
         const exec = async () => {
             return await request(server)
                 .post('/api/folders')
-                .set('Cookie', `token=${token};`)
+                .set('x-auth-token', token)
                 .send({
                     name: name,
                     description: description
@@ -208,7 +208,7 @@ describe('/api/folders', () => {
         const exec = async () => {
             return await request(server)
                 .put(`/api/folders/${id}`)
-                .set('Cookie', `token=${token};`)
+                .set('x-auth-token', token)
                 .send({
                     name: newName,
                     description: newDescription
@@ -309,7 +309,7 @@ describe('/api/folders', () => {
         const exec = async () => {
             return await request(server)
                 .delete(`/api/folders/${id}`)
-                .set('Cookie', `token=${token};`)
+                .set('x-auth-token', token)
                 .send();
         }
 
