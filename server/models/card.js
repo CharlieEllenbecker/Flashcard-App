@@ -14,7 +14,7 @@ const cardSchema = new mongoose.Schema({
         minLength: 1,
         maxLength: 200
     }
-});
+}, { versionKey: false });
 
 const Card = mongoose.model('Card', cardSchema);
 

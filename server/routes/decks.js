@@ -1,6 +1,7 @@
 const { Deck, validate} = require('../models/deck');
 const validateObjectIds = require('../middleware/validateObjectIds');
 const auth = require('../middleware/auth');
+const decodeJwt = require('jwt-decode');
 const _ = require('lodash');
 const express = require('express');
 require('express-async-errors');
@@ -9,8 +10,9 @@ const router = express.Router();
 /*
     GET - Get all decks
 */
-router.get('/', async (req, res) => {
-    const decks = await Deck.find().sort('name');
+router.get('/', auth, async (req, res) => {
+    const userId = decodeJwt(req.header('x-auth-token'))._id;
+    const decks = await Deck.find({ userId: userId }).sort('name');
     return res.status(200).send(decks);
 });
 
@@ -23,7 +25,8 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards']));
+    req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
+    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']));
     deck = await deck.save();
 
     return res.status(200).send(deck);
@@ -32,8 +35,9 @@ router.post('/', auth, async (req, res) => {
 /*
     GET - The deck with the given id
 */
-router.get('/:id', validateObjectIds, async (req, res) => {
-    const deck = await Deck.findById(req.params.id);
+router.get('/:id', [auth, validateObjectIds], async (req, res) => {
+    const userId = decodeJwt(req.header('x-auth-token'))._id;
+    const deck = await Deck.find({_id: req.params.id, userId: userId });
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -50,8 +54,8 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folderId', 'cards']), { new: true });
-
+    const userId = decodeJwt(req.header('x-auth-token'))._id;
+    const deck = await Deck.findOneAndUpdate({ _id: req.params.id, userId: userId }, _.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']) , { new: true });
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -63,7 +67,8 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     DELETE - Delete the deck with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
-    const deck = await Deck.findByIdAndDelete(req.params.id);
+    const userId = decodeJwt(req.header('x-auth-token'))._id;
+    const deck = await Deck.findOneAndDelete({ _id: req.params.id, userId: userId });
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }

@@ -13,13 +13,19 @@ const Folder = mongoose.model('Folder', new mongoose.Schema({
         required: false,
         minLength: 5,
         maxLength: 200
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false // userId is generated from token
     }
-}));
+}, { versionKey: false }));
 
 function validateFolder(folder) {
     const schema = Joi.object({
         name: Joi.string().min(5).max(50).required(),
-        description: Joi.string().min(5).max(200)
+        description: Joi.string().min(5).max(200),
+        userId: Joi.objectId()
     });
 
     return schema.validate(folder);

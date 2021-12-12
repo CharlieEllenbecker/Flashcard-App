@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     }
-});
+}, { versionKey: false });
 
 userSchema.methods.generateAuthToken = function() {
     return jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));    // expiresIn property?...

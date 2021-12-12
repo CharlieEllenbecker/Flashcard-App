@@ -36,7 +36,7 @@ const Folders = () => {
 
     return(
         <div>
-            <h1>Folders</h1>
+            <h1>Folders Page</h1>
             <table className="table">
                 <thead>
                     <tr>

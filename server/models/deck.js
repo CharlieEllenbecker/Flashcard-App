@@ -20,8 +20,13 @@ const Deck = mongoose.model('Deck', new mongoose.Schema({
         ref: 'Folder',
         required: false
     },
-    cards: [cardSchema] // cards can't exist outside of a deck
-}));
+    cards: [cardSchema],    // cards can't exist outside of a deck
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false // userId is generated from token
+    }
+}, { versionKey: false }));
 
 function validateDeck(deck) {
     const schema = Joi.object({
@@ -31,7 +36,8 @@ function validateDeck(deck) {
         cards: Joi.array().items(Joi.object({
             front: Joi.string().min(1).max(200).required(),
             back: Joi.string().min(1).max(200).required()
-        })).required()
+        })).required(),
+        userId: Joi.objectId()
     });
 
     return schema.validate(deck);
