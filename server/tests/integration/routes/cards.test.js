@@ -4,8 +4,18 @@ const { User } = require('../../../models/user');
 const request = require('supertest');
 const mongoose = require('mongoose');
 
+let server;
+let globalUserToken;
+
 describe('/api/cards', () => {
-    beforeEach(() => { server  = require('../../../index'); });
+    beforeEach(async () => {
+        server  = require('../../../index');
+        const user = await new User({
+                email: 'john.smith@gmail.com',
+                password: 'password'
+            }).save();
+        globalUserToken = new User(user).generateAuthToken();
+    });
     afterEach(async () => {
         await Deck.deleteMany({});
         await Card.deleteMany({});
@@ -36,7 +46,7 @@ describe('/api/cards', () => {
                 ]
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             deckId = deck._id;
             cardId = deck.cards[0]._id;
             newFront = 'newFront';
@@ -168,7 +178,7 @@ describe('/api/cards', () => {
                 ]
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             deckId = deck._id;
             cardId = deck.cards[0]._id;
         });

@@ -5,23 +5,37 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 
 let server;
+let globalUserId;
+let globalUserToken;
 
 describe('/api/folders', () => {
-    beforeEach(() => { server  = require('../../../index'); });
+    beforeEach(async () => {
+        server  = require('../../../index');
+        const user = await new User({
+            email: 'john.smith@gmail.com',
+            password: 'password'
+        }).save();
+        globalUserId = user._id;
+        globalUserToken = new User(user).generateAuthToken();
+    });
     afterEach(async () => {
         await Folder.deleteMany({});
         await Deck.deleteMany({});
+        await User.deleteMany({});
         server.close();
     });
 
     describe('GET /', () => {
         it('should return all folders', async () => {
             await Folder.collection.insertMany([
-                { name: 'folder1' },
-                { name: 'folder2' }
+                { name: 'folder1', userId: globalUserId },
+                { name: 'folder2', userId: globalUserId }
             ]);
 
-            const res = await request(server).get('/api/folders');
+            const res = await request(server)
+                .get('/api/folders')
+                .set('x-auth-token', globalUserToken)
+                .send();
 
             expect(res.status).toBe(200);
             expect(res.body.some(f => f.name === 'folder1')).toBeTruthy();
@@ -29,7 +43,10 @@ describe('/api/folders', () => {
         });
 
         it('should return an empty array of folders', async () => {
-            const res = await request(server).get('/api/folders');
+            const res = await request(server)
+                .get('/api/folders')
+                .set('x-auth-token', globalUserToken)
+                .send();
 
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -42,7 +59,7 @@ describe('/api/folders', () => {
         let description;
 
         beforeEach(() => {
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             name = 'folder1';
             description = 'description1';
         });
@@ -120,15 +137,21 @@ describe('/api/folders', () => {
         it('should return 404 if no folder with the given id exists', async () => {
             const id = mongoose.Types.ObjectId();
 
-            const res = await request(server).get(`/api/folders/${id}`);
-        
+            const res = await request(server)
+                .get(`/api/folders/${id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
+            
             expect(res.status).toBe(404);
         });
 
         it('should return 404 if invalid id is passed', async () => {
             const id = 1;
             
-            const res = await request(server).get(`/api/folders/${id}`);
+            const res = await request(server)
+                .get(`/api/folders/${id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
         
             expect(res.status).toBe(404);
         });
@@ -136,7 +159,10 @@ describe('/api/folders', () => {
         it('should return an empty array of decks if valid id is passed', async () => {
             const folder = await new Folder({ name: 'folder1' }).save();
 
-            const res = await request(server).get(`/api/folders/${folder._id}`);
+            const res = await request(server)
+                .get(`/api/folders/${folder._id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
         
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -144,7 +170,6 @@ describe('/api/folders', () => {
 
         it('should return a populated array of decks if valid id is passed', async () => {
             const folder = await new Folder({ name: 'folder1' }).save();
-
             const decks = [
                 {
                     name: 'deck1',
@@ -177,7 +202,10 @@ describe('/api/folders', () => {
             ];
             await Deck.collection.insertMany(decks);
 
-            const res = await request(server).get(`/api/folders/${folder._id}`);
+            const res = await request(server)
+                .get(`/api/folders/${folder._id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
         
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
@@ -199,7 +227,7 @@ describe('/api/folders', () => {
                 description: 'description1'
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             id = folder._id;
             newName = 'updatedName';
             newDescription = 'updatedDescription';
@@ -301,7 +329,7 @@ describe('/api/folders', () => {
                 description: 'description1'
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             id = folder._id;
             
         });

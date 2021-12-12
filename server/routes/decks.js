@@ -36,8 +36,7 @@ router.post('/', auth, async (req, res) => {
     GET - The deck with the given id
 */
 router.get('/:id', [auth, validateObjectIds], async (req, res) => {
-    const userId = decodeJwt(req.header('x-auth-token'))._id;
-    const deck = await Deck.find({_id: req.params.id, userId: userId });
+    const deck = await Deck.findById(req.params.id);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -54,8 +53,8 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
     
-    const userId = decodeJwt(req.header('x-auth-token'))._id;
-    const deck = await Deck.findOneAndUpdate({ _id: req.params.id, userId: userId }, _.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']) , { new: true });
+    req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
+    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']) , { new: true });
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -67,8 +66,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     DELETE - Delete the deck with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
-    const userId = decodeJwt(req.header('x-auth-token'))._id;
-    const deck = await Deck.findOneAndDelete({ _id: req.params.id, userId: userId });
+    const deck = await Deck.findByIdAndDelete(req.params.id);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }

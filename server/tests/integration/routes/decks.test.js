@@ -4,8 +4,20 @@ const { User } = require('../../../models/user');
 const request = require('supertest');
 const mongoose = require('mongoose');
 
+let server;
+let globalUserId;
+let globalUserToken;
+
 describe('/api/decks', () => {
-    beforeEach(() => { server  = require('../../../index'); });
+    beforeEach(async () => {
+        server  = require('../../../index');
+        const user = await new User({
+            email: 'john.smith@gmail.com',
+            password: 'password'
+        }).save();
+        globalUserId = user._id;
+        globalUserToken = new User(user).generateAuthToken();
+    });
     afterEach(async () => {
         await Deck.deleteMany({});
         await Folder.deleteMany({});
@@ -30,7 +42,8 @@ describe('/api/decks', () => {
                             front: '2',
                             back: 'b'
                         }
-                    ]
+                    ],
+                    userId: globalUserId
                 },
                 {
                     name: 'deck2',
@@ -45,11 +58,15 @@ describe('/api/decks', () => {
                             front: '4',
                             back: 'd'
                         }
-                    ]
+                    ],
+                    userId: globalUserId
                 }
             ]);
 
-            const res = await request(server).get('/api/decks');
+            const res = await request(server)
+                .get('/api/decks')
+                .set('x-auth-token', globalUserToken)
+                .send();
 
             expect(res.status).toBe(200);
             expect(res.body.some(d => d.name === 'deck1')).toBeTruthy();
@@ -57,7 +74,10 @@ describe('/api/decks', () => {
         });
 
         it('should return an empty array of decks', async () => {
-            const res = await request(server).get('/api/decks');
+            const res = await request(server)
+                .get('/api/decks')
+                .set('x-auth-token', globalUserToken)
+                .send();
 
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
@@ -72,7 +92,7 @@ describe('/api/decks', () => {
         let cards;
 
         beforeEach(async () => {
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             name = 'deck1';
             description = 'description1';
 
@@ -197,7 +217,10 @@ describe('/api/decks', () => {
         it('should return 404 if no deck with the given id exists', async () => {
             const id = mongoose.Types.ObjectId();
 
-            const res = await request(server).get(`/api/decks/${id}`);
+            const res = await request(server)
+                .get(`/api/decks/${id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
         
             expect(res.status).toBe(404);
         });
@@ -205,7 +228,10 @@ describe('/api/decks', () => {
         it('should return 404 if invalid id is passed', async () => {
             const id = 1;
 
-            const res = await request(server).get(`/api/decks/${id}`);
+            const res = await request(server)
+                .get(`/api/decks/${id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
         
             expect(res.status).toBe(404);
         });
@@ -229,7 +255,10 @@ describe('/api/decks', () => {
                     ]
             }).save();
 
-            const res = await request(server).get(`/api/decks/${deck._id}`);
+            const res = await request(server)
+                .get(`/api/decks/${deck._id}`)
+                .set('x-auth-token', globalUserToken)
+                .send();
 
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('_id', deck._id.toHexString());
@@ -269,7 +298,7 @@ describe('/api/decks', () => {
                 ]
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             id = deck._id;
             newName = 'updatedName';
             newDescription = 'updatedDescription';
@@ -439,7 +468,7 @@ describe('/api/decks', () => {
                 ]
             }).save();
 
-            token = new User().generateAuthToken();
+            token = globalUserToken;
             id = deck._id;
         });
 
