@@ -2,24 +2,41 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Auth = () => {
-    const [state, setState] = useState({ email: undefined, password: undefined });
+    const [state, setState] = useState({});
+    let token;
+
+    const clearInputs = () => {
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        setState({});
+    }
 
     const handleChange = (e) => {
         e.preventDefault();
-        setState({...state, [e.target.name]: e.target.value });
+        setState({...state, [e.target.id]: e.target.value });
     }
 
-    const register = async () => {
+    const register = async (e) => {
+        e.preventDefault();
         await axios
             .post('/api/users', state)
-            .then(response => console.log('Register response: ', response))
+            .then(response => {
+                console.log('Register response: ', response);
+                token = response.headers['x-auth-token'];
+                clearInputs();
+            })
             .catch(error => console.error('Error: ', error));
     }
 
-    const login = async () => {
+    const login = async (e) => {
+        e.preventDefault();
         await axios
-            .post('/api/users', state)
-            .then(response => console.log('Login Response: ', response))
+            .post('/api/login', state)
+            .then(response => {
+                console.log('Login Response: ', response);
+                token = response.headers['x-auth-token'];
+                clearInputs();
+            })
             .catch(error => console.error('Error: ', error));
     }
 
@@ -29,11 +46,11 @@ const Auth = () => {
             <form>
                 <label>
                     <p>Email</p>
-                    <input type="email" name="email" onChange={handleChange} />
+                    <input type="email" id="email" onChange={handleChange} />
                 </label>
                 <label>
                     <p>Password</p>
-                    <input type="password" name="password" onChange={handleChange} />
+                    <input type="password" id="password" onChange={handleChange} />
                 </label>
                 <div>
                     <button type="submit" onClick={register}>Register</button>
