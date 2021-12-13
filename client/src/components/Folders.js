@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import CustomCard from './CustomCard';
+import CustomNavbar from './CustomNavbar';
 import axios from 'axios';
+import folder from '../images/folder.jpg';
+import '../styles/cards.css';
 
 const Folders = (props) => {
 	const [folderInput, setFolderInput] = useState({ name: undefined, description: undefined });
@@ -36,38 +40,28 @@ const Folders = (props) => {
 	}, []);
 
 	return(
-		<div className="container">
+		<>
+			{props.displayNavbar && <CustomNavbar />}
 			<h1>Folders</h1>
-			<table className="table">
-				<thead>
-					<tr>
-						<th scope="col">Name</th>
-						<th scope="col">Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					{folders.map(f =>
-					<tr key={f._id}>
-						<td>{f.name}</td>
-						<td>{f.description}</td>
-					</tr>
-				)}
-				</tbody>
-			</table>
-			{props.canAddFolder && <form>
-				<label>
-					<p>Name</p>
-					<input type="name" name="name" onChange={handleChange} />
-				</label>
-				<label>
-					<p>Description</p>
-					<input type="description" name="description" onChange={handleChange} />
-				</label>
-				<div>
-					<button type="submit" onClick={addFolder}>Add Folder</button>
-				</div>
-			</form>}
-		</div>
+			<div className="card-grid">
+				{folders.map(f => <CustomCard name={f.name} description={f.description} img={folder} />)}
+			</div>
+			{props.canAddFolder &&
+				<form>
+					<label>
+						<p>Name</p>
+						<input type="name" name="name" onChange={handleChange} />
+					</label>
+					<label>
+						<p>Description</p>
+						<input type="description" name="description" onChange={handleChange} />
+					</label>
+					<div>
+						<button type="submit" onClick={addFolder}>Add Folder</button>
+					</div>
+				</form>
+			}
+		</>
 	);
 }
 

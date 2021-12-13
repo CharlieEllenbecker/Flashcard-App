@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';		// utilize instead!
 import axios from 'axios';
 
 const Auth = () => {
@@ -40,7 +41,7 @@ const Auth = () => {
 	}
 
 	return(
-		<div>
+		<>
 			<h1>Auth Page</h1>
 			<form>
 				<label>
@@ -56,7 +57,7 @@ const Auth = () => {
 					<button type="submit" onClick={login}>Login</button>
 				</div>
 			</form>
-		</div>
+		</>
 	);
 }
 

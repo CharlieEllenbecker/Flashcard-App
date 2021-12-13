@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import CustomCard from './CustomCard';
+import CustomNavbar from './CustomNavbar';
 import axios from 'axios';
+import deck from '../images/deck.png';
+import '../styles/cards.css';
 
-const Decks = () => {
+const Decks = (props) => {
 	const [decks, setDecks] = useState([])
 
 	const getDecks = async () => {
@@ -19,23 +23,13 @@ const Decks = () => {
 	}, []);
 
 	return(
-		<div className="grid-wrapper">
+		<>
+			{props.displayNavbar && <CustomNavbar />}
 			<h1>Decks</h1>
-			<table className="table">
-				<thead>
-					<tr>
-						<th scope="col">Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					{decks.map(d =>
-					<tr key={d._id}>
-						<td>{d.name}</td> 
-					</tr>
-				)}
-				</tbody>
-			</table>
-		</div>
+			<div className="card-grid">
+				{decks.map(d => <CustomCard name={d.name} description={d.description} img={deck} />)}
+			</div>
+		</>
 	);
 }
 
