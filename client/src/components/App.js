@@ -9,7 +9,7 @@ const App = () => {
 	<>
 	  	<BrowserRouter>
 			<Routes>
-				<Route path="/home" element={<Home />} />
+				<Route exact path="/" element={<Home />} />
 				<Route path="/auth" element={<Auth />} />
 				<Route path="/decks" element={<Decks displayNavbar={true} />} />
 				<Route path="/folders" element={<Folders displayNavbar={true} canAddFolder={true} />} />
