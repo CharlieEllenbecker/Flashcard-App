@@ -7,7 +7,7 @@ import '../styles/container.css';
 
 const Auth = () => {
 	const [state, setState] = useState({});
-	const [errorMessage, setErrorMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState(null);
 
 	const clearInputs = () => {
 		document.getElementById('login-email').value = '';
@@ -16,7 +16,7 @@ const Auth = () => {
 		document.getElementById('signup-password').value = '';
 		document.getElementById('confirm-email').value = '';
 		document.getElementById('confirm-password').value = '';
-		setErrorMessage('');
+		setErrorMessage(null);
 		setState({});
 	}
 
@@ -44,11 +44,15 @@ const Auth = () => {
 				localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
 				clearInputs();
 			})
-			.catch(error => console.error('Error: ', error));
+			.catch(error => {
+				console.error('Error: ', error);
+				setErrorMessage(error.message);
+			});
 	}
 
 	const login = async (e) => {
 		e.preventDefault();
+
 		await axios
 			.post('/api/login', {
 				email: state['login-email'],
@@ -59,7 +63,10 @@ const Auth = () => {
 				localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
 				clearInputs();
 			})
-			.catch(error => console.error('Error: ', error));
+			.catch(error => {
+				console.error('Error: ', error);
+				setErrorMessage(error.message);
+			});
 	}
 
 	return(
@@ -74,7 +81,7 @@ const Auth = () => {
 					<Signup handleChange={handleChange} signup={signup} />
 					</Tab>
 				</Tabs>
-				<h6>{errorMessage}</h6>
+				{errorMessage && <h6>{errorMessage}</h6>}
 			</Container>
 		</>
 	);
