@@ -1,11 +1,13 @@
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, redirectTo, isAuth, path, ...props }) => {
-    if(!isAuth) {
-        return <Navigate to={redirectTo} />;
-    }
-    return <Route path={path} element={<Component />} />
-};
+const PrivateRoute = ({ isAuth, redirectTo }) => {
+    const location = useLocation();
+
+    return isAuth ? <Outlet /> : <Navigate to={redirectTo} state={{ from: location }} />;
+}
 
 export default PrivateRoute;
+
+/*
+    Something about editing the history of the location and making back arrow not go back to the signup page...
+*/
