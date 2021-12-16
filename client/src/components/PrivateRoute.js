@@ -7,7 +7,3 @@ const PrivateRoute = ({ isAuth, redirectTo }) => {
 }
 
 export default PrivateRoute;
-
-/*
-    Something about editing the history of the location and making back arrow not go back to the signup page...
-*/

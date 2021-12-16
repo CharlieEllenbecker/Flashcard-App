@@ -1,7 +1,7 @@
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const CustomNavbar = () => {
+const PrivateNavbar = () => {
     return(
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -23,4 +23,4 @@ const CustomNavbar = () => {
     );
 }
 
-export default CustomNavbar;
+export default PrivateNavbar;

@@ -1,7 +1,9 @@
+import PublicNavbar from './PublicNavbar';
+
 const PublicHome = () => {
 	return (
 		<>
-            {/* TODO: make a public home navbar or edit the existign navbar to just allow auth */}
+            <PublicNavbar />
 			<h1>Public Home Page</h1>
 		</>
 	);

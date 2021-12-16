@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CustomCard from './CustomCard';
-import CustomNavbar from './CustomNavbar';
+import PrivateNavbar from './PrivateNavbar';
 import axios from 'axios';
 import folder from '../images/folder.jpg';
 import '../styles/cards.css';
@@ -41,10 +41,10 @@ const Folders = (props) => {
 
 	return(
 		<>
-			{props.displayNavbar && <CustomNavbar />}
+			{props.displayNavbar && <PrivateNavbar />}
 			<h1>Folders</h1>
 			<div className="card-grid">
-				{folders.map(f => <CustomCard name={f.name} description={f.description} img={folder} />)}
+				{folders.map(f => <CustomCard key={f._id} name={f.name} description={f.description} img={folder} />)}
 			</div>
 			{props.canAddFolder &&
 				<form>

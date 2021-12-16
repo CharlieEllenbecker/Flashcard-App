@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PublicHome from './PublicHome';
 import Dashboard from './Dashboard';
-import Auth from './Auth';
 import Decks from './Decks';
 import Folders from './Folders';
 import Private from './Private';
@@ -18,7 +17,6 @@ const App = () => {
 				</Route>
 				<Route exact path="/dashboard" element={<Dashboard />} />
 				<Route exact path="/" element={<PublicHome />} />
-				<Route path="/auth" element={<Auth />} />
 				<Route path="/decks" element={<Decks displayNavbar={true} />} />
 				<Route path="/folders" element={<Folders displayNavbar={true} canAddFolder={true} />} />
 				<Route path="/private" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CustomCard from './CustomCard';
-import CustomNavbar from './CustomNavbar';
+import PrivateNavbar from './PrivateNavbar';
 import axios from 'axios';
 import deck from '../images/deck.png';
 import '../styles/cards.css';
@@ -24,10 +24,10 @@ const Decks = (props) => {
 
 	return(
 		<>
-			{props.displayNavbar && <CustomNavbar />}
+			{props.displayNavbar && <PrivateNavbar />}
 			<h1>Decks</h1>
 			<div className="card-grid">
-				{decks.map(d => <CustomCard name={d.name} description={d.description} img={deck} />)}
+				{decks.map(d => <CustomCard key={d._id} name={d.name} description={d.description} img={deck} />)}
 			</div>
 		</>
 	);
