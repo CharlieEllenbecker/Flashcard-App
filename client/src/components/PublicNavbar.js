@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navbar, Container, Nav, Button, Modal } from 'react-bootstrap';
 import { Navigate, Link } from 'react-router-dom';
 import isAuth from '../services/isAuth';
@@ -8,18 +8,13 @@ import Signup from './Signup';
 const PrivateNavbar = () => {
     const [showLogin, setShowLogin] = useState(false);
     const [showSignup, setShowSignup] = useState(false);
-    let isAuthorized;
 
     const handleShowLogin = () => setShowLogin(true);
     const handleCloseLogin = () => setShowLogin(false);
     const handleShowSignup = () => setShowSignup(true);
     const handleCloseSignup = () => setShowSignup(false);
 
-    useEffect(() => {   // Change to a useRef hook?
-        isAuthorized = isAuth();
-    }, []);
-
-    if(isAuthorized) {
+    if(isAuth()) {
         return <Navigate to="/dashboard" />
     } else {
         return(

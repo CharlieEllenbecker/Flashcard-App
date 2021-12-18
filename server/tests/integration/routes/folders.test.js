@@ -19,9 +19,9 @@ describe('/api/folders', () => {
         globalUserToken = new User(user).generateAuthToken();
     });
     afterEach(async () => {
+        await User.deleteMany({});
         await Folder.deleteMany({});
         await Deck.deleteMany({});
-        await User.deleteMany({});
         server.close();
     });
 
