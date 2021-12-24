@@ -7,8 +7,8 @@ const Dashboard = () => {
 		<>
 			<PrivateNavbar />
 			<h1>Dashboard Page</h1>
-			<Decks displayNavbar={false}/>
-			<Folders displayNavbar={false} canAddFolder={false}/>
+			<Decks displayNavbar={false} />
+			<Folders displayNavbar={false} />
 		</>
 	);
 }

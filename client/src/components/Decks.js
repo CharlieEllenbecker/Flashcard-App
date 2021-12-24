@@ -15,7 +15,7 @@ const Decks = (props) => {
 				console.log('Get Decks Response: ', response);
 				setDecks(response.data);
 			})
-			.catch(error => console.error('Error: ', error));
+			.catch(error => console.error('Error: ', error.response.data));
 	}
 
 	useEffect(() => {
