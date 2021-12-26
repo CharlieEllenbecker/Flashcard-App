@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addFolder } from '../state/actions/folderActions';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const FolderForm = ({ addNewFolder, handleCloseModal }) => {
+const FolderForm = ({ handleCloseModal }) => {
     const [folderInput, setFolderInput] = useState({});
 	const [errorMessage, setErrorMessage] = useState(null);
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
 		e.preventDefault();
@@ -30,7 +33,7 @@ const FolderForm = ({ addNewFolder, handleCloseModal }) => {
             .then(response => {
                     console.log('Create Folder Response: ', response);
                     clearInputs();
-                    addNewFolder(response.data);
+                    dispatch(addFolder(response.data));
                     handleCloseModal();
                 }
             )

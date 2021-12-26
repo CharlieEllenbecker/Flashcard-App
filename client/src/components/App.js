@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 import PublicHome from './PublicHome';
 import Dashboard from './Dashboard';
-import Decks from './Decks';
-import Folders from './Folders';
-import PrivateRoute from './PrivateRoute';
 import isAuth from '../services/isAuth';
 
 const App = () => {
@@ -11,13 +9,10 @@ const App = () => {
 	<>
 	  	<BrowserRouter>
 			<Routes>
+				<Route exact path="/" element={<PublicHome />} />
 				<Route path="/dashboard" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
 				</Route>
-				<Route exact path="/dashboard" element={<Dashboard />} />
-				<Route exact path="/" element={<PublicHome />} />
-				<Route path="/decks" element={<Decks displayNavbar={true} />} />
-				<Route path="/folders" element={<Folders displayNavbar={true} />} />
 				<Route path="*" element={() => "404 NOT FOUND"} />	{/* TODO: Make into a redirect? */}
 			</Routes>
 	  	</BrowserRouter>

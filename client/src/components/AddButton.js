@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import FolderForm from './FolderForm';
 
-const AddButton = ({ type, addNewFolder }) => {
+const AddButton = ({ type }) => {
     const [showAddCard, setShowAddCard] = useState(false);
     const [showAddDeck, setShowAddDeck] = useState(false);
     const [showAddFolder, setShowAddFolder] = useState(false);
@@ -44,7 +44,7 @@ const AddButton = ({ type, addNewFolder }) => {
                     <Modal.Title>New Folder</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FolderForm addNewFolder={addNewFolder} handleCloseModal={handleCloseAddFolder} />
+                    <FolderForm handleCloseModal={handleCloseAddFolder} />
                 </Modal.Body>
             </Modal>
         </>
