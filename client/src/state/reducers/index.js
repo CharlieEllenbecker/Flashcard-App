@@ -3,8 +3,8 @@ import folderReducer from './folderReducer';
 import deckReducer from './deckReducer';
 
 const reducers = combineReducers({
-    folders: folderReducer,
-    decks: deckReducer
+    folderReducer: folderReducer,
+    deckReducer: deckReducer
 });
 
 export default reducers;

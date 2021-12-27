@@ -8,7 +8,7 @@ import folder from '../images/folder.jpg';
 import '../styles/cards.css';
 
 const Folders = () => {
-	const { folders } = useSelector((state) => state.folders);
+	const { folders } = useSelector((state) => state.folderReducer);
 	console.log('Folders: ', folders);
 	const dispatch = useDispatch();
 

@@ -2,7 +2,12 @@ import ActionTypes from '../actions/actionTypes';
 
 const initialState = {
     decks: [],
-    unsavedDeck: {}
+    newDeck: {
+        name: null,
+        description: null,
+        folderId: null,
+        cards: []
+    }
 };
 
 const deckReducer = (state = initialState, { type, payload }) => {
@@ -17,10 +22,25 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 decks: [...state.decks, payload]
             };
-        case ActionTypes.EDIT_UNSAVED_DECK:
+        case ActionTypes.SET_NEW_DECK_NAME:
             return {
                 ...state,
-                unsavedDeck: {...state.unsavedDeck, ...payload} // TODO: CHECK IF THIS WORKS
+                newDeck: { ...state.newDeck, name: payload }
+            };
+        case ActionTypes.SET_NEW_DECK_DESCRIPTION:
+            return {
+                ...state,
+                newDeck: { ...state.newDeck, description: payload }
+            };
+        case ActionTypes.SET_NEW_DECK_FOLDER_ID:
+            return {
+                ...state,
+                newDeck: { ...state.newDeck, folderId: payload }
+            };
+        case ActionTypes.SET_NEW_DECK_CARDS:
+            return {
+                ...state,
+                newDeck: { ...state.newDeck, cards: payload }
             };
         default:
             return state;

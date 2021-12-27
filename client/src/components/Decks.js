@@ -7,7 +7,7 @@ import deck from '../images/deck.png';
 import '../styles/cards.css';
 
 const Decks = () => {
-	const { decks } = useSelector((state) => state.decks);
+	const { decks } = useSelector((state) => state.deckReducer);
 	const dispatch = useDispatch();
 
 	const fetchDecks = async () => {
