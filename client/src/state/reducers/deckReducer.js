@@ -10,17 +10,17 @@ const deckReducer = (state = initialState, { type, payload }) => {
         case ActionTypes.SET_DECKS:
             return {
                 ...state,
-                decks: payload.decks
+                decks: payload
             };
         case ActionTypes.ADD_DECK:
             return {
                 ...state,
-                decks: [...state.decks, payload.deck]
+                decks: [...state.decks, payload]
             };
         case ActionTypes.EDIT_UNSAVED_DECK:
             return {
                 ...state,
-                unsavedDeck: {...state.unsavedDeck, ...payload.unsavedDeck} // TODO: CHECK IF THIS WORKS
+                unsavedDeck: {...state.unsavedDeck, ...payload} // TODO: CHECK IF THIS WORKS
             };
         default:
             return state;

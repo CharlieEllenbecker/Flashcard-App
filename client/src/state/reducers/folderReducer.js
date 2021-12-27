@@ -6,10 +6,10 @@ const initailState = {
 
 const folderReducer = (state = initailState, { type, payload }) => {
     switch(type) {
-        case ActionTypes.SET_FOLDER:
+        case ActionTypes.SET_FOLDERS:
             return {
                 ...state,
-                folders: payload.folders
+                folders: payload
             };
         case ActionTypes.ADD_FOLDER:
             return {

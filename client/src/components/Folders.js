@@ -9,6 +9,7 @@ import '../styles/cards.css';
 
 const Folders = () => {
 	const { folders } = useSelector((state) => state.folders);
+	console.log('Folders: ', folders);
 	const dispatch = useDispatch();
 
 	const fetchFolders = async () => {
@@ -16,12 +17,7 @@ const Folders = () => {
 			.get('/api/folders', { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
 			.then(response => {
 				console.log('Get Folders Response: ', response);
-				dispatch({
-					type: setFolders,
-					payload: {
-						folders: response.data
-					}
-				});
+				dispatch(setFolders(response.data));
 			})
 			.catch(error => console.error('Error: ', error.response.data));
 	}
