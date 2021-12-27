@@ -5,7 +5,7 @@ import deck from '../images/deck.png';
 import '../styles/cards.css';
 
 const Decks = () => {
-	const [decks, setDecks] = useState([])
+	const [decks, setDecks] = useState([]);
 
 	const fetchDecks = async () => {
 		await axios

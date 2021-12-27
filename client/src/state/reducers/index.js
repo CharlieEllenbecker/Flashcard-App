@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import foldersReducer from './foldersReducer';
+import folderReducer from './folderReducer';
+import deckReducer from './deckReducer';
 
 const reducers = combineReducers({
-    folders: foldersReducer
+    folders: folderReducer,
+    decks: deckReducer
 });
 
 export default reducers;

@@ -1,17 +1,19 @@
-export const addFolder = (folder) => {
+import ActionTypes from './actionTypes';
+
+export const setFolders = (folders) => {
     return (dispatch) => {
         dispatch({
-            type: 'addFolder',
-            payload: folder
+            type: ActionTypes.SET_FOLDER,
+            payload: folders
         });
     }
 }
 
-export const setFolders = (folders) => {    // prefer to not make this async and handle the api call here... however middleware is nice...
+export const addFolder = (folder) => {
     return (dispatch) => {
         dispatch({
-            type: 'setFolders',
-            payload: folders    // is an array going to work here?
+            type: ActionTypes.ADD_FOLDER,
+            payload: folder
         });
     }
 }
