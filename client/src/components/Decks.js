@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PrivateNavbar from './PrivateNavbar';
 import { setDecks } from '../state/actions/deckActions';
 import CustomCard from './CustomCard';
 import axios from 'axios';
 import deck from '../images/deck.png';
-import '../styles/cards.css';
+import '../styles/styles.css';
 
 const Decks = () => {
 	const { decks } = useSelector((state) => state.deckReducer);
@@ -26,6 +27,7 @@ const Decks = () => {
 
 	return(
 		<>
+			<PrivateNavbar />
 			<h1>Decks</h1>
 			<div className="card-grid">
 				{decks.map(d => <CustomCard key={d._id} name={d.name} description={d.description} img={deck} />)}

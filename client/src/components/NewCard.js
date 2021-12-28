@@ -23,15 +23,17 @@ const NewCard = ({ tempId, front, back }) => {
 
     return(
         <>
-            <Container className="border border-primary">
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Front</Form.Label>
-                        <Form.Control id="card-front" name="front" type="text" defaultValue={front} placeholder="Enter Front" onChange={handleChange} />
-                        <Form.Label>Back</Form.Label>
-                        <Form.Control id="deck-description" name="back" type="text" defaultValue={back} placeholder="Enter Back" onChange={handleChange} />
-                    </Form.Group>
-                </Form>
+            <Container className="center-new-card" fluid>
+                <Container className="border border-primary rounded light-margin">
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Front</Form.Label>
+                            <Form.Control id="card-front" name="front" type="text" defaultValue={front} placeholder="Enter Front" onChange={handleChange} />
+                            <Form.Label>Back</Form.Label>
+                            <Form.Control id="deck-description" name="back" type="text" defaultValue={back} placeholder="Enter Back" onChange={handleChange} />
+                        </Form.Group>
+                    </Form>
+                </Container>
             </Container>
         </>
     );

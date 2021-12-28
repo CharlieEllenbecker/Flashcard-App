@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFolders } from '../state/actions/folderActions';
+import PrivateNavbar from './PrivateNavbar';
 import CustomCard from './CustomCard';
-import AddFolderButton from './AddFolderButton';
+// import AddFolderButton from './AddFolderButton';
 import axios from 'axios';
 import folder from '../images/folder.jpg';
-import '../styles/cards.css';
+import '../styles/styles.css';
 
 const Folders = () => {
 	const { folders } = useSelector((state) => state.folderReducer);
@@ -28,10 +29,11 @@ const Folders = () => {
 
 	return(
 		<>
+			<PrivateNavbar />
 			<h1>Folders</h1>
 			<div className="card-grid">
 				{folders.map(f => <CustomCard key={f._id} name={f.name} description={f.description} img={folder} />)}
-				<AddFolderButton />
+				{/* <AddFolderButton /> */}
 			</div>
 		</>
 	);

@@ -32,14 +32,14 @@ const FolderForm = ({ handleCloseModal }) => {
                 description: folderInput.description
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
-                    console.log('Create Folder Response: ', response);
-                    clearInputs();
-                    dispatch(addFolder(response.data));
-                    handleCloseModal();
+                console.log('Create Folder Response: ', response);
+                clearInputs();
+                dispatch(addFolder(response.data));
+                handleCloseModal();
             })
             .catch(error => {
-                    console.error(error);
-                    setErrorMessage(error.response.data);
+                console.error('Error: ', error.response.data);
+                setErrorMessage(error.response.data);
             });
     }
 

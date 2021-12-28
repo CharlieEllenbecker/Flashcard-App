@@ -1,5 +1,5 @@
 import { Card, Button } from 'react-bootstrap';
-import '../styles/cards.css';
+import '../styles/styles.css';
 
 const CustomCard = (props) => {
 	if(!props.name) {
@@ -7,7 +7,7 @@ const CustomCard = (props) => {
 	}
 	else {
 		return(
-			<div className="custom-card">
+			<div className="light-margin">
 				<Card>
 					<Card.Img variant="top" src={props.img} />
 					<Card.Body>

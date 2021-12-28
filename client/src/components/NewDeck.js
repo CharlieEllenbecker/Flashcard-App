@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Form, Container, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { setNewDeckName, setNewDeckDescription, addNewDeckCard } from '../state/actions/deckActions';
+import { setNewDeckName, setNewDeckDescription, addNewDeckCard, clearNewDeck } from '../state/actions/deckActions';
 import PrivateNavbar from './PrivateNavbar';
+import Page from './Page';
 import NewCard from './NewCard';
 
 const NewDeck = () => {
@@ -11,6 +12,15 @@ const NewDeck = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const dispatch = useDispatch();
 
+    const addEmptyCard = () => {
+        dispatch(addNewDeckCard({
+            tempId: tempIdCounter,
+            front: null,
+            back: null
+        }));
+    }
+
+    // Async code starts
     let tempIdCounter = 0;
     newDeck.cards.forEach(c => {
         if(c.tempId >= tempIdCounter) {
@@ -18,14 +28,15 @@ const NewDeck = () => {
         }
     });
 
+    if(tempIdCounter === 0) {
+        addEmptyCard();
+    }
+    // Async code ends
+
     const handleAddNewDeckCard = (e) => {
         e.preventDefault();
 
-        dispatch(addNewDeckCard({
-            tempId: tempIdCounter,
-            front: null,
-            back: null
-        }));
+        addEmptyCard();
     }
 
     const handleChange = (e) => {
@@ -49,19 +60,19 @@ const NewDeck = () => {
                 cards: cards
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
-                console.log('Create Deck Response: ', response);                
+                console.log('Create Deck Response: ', response);
+                dispatch(clearNewDeck());              
             })
             .catch(error => {
-                    console.error(error);
-                    setErrorMessage(error.response.data);
+                console.error('Error: ', error.response.data)
+                setErrorMessage(error.response.data);
             });
     }
 
     return(
         <>
             <PrivateNavbar />
-            <Container className="border border-dark" fluid>
-                <h1>New Deck Page</h1>
+            <Page title="New Deck Page" >
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Deck Name</Form.Label>
@@ -70,10 +81,15 @@ const NewDeck = () => {
                         <Form.Control id="deck-description" name="description" type="text" defaultValue={newDeck.description} placeholder="Enter Description (optional)" onChange={handleChange} />
                     </Form.Group>
                 </Form>
+                <span>Cards</span>
                 {newDeck.cards.map(c => <NewCard key={c.tempId} tempId={c.tempId} front={c.front} back={c.back} />)}
-                <Button variant="primary" onClick={handleAddNewDeckCard}>+</Button>
+                <Container className="center-add-card-button" fluid>
+                    <Button variant="primary" onClick={handleAddNewDeckCard}>Add Card</Button>
+                </Container>
+            </Page>
+            <Container className="move-create-deck-button-right" fluid>
+                <Button variant="success" onClick={postDeck}>Create Deck</Button>
             </Container>
-            <Button variant="primary" onClick={postDeck}>Create Deck</Button>
             {errorMessage && <p>{errorMessage}</p>}
         </>
     );

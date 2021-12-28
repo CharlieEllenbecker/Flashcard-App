@@ -10,7 +10,7 @@ const AddFolderButton = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleOpen}>+</Button>
+            <Button variant="primary" onClick={handleOpen}>Create New Folder</Button>
 
             <Modal
                 show={showAddFolder}

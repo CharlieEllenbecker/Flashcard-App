@@ -62,3 +62,10 @@ export const editNewDeckCardBack = (card) => {
         payload: card
     };
 }
+
+export const clearNewDeck = () => {
+    return {
+        type: ActionTypes.CLEAR_NEW_DECK,
+        payload: null
+    };
+}

@@ -1,0 +1,27 @@
+.card-grid{
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+	grid-template-rows: 1fr;
+}
+
+.light-margin {
+	margin: 4px;
+}
+
+.center-add-card-button {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.move-create-deck-button-right {
+    display: flex;
+    justify-content: right;
+    padding: 10px;
+}
+
+.center-new-card {
+    display: flex;
+    justify-content: center;
+}
