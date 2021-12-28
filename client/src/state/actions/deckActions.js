@@ -41,3 +41,24 @@ export const setNewDeckCards = (cards) => {
         payload: cards
     };
 }
+
+export const addNewDeckCard = (card) => {
+    return {
+        type: ActionTypes.ADD_NEW_DECK_CARD,
+        payload: card
+    };
+}
+
+export const editNewDeckCardFront = (card) => {
+    return {
+        type: ActionTypes.EDIT_NEW_DECK_CARD_FRONT,
+        payload: card
+    };
+}
+
+export const editNewDeckCardBack = (card) => {
+    return {
+        type: ActionTypes.EDIT_NEW_DECK_CARD_BACK,
+        payload: card
+    };
+}

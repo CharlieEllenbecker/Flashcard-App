@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import FolderForm from './FolderForm';
 
-const AddButton = ({ type }) => {
+const AddButton = ({ type }) => {   // TODO: Refactor
     const [showAddCard, setShowAddCard] = useState(false);
     const [showAddDeck, setShowAddDeck] = useState(false);
     const [showAddFolder, setShowAddFolder] = useState(false);

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addFolder } from '../state/actions/folderActions';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { addFolder } from '../state/actions/folderActions';
+
 
 const FolderForm = ({ handleCloseModal }) => {
     const [folderInput, setFolderInput] = useState({});
@@ -20,7 +21,7 @@ const FolderForm = ({ handleCloseModal }) => {
 		setFolderInput({});
 	}
 
-    const createFolder = async (e) => {
+    const postFolder = async (e) => {
         e.preventDefault();
 
         console.log(folderInput);
@@ -53,7 +54,7 @@ const FolderForm = ({ handleCloseModal }) => {
                     <Form.Label>Folder Description</Form.Label>
                     <Form.Control id="folder-description" type="text" placeholder="Enter Description (optional)" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={createFolder}>
+                <Button variant="primary" type="submit" onClick={postFolder}>
                     Create Folder
                 </Button>
             </Form>
