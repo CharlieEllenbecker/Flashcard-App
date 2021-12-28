@@ -2,12 +2,7 @@ import ActionTypes from '../actions/actionTypes';
 
 const initialState = {  // maybe it might be a good idea to make models for the front end? (convert to typescript)
     decks: [],
-    newDeck: {
-        name: null,
-        description: null,
-        folderId: null,
-        cards: []
-    }
+    newDeck: {}
 };
 
 const deckReducer = (state = initialState, { type, payload }) => {

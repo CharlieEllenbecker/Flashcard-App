@@ -1,7 +1,8 @@
 import ActionTypes from '../actions/actionTypes';
 
 const initailState = {
-    folders: []
+    folders: [],
+    newFolder: {}
 };
 
 const folderReducer = (state = initailState, { type, payload }) => {

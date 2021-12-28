@@ -12,7 +12,7 @@ const FolderForm = ({ handleCloseModal }) => {
 
     const handleChange = (e) => {
 		e.preventDefault();
-		setFolderInput({...folderInput, [e.target.id]: e.target.value });   // TODO: check case where a description is entered, then deleted then submitted
+		setFolderInput({...folderInput, [e.target.name]: e.target.value });   // TODO: check case where a description is entered, then deleted then submitted
 	}
 
 	const clearInputs = () => {
@@ -28,8 +28,8 @@ const FolderForm = ({ handleCloseModal }) => {
 
         await axios
             .post('/api/folders', {
-                name: folderInput['folder-name'],
-                description: folderInput['folder-description']
+                name: folderInput.name,
+                description: folderInput.description
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                     console.log('Create Folder Response: ', response);
@@ -48,9 +48,9 @@ const FolderForm = ({ handleCloseModal }) => {
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label>Folder Name</Form.Label>
-                    <Form.Control id="folder-name" type="text" placeholder="Enter Name" onChange={handleChange} />
+                    <Form.Control id="folder-name" name="name" type="text" placeholder="Enter Name" onChange={handleChange} />
                     <Form.Label>Folder Description</Form.Label>
-                    <Form.Control id="folder-description" type="text" placeholder="Enter Description (optional)" onChange={handleChange} />
+                    <Form.Control id="folder-description" name="description" type="text" placeholder="Enter Description (optional)" onChange={handleChange} />
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={postFolder}>
                     Create Folder

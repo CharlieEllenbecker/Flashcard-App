@@ -5,13 +5,13 @@ import axios from 'axios';
 import isAuth from '../services/isAuth';
 
 const SignupForm = ({ handleCloseModal }) => {
-    const [state, setState] = useState({});
+    const [signupInput, setSignupInput] = useState({});
 	const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		setState({...state, [e.target.name]: e.target.value });
+		setSignupInput({...signupInput, [e.target.name]: e.target.value });
 	}
 
 	const clearInputs = () => {
@@ -19,22 +19,22 @@ const SignupForm = ({ handleCloseModal }) => {
 		document.getElementById('signup-password').value = '';
 		document.getElementById('confirm-email').value = '';
 		document.getElementById('confirm-password').value = '';
-		setState({});
+		setSignupInput({});
 	}
 
     const signup = async (e) => {
 		e.preventDefault();
 
-		if(!(state.email && state.password && state['confirm-email'] && state['confirm-password']) || 
-            (state.email.normalize() !== state['confirm-email'].normalize() || state.password.normalize() !== state['confirm-password'].normalize())) {
+		if(!(signupInput.email && signupInput.password && signupInput['confirm-email'] && signupInput['confirm-password']) || 
+            (signupInput.email.normalize() !== signupInput['confirm-email'].normalize() || signupInput.password.normalize() !== signupInput['confirm-password'].normalize())) {
 			setErrorMessage('Please check if your email or password is typed in correctly');
 			return;
 		}
 
 		await axios
 			.post('/api/users', {
-				email: state.email,
-				password: state.password
+				email: signupInput.email,
+				password: signupInput.password
 			})
 			.then(response => {
 				console.log('Signup response: ', response);
