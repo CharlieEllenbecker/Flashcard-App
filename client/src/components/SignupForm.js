@@ -11,7 +11,7 @@ const SignupForm = ({ handleCloseModal }) => {
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		setState({...state, [e.target.id]: e.target.value });
+		setState({...state, [e.target.name]: e.target.value });
 	}
 
 	const clearInputs = () => {
@@ -25,16 +25,16 @@ const SignupForm = ({ handleCloseModal }) => {
     const signup = async (e) => {
 		e.preventDefault();
 
-		if(!(state['signup-email'] && state['signup-password'] && state['confirm-email'] && state['confirm-password']) || 
-            (state['signup-email'].normalize() !== state['confirm-email'].normalize() || state['signup-password'].normalize() !== state['confirm-password'].normalize())){
+		if(!(state.email && state.password && state['confirm-email'] && state['confirm-password']) || 
+            (state.email.normalize() !== state['confirm-email'].normalize() || state.password.normalize() !== state['confirm-password'].normalize())) {
 			setErrorMessage('Please check if your email or password is typed in correctly');
 			return;
 		}
 
 		await axios
 			.post('/api/users', {
-				email: state['signup-email'],
-				password: state['signup-password']
+				email: state.email,
+				password: state.password
 			})
 			.then(response => {
 				console.log('Signup response: ', response);
@@ -56,15 +56,15 @@ const SignupForm = ({ handleCloseModal }) => {
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control id="signup-email" type="email" placeholder="Enter email" onChange={handleChange} />
+                    <Form.Control id="signup-email" name="email" type="email" placeholder="Enter email" onChange={handleChange} />
                     <Form.Label>Confirm Email address</Form.Label>
-                    <Form.Control id="confirm-email" type="email" placeholder="Confirm email" onChange={handleChange} />
+                    <Form.Control id="confirm-email" name="confirm-email" type="email" placeholder="Confirm email" onChange={handleChange} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control id="signup-password" type="password" placeholder="Password" onChange={handleChange} />
+                    <Form.Control id="signup-password" name="password" type="password" placeholder="Password" onChange={handleChange} />
                     <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control id="confirm-password" type="password" placeholder="Confirm password" onChange={handleChange} />
+                    <Form.Control id="confirm-password" name="confirm-password" type="password" placeholder="Confirm password" onChange={handleChange} />
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={signup}>
                     Signup

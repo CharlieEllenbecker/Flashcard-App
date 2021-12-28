@@ -36,13 +36,11 @@ const FolderForm = ({ handleCloseModal }) => {
                     clearInputs();
                     dispatch(addFolder(response.data));
                     handleCloseModal();
-                }
-            )
+            })
             .catch(error => {
                     console.error(error);
                     setErrorMessage(error.response.data);
-                }
-            )
+            });
     }
 
     return(

@@ -54,9 +54,7 @@ const NewDeck = () => {
             .catch(error => {
                     console.error(error);
                     setErrorMessage(error.response.data);
-                }
-            )
-
+            });
     }
 
     return(

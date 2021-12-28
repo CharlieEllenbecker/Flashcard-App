@@ -11,7 +11,7 @@ const LoginForm = ({ handleCloseModal }) => {
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		setState({...state, [e.target.id]: e.target.value });
+		setState({...state, [e.target.name]: e.target.value });
 	}
 
 	const clearInputs = () => {
@@ -23,10 +23,15 @@ const LoginForm = ({ handleCloseModal }) => {
 	const login = async (e) => {
 		e.preventDefault();
 
+		if(!(state.email && state.password)) {
+			setErrorMessage('Please check if your email or password is typed in correctly');
+			return;
+		}
+
 		await axios
 			.post('/api/login', {
-				email: state['login-email'],
-				password: state['login-password']
+				email: state.email,
+				password: state.password
 			})
 			.then(response => {
 				console.log('Login Response: ', response);
@@ -48,11 +53,11 @@ const LoginForm = ({ handleCloseModal }) => {
 			<Form>
 				<Form.Group className="mb-3">
 					<Form.Label>Email address</Form.Label>
-					<Form.Control id="login-email" type="email" placeholder="Enter email" onChange={handleChange} />
+					<Form.Control id="login-email" name="email" type="email" placeholder="Enter email" onChange={handleChange} />
 				</Form.Group>
 				<Form.Group className="mb-3">
 					<Form.Label>Password</Form.Label>
-					<Form.Control id="login-password" type="password" placeholder="Password" onChange={handleChange} />
+					<Form.Control id="login-password" name="password" type="password" placeholder="Password" onChange={handleChange} />
 				</Form.Group>
 				<Button variant="primary" type="submit" onClick={login}>
 					Login
