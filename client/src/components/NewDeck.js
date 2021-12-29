@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Container, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -25,6 +25,7 @@ const NewDeck = () => {
             addEmptyCard();
             addEmptyCard();
         }
+        setCanDeleteCard(newDeck.cards.length > 2);
     }
 
     const handleAddNewDeckCard = (e) => {
@@ -41,6 +42,12 @@ const NewDeck = () => {
         } else if(e.target.name === 'description') {
             dispatch(setNewDeckDescription(e.target.value));
         }
+    }
+
+    const handleDeleteDeckInputs = (e) => {
+        e.preventDefault();
+
+        dispatch(clearNewDeck());
     }
 
     const postDeck = async () => {
@@ -62,13 +69,13 @@ const NewDeck = () => {
 
     useEffect(() => {
         addStartingCards();
-        setCanDeleteCard(newDeck.cards.length > 2);
-    }, [newDeck.cards.length]);
+    }, [])
 
     return(
         <>
             <PrivateNavbar />
             <Page title="New Deck Page" >
+                <Button variant="primary" onClick={handleDeleteDeckInputs}>Delete All Inputs</Button>
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Deck Name</Form.Label>

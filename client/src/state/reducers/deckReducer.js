@@ -52,7 +52,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 newDeck: { 
                     ...state.newDeck,
-                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? c.front = payload.front : c)
+                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front } : c)
                 }
             };
         case ActionTypes.EDIT_NEW_DECK_CARD_BACK:
@@ -60,7 +60,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 newDeck: { 
                     ...state.newDeck,
-                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? c.back = payload.back : c)
+                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? { ...c, back: payload.back } : c)
                 }
         };
         case ActionTypes.DELETE_NEW_DECK_CARD:
@@ -74,7 +74,9 @@ const deckReducer = (state = initialState, { type, payload }) => {
         case ActionTypes.CLEAR_NEW_DECK:
             return {
                 ...state,
-                newDeck: {}
+                newDeck: {
+                    cards: []
+                }
             };
         default:
             return state;
