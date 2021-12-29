@@ -4,6 +4,9 @@ const initialState = {  // maybe it might be a good idea to make models for the 
     decks: [],
     newDeck: {
         cards: []
+    },
+    selectedDeck: {
+        cards: []
     }
 };
 
@@ -19,6 +22,13 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 decks: [...state.decks, payload]
             };
+        case ActionTypes.SET_SELECTED_DECK: {
+            console.log('Set Selected Deck: ', payload);
+            return {
+                ...state,
+                selectedDeck: payload
+            };
+        }
         case ActionTypes.SET_NEW_DECK_NAME:
             return {
                 ...state,

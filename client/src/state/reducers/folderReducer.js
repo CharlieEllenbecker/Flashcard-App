@@ -3,7 +3,7 @@ import ActionTypes from '../actions/actionTypes';
 const initailState = {
     folders: [],
     newFolder: {},
-    selectedFolderDecks: []
+    selectedFolderDecks: [] // make into selected folder instead as it may be good to contain more data (fix backend first)
 };
 
 const folderReducer = (state = initailState, { type, payload }) => {

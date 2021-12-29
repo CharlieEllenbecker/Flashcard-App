@@ -6,6 +6,7 @@ import AllDecks from './AllDecks';
 import AllFolders from './AllFolders';
 import NewDeck from './NewDeck';
 import Folder from './Folder';
+import Deck from './Deck';
 import isAuth from '../services/isAuth';
 
 const App = () => {
@@ -28,6 +29,9 @@ const App = () => {
 				</Route>
 				<Route path="/folders/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
 						<Route exact path="/folders/:id" element={<Folder />} />
+				</Route>
+				<Route path="/decks/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+						<Route exact path="/decks/:id" element={<Deck />} />
 				</Route>
 				<Route path="*" element={() => "404 NOT FOUND"} />	{/* TODO: Make into a redirect? */}
 			</Routes>

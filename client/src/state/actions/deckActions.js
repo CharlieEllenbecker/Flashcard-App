@@ -14,6 +14,14 @@ export const addDeck = (deck) => {
     };
 }
 
+export const setSelectedDeck = (deck) => {
+    console.log('here');
+    return {
+        type: ActionTypes.SET_SELECTED_DECK,
+        payload: deck
+    };
+}
+
 export const setNewDeckName = (name) => {
     return {
         type: ActionTypes.SET_NEW_DECK_NAME,

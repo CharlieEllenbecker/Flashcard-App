@@ -10,6 +10,8 @@ const CustomCard = ({ type, img, id, name, description, }) => {
 
 		if(type === 'folder') {
 			navigate(`/folders/${id}`);
+		} else if(type === 'deck') {
+			navigate(`/decks/${id}`);
 		}
 	}
 

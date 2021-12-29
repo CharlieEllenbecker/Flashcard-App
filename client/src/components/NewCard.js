@@ -29,7 +29,7 @@ const NewCard = ({ index, front, back, canDelete }) => {
 
     return(
         <>
-            <Container className="center-new-card" fluid>
+            <Container className="center-card" fluid>
                 <Container className="border border-primary rounded light-margin">
                     <span>{`(${index + 1})`}</span>
                     {canDelete && <Button variant="primary" onClick={handleDeleteCard}>Delete Card</Button>}
