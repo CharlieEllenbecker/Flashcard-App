@@ -240,12 +240,14 @@ describe('/api/cards', () => {
             expect(deckInDb.cards).toEqual(expect.not.arrayContaining([deck.cards[0]]));
         });
 
-        it('should return the deleted card ', async () => {
+        it('should return the deck without the deleted card ', async () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('front', deck.cards[0].front);
-            expect(res.body).toHaveProperty('back', deck.cards[0].back);
+            expect(res.body).toHaveProperty('_id', deckId.toHexString());
+            expect(res.body).toHaveProperty('name', deck.name);
+            expect(res.body).toHaveProperty('description', deck.description);
+            expect(res.body).toHaveProperty('cards');
         });
     });
 });

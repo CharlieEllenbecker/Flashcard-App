@@ -15,7 +15,6 @@ export const addDeck = (deck) => {
 }
 
 export const setSelectedDeck = (deck) => {
-    console.log('here');
     return {
         type: ActionTypes.SET_SELECTED_DECK,
         payload: deck

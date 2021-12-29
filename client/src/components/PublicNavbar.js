@@ -17,7 +17,7 @@ const PublicNavbar = () => {
         <>
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand as={Link} to="/home">Flashcard-App</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/dashboard">Flashcard-App</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">                         {/* TODO: NEEDED? */}
                         <Nav className="me-auto">

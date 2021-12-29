@@ -22,13 +22,11 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 decks: [...state.decks, payload]
             };
-        case ActionTypes.SET_SELECTED_DECK: {
-            console.log('Set Selected Deck: ', payload);
+        case ActionTypes.SET_SELECTED_DECK:
             return {
                 ...state,
                 selectedDeck: payload
             };
-        }
         case ActionTypes.SET_NEW_DECK_NAME:
             return {
                 ...state,

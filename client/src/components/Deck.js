@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setSelectedDeck } from '../state/actions/deckActions';
 import Page from './Page';
+import PrivateNavbar from'./PrivateNavbar';
 import Card from './Card';
 
 const Deck = () => {
+    const [showCards, setShowCards] = useState(false);
     const { selectedDeck } = useSelector((state) => state.deckReducer);
-    console.log(selectedDeck);
     const dispatch = useDispatch();
     const { id } = useParams();
 
@@ -24,12 +25,18 @@ const Deck = () => {
 
     useEffect(() => {
         fetchDeck();
+        setShowCards(selectedDeck.cards.length > 0);
     }, [])
 
     return(
         <>
-            <Page title="Particular Deck">
-                {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} front={c.front} back={c.back} />)}
+            <PrivateNavbar />
+            <Page title={selectedDeck.name} description={selectedDeck.description}>
+                {showCards ?
+                    <div>
+                        {selectedDeck.cards.map(c => <Card key={c._id} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
+                    </div> :
+                    <h2>No Decks In This Folder!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
             </Page>
         </>
     );
