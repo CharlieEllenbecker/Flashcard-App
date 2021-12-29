@@ -1,5 +1,5 @@
-import Folders from './Folders';
-import Decks from './Decks';
+import AllFolders from './AllFolders';
+import AllDecks from './AllDecks';
 import PrivateNavbar from './PrivateNavbar';
 import Page from './Page';
 
@@ -8,8 +8,8 @@ const Dashboard = () => {
 		<>
 			<PrivateNavbar />
 			<Page title="Dashboard">
-				<Decks />
-				<Folders />
+				<AllDecks showNavbar={false} />
+				<AllFolders showNavbar={false} />
 			</Page>
 		</>
 	);

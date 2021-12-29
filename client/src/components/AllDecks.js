@@ -8,7 +8,7 @@ import axios from 'axios';
 import deck from '../images/deck.png';
 import '../styles/styles.css';
 
-const Decks = () => {
+const AllDecks = ({ showNavbar }) => {
 	const { decks } = useSelector((state) => state.deckReducer);
 	const dispatch = useDispatch();
 
@@ -28,14 +28,14 @@ const Decks = () => {
 
 	return(
 		<>
-			<PrivateNavbar />
+			{showNavbar && <PrivateNavbar />}
 			<Page title="Decks">
 				<div className="card-grid">
-					{decks.map(d => <CustomCard key={d._id} name={d.name} description={d.description} img={deck} />)}
+					{decks.map(d => <CustomCard key={d._id} type="deck" img={deck} id={d._id} name={d.name} description={d.description} />)}
 				</div>
 			</Page>
 		</>
 	);
 }
 
-export default Decks;
+export default AllDecks;

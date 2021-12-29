@@ -8,9 +8,8 @@ import axios from 'axios';
 import folder from '../images/folder.jpg';
 import '../styles/styles.css';
 
-const Folders = () => {
+const AllFolders = ({ showNavbar }) => {
 	const { folders } = useSelector((state) => state.folderReducer);
-	console.log('Folders: ', folders);
 	const dispatch = useDispatch();
 
 	const fetchFolders = async () => {
@@ -29,14 +28,14 @@ const Folders = () => {
 
 	return(
 		<>
-			<PrivateNavbar />
+			{showNavbar && <PrivateNavbar />}
 			<Page title="Folders">
 				<div className="card-grid">
-					{folders.map(f => <CustomCard key={f._id} name={f.name} description={f.description} img={folder} />)}
+					{folders.map(f => <CustomCard key={f._id} type="folder" img={folder} id={f._id} name={f.name} description={f.description} />)}
 				</div>
 			</Page>
 		</>
 	);
 }
 
-export default Folders;
+export default AllFolders;
