@@ -1,8 +1,8 @@
-import { Form, Container } from 'react-bootstrap';
+import { Form, Container, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editNewDeckCardFront, editNewDeckCardBack } from '../state/actions/deckActions';
+import { editNewDeckCardFront, editNewDeckCardBack, deleteNewDeckCard } from '../state/actions/deckActions';
 
-const NewCard = ({ tempId, front, back }) => {
+const NewCard = ({ index, front, back, canDelete }) => {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -10,21 +10,29 @@ const NewCard = ({ tempId, front, back }) => {
 
         if(e.target.name === 'front') {
             dispatch(editNewDeckCardFront({
-                tempId: tempId,
+                index: index,
                 front: e.target.value
             }));
         } else if(e.target.name === 'back') {
             dispatch(editNewDeckCardBack({
-                tempId: tempId,
+                index: index,
                 back: e.target.value
             }));
         }
+    }
+
+    const handleDeleteCard = (e) => {
+        e.preventDefault();
+
+        dispatch(deleteNewDeckCard(index));
     }
 
     return(
         <>
             <Container className="center-new-card" fluid>
                 <Container className="border border-primary rounded light-margin">
+                    <span>{`(${index + 1})`}</span>
+                    {canDelete && <Button variant="primary" onClick={handleDeleteCard}>Delete Card</Button>}
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Front</Form.Label>

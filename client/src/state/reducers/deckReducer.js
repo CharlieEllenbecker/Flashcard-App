@@ -47,32 +47,30 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: [...state.newDeck.cards, payload]
                 }
             };
-        case ActionTypes.EDIT_NEW_DECK_CARD_FRONT: {
-            const cards = state.newDeck.cards;
-            const card = cards.find(c => c.tempId === payload.tempId);
-            card.front = payload.front;
-
+        case ActionTypes.EDIT_NEW_DECK_CARD_FRONT:
             return {
                 ...state,
                 newDeck: { 
                     ...state.newDeck,
-                    cards: cards
+                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? c.front = payload.front : c)
                 }
             };
-        }
-        case ActionTypes.EDIT_NEW_DECK_CARD_BACK: {
-            const cards = state.newDeck.cards;
-            const card = cards.find(c => c.tempId === payload.tempId);
-            card.back = payload.back;
-
+        case ActionTypes.EDIT_NEW_DECK_CARD_BACK:
             return {
                 ...state,
                 newDeck: { 
                     ...state.newDeck,
-                    cards: cards
+                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? c.back = payload.back : c)
+                }
+        };
+        case ActionTypes.DELETE_NEW_DECK_CARD:
+            return {
+                ...state,
+                newDeck: {
+                    ...state.newDeck,
+                    cards: [...state.newDeck.cards.slice(0, payload), ...state.newDeck.cards.slice(payload + 1)]
                 }
             };
-        }
         case ActionTypes.CLEAR_NEW_DECK:
             return {
                 ...state,

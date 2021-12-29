@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Container, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -10,28 +10,22 @@ import NewCard from './NewCard';
 const NewDeck = () => {
     const { newDeck } = useSelector((state) => state.deckReducer);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [canDeleteCard, setCanDeleteCard] = useState(false);
     const dispatch = useDispatch();
 
     const addEmptyCard = () => {
         dispatch(addNewDeckCard({
-            tempId: tempIdCounter,
             front: null,
             back: null
         }));
     }
 
-    // Async code starts
-    let tempIdCounter = 0;
-    newDeck.cards.forEach(c => {
-        if(c.tempId >= tempIdCounter) {
-            tempIdCounter = c.tempId + 1;
+    const addStartingCards = () => {
+        if(newDeck.cards.length === 0) {
+            addEmptyCard();
+            addEmptyCard();
         }
-    });
-
-    if(tempIdCounter === 0) {
-        addEmptyCard();
     }
-    // Async code ends
 
     const handleAddNewDeckCard = (e) => {
         e.preventDefault();
@@ -50,14 +44,11 @@ const NewDeck = () => {
     }
 
     const postDeck = async () => {
-        const cards = newDeck.cards.map(({tempId, ...rest}) => rest);
-        console.log(cards);
-
         await axios
             .post('/api/decks', {
                 name: newDeck.name,
                 description: newDeck.description,
-                cards: cards
+                cards: newDeck.cards
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                 console.log('Create Deck Response: ', response);
@@ -68,6 +59,11 @@ const NewDeck = () => {
                 setErrorMessage(error.response.data);
             });
     }
+
+    useEffect(() => {
+        addStartingCards();
+        setCanDeleteCard(newDeck.cards.length > 2);
+    }, [newDeck.cards.length]);
 
     return(
         <>
@@ -82,7 +78,7 @@ const NewDeck = () => {
                     </Form.Group>
                 </Form>
                 <span>Cards</span>
-                {newDeck.cards.map(c => <NewCard key={c.tempId} tempId={c.tempId} front={c.front} back={c.back} />)}
+                {newDeck.cards.map((c, i) => <NewCard key={i} index={i} front={c.front} back={c.back} canDelete={canDeleteCard} />)}
                 <Container className="center-add-card-button" fluid>
                     <Button variant="primary" onClick={handleAddNewDeckCard}>Add Card</Button>
                 </Container>

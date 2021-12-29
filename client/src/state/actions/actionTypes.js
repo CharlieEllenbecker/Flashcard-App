@@ -10,6 +10,7 @@ const ActionTypes = {
     ADD_NEW_DECK_CARD: 'addNewDeckCard',
     EDIT_NEW_DECK_CARD_FRONT: 'editNewDeckCardFront',
     EDIT_NEW_DECK_CARD_BACK: 'editNewDeckCardBack',
+    DELETE_NEW_DECK_CARD: 'deleteNewDeckCard',
     CLEAR_NEW_DECK: 'clearNewDeck'
 };
 

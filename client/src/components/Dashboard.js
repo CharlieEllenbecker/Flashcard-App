@@ -1,14 +1,16 @@
 import Folders from './Folders';
 import Decks from './Decks';
 import PrivateNavbar from './PrivateNavbar';
+import Page from './Page';
 
 const Dashboard = () => {
 	return (
 		<>
 			<PrivateNavbar />
-			<h1>Dashboard Page</h1>
-			<Decks />
-			<Folders />
+			<Page title="Dashboard">
+				<Decks />
+				<Folders />
+			</Page>
 		</>
 	);
 }
