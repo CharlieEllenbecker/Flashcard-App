@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+
 import { setDecks } from '../state/actions/deckActions';
 import PrivateNavbar from './PrivateNavbar';
 import CustomCard from './CustomCard';
 import Page from './Page';
-import axios from 'axios';
 import deck from '../images/deck.png';
 import '../styles/styles.css';
 

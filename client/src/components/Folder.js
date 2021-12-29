@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { setSelectedFolderDecks } from '../state/actions/folderActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
+import { setSelectedFolderDecks } from '../state/actions/folderActions';
 import PrivateNavbar from './PrivateNavbar';
 import CustomCard from './CustomCard';
 import Page from './Page';
@@ -18,7 +18,7 @@ const Folder = () => {
 			.get(`/api/folders/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
 			.then(response => {
 				console.log('Get Decks From Folder Response: ', response);
-                dispatch(setSelectedFolderDecks(response.data));	// had a similar error before
+                dispatch(setSelectedFolderDecks(response.data));
 			})
 			.catch(error => console.error('Error: ', error.response.data));
 	}

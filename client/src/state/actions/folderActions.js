@@ -16,7 +16,7 @@ export const addFolder = (folder) => {
 
 export const setSelectedFolderDecks = (decks) => {
     return {
-        type: ActionTypes.SET_SELECTED_FOLDER,
+        type: ActionTypes.SET_SELECTED_FOLDER_DECKS,
         payload: decks
     };
 }
