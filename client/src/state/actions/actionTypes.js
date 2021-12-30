@@ -5,6 +5,8 @@ const ActionTypes = {
     SET_DECKS: 'setDecks',
     ADD_DECK: 'addDeck',
     SET_SELECTED_DECK: 'setSelectedDeck',
+    DELETE_CARD_FROM_SELECTED_DECK: 'deleteCardFromSelectedDeck',
+    EDIT_CARD_FROM_SELECTED_DECK: 'editCardFromSelectedDeck',
     SET_NEW_DECK_NAME: 'setNewDeckName',
     SET_NEW_DECK_DESCRIPTION: 'setNewDeckDescription',
     SET_NEW_DECK_FOLDER_ID: 'setNewDeckFolderId',

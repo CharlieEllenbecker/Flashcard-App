@@ -150,10 +150,9 @@ describe('/api/cards', () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('_id', deckId.toHexString());
-            expect(res.body).toHaveProperty('name', deck.name);
-            expect(res.body).toHaveProperty('description', deck.description);
-            expect(res.body).toHaveProperty('cards');
+            expect(res.body).toHaveProperty('_id', cardId.toHexString());
+            expect(res.body).toHaveProperty('front', newFront);
+            expect(res.body).toHaveProperty('back', newBack);
         });
     });
 
@@ -240,14 +239,13 @@ describe('/api/cards', () => {
             expect(deckInDb.cards).toEqual(expect.not.arrayContaining([deck.cards[0]]));
         });
 
-        it('should return the deck without the deleted card ', async () => {
+        it('should return the updated card', async () => {
             const res = await exec();
 
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('_id', deckId.toHexString());
-            expect(res.body).toHaveProperty('name', deck.name);
-            expect(res.body).toHaveProperty('description', deck.description);
-            expect(res.body).toHaveProperty('cards');
+            expect(res.body).toHaveProperty('_id', cardId.toHexString());
+            expect(res.body).toHaveProperty('front', deck.cards[0].front);
+            expect(res.body).toHaveProperty('back', deck.cards[0].back);
         });
     });
 });

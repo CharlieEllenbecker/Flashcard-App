@@ -21,6 +21,20 @@ export const setSelectedDeck = (deck) => {
     };
 }
 
+export const deleteCardFromSelectedDeck = (index) => {
+    return {
+        type: ActionTypes.DELETE_CARD_FROM_SELECTED_DECK,
+        payload: index
+    };
+}
+
+export const editCardFromSelectedDeck = (card) => {
+    return {
+        type: ActionTypes.EDIT_CARD_FROM_SELECTED_DECK,
+        payload: card
+    };
+}
+
 export const setNewDeckName = (name) => {
     return {
         type: ActionTypes.SET_NEW_DECK_NAME,

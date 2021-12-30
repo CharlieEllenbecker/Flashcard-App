@@ -17,7 +17,7 @@ router.put('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    let deck = await Deck.findById(req.params.deckId);
+    const deck = await Deck.findById(req.params.deckId);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
     }
@@ -27,16 +27,16 @@ router.put('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
         return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}.`);
     }
     card.set(_.pick(req.body, ['front', 'back']));
-    deck = await deck.save();
+    await deck.save();
     
-    return res.status(200).send(deck);
+    return res.status(200).send(card);
 });
 
 /*
     DELETE - Delete the card with the given cardId from the deck with the given deckId
 */
 router.delete('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) => {
-    let deck = await Deck.findById(req.params.deckId);
+    const deck = await Deck.findById(req.params.deckId);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.deckId} does not exist.`);
     }
@@ -46,9 +46,9 @@ router.delete('/:deckId/:cardId', [auth, validateObjectIds], async (req, res) =>
         return res.status(404).send(`The card with the given id ${req.params.cardId} does not exist in the deck with the given id ${req.params.deckId}.`);
     }
     card.remove();
-    deck = await deck.save();
+    await deck.save();
 
-    return res.status(200).send(deck);
+    return res.status(200).send(card);
 });
 
 module.exports = router;

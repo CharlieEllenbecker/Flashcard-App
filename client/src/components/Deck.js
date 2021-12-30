@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -8,7 +8,6 @@ import PrivateNavbar from'./PrivateNavbar';
 import Card from './Card';
 
 const Deck = () => {
-    const [showCards, setShowCards] = useState(false);
     const { selectedDeck } = useSelector((state) => state.deckReducer);
     const dispatch = useDispatch();
     const { id } = useParams();
@@ -25,18 +24,17 @@ const Deck = () => {
 
     useEffect(() => {
         fetchDeck();
-        setShowCards(selectedDeck.cards.length > 0);
     }, [])
 
     return(
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
-                {showCards ?
+                {selectedDeck.cards.length > 0 ?
                     <div>
-                        {selectedDeck.cards.map(c => <Card key={c._id} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
+                        {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
                     </div> :
-                    <h2>No Decks In This Folder!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
+                    <h2>No Cards in this Deck!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
             </Page>
         </>
     );

@@ -1,3 +1,4 @@
+import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
 import ActionTypes from '../actions/actionTypes';
 
 const initialState = {  // maybe it might be a good idea to make models for the front end? (convert to typescript)
@@ -26,6 +27,22 @@ const deckReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 selectedDeck: payload
+            };
+        case ActionTypes.DELETE_CARD_FROM_SELECTED_DECK:
+            return {
+                ...state,
+                selectedDeck: {
+                    ...state.selectedDeck,
+                    cards: [...state.selectedDeck.cards.slice(0, payload), ...state.selectedDeck.cards.slice(payload + 1)]
+                }
+            };
+        case ActionTypes.EDIT_CARD_FROM_SELECTED_DECK:
+            return {
+                ...state,
+                selectedDeck: {
+                    ...state.selectedDeck,
+                    cards: state.selectedDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front, back: payload.back } : c)
+                }
             };
         case ActionTypes.SET_NEW_DECK_NAME:
             return {
