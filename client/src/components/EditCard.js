@@ -1,20 +1,20 @@
 import { Form, Container, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editNewDeckCardFront, editNewDeckCardBack, deleteNewDeckCard } from '../state/actions/deckActions';
+import { setEditDeckCardFront, setEditDeckCardBack, deleteEditDeckCard } from '../state/actions/deckActions';
 
-const NewCard = ({ index, front, back, canDelete }) => {
+const EditCard = ({ index, front, back, canDelete }) => {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
         e.preventDefault();
 
         if(e.target.name === 'front') {
-            dispatch(editNewDeckCardFront({
+            dispatch(setEditDeckCardFront({
                 index: index,
                 front: e.target.value
             }));
         } else if(e.target.name === 'back') {
-            dispatch(editNewDeckCardBack({
+            dispatch(setEditDeckCardBack({
                 index: index,
                 back: e.target.value
             }));
@@ -24,7 +24,7 @@ const NewCard = ({ index, front, back, canDelete }) => {
     const handleDeleteCard = (e) => {
         e.preventDefault();
 
-        dispatch(deleteNewDeckCard(index));
+        dispatch(deleteEditDeckCard(index));
     }
 
     return(
@@ -47,4 +47,4 @@ const NewCard = ({ index, front, back, canDelete }) => {
     );
 }
 
-export default NewCard;
+export default EditCard;

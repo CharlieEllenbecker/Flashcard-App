@@ -1,9 +1,8 @@
-import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
 import ActionTypes from '../actions/actionTypes';
 
 const initialState = {  // maybe it might be a good idea to make models for the front end? (convert to typescript)
     decks: [],
-    newDeck: {
+    editDeck: {
         cards: []
     },
     selectedDeck: {
@@ -36,7 +35,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: [...state.selectedDeck.cards.slice(0, payload), ...state.selectedDeck.cards.slice(payload + 1)]
                 }
             };
-        case ActionTypes.EDIT_CARD_FROM_SELECTED_DECK:
+        case ActionTypes.SET_CARD_FROM_SELECTED_DECK:
             return {
                 ...state,
                 selectedDeck: {
@@ -44,62 +43,67 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: state.selectedDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front, back: payload.back } : c)
                 }
             };
-        case ActionTypes.SET_NEW_DECK_NAME:
+        case ActionTypes.SET_EDIT_DECK:
             return {
                 ...state,
-                newDeck: { ...state.newDeck, name: payload }
+                editDeck: payload
             };
-        case ActionTypes.SET_NEW_DECK_DESCRIPTION:
+        case ActionTypes.SET_EDIT_DECK_NAME:
             return {
                 ...state,
-                newDeck: { ...state.newDeck, description: payload }
+                editDeck: { ...state.editDeck, name: payload }
             };
-        case ActionTypes.SET_NEW_DECK_FOLDER_ID:
+        case ActionTypes.SET_EDIT_DECK_DESCRIPTION:
             return {
                 ...state,
-                newDeck: { ...state.newDeck, folderId: payload }
+                editDeck: { ...state.editDeck, description: payload }
             };
-        case ActionTypes.SET_NEW_DECK_CARDS:
+        case ActionTypes.SET_EDIT_DECK_FOLDER_ID:
             return {
                 ...state,
-                newDeck: { ...state.newDeck, cards: payload }
+                editDeck: { ...state.editDeck, folderId: payload }
             };
-        case ActionTypes.ADD_NEW_DECK_CARD:
+        case ActionTypes.SET_EDIT_DECK_CARDS:
             return {
                 ...state,
-                newDeck: { 
-                    ...state.newDeck,
-                    cards: [...state.newDeck.cards, payload]
+                editDeck: { ...state.editDeck, cards: payload }
+            };
+        case ActionTypes.ADD_EDIT_DECK_CARD:
+            return {
+                ...state,
+                editDeck: { 
+                    ...state.editDeck,
+                    cards: [...state.editDeck.cards, payload]
                 }
             };
-        case ActionTypes.EDIT_NEW_DECK_CARD_FRONT:
+        case ActionTypes.SET_EDIT_DECK_CARD_FRONT:
             return {
                 ...state,
-                newDeck: { 
-                    ...state.newDeck,
-                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front } : c)
+                editDeck: { 
+                    ...state.editDeck,
+                    cards: state.editDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front } : c)
                 }
             };
-        case ActionTypes.EDIT_NEW_DECK_CARD_BACK:
+        case ActionTypes.SET_EDIT_DECK_CARD_BACK:
             return {
                 ...state,
-                newDeck: { 
-                    ...state.newDeck,
-                    cards: state.newDeck.cards.map((c, i) => i === payload.index ? { ...c, back: payload.back } : c)
+                editDeck: { 
+                    ...state.editDeck,
+                    cards: state.editDeck.cards.map((c, i) => i === payload.index ? { ...c, back: payload.back } : c)
                 }
         };
-        case ActionTypes.DELETE_NEW_DECK_CARD:
+        case ActionTypes.DELETE_EDIT_DECK_CARD:
             return {
                 ...state,
-                newDeck: {
-                    ...state.newDeck,
-                    cards: [...state.newDeck.cards.slice(0, payload), ...state.newDeck.cards.slice(payload + 1)]
+                editDeck: {
+                    ...state.editDeck,
+                    cards: [...state.editDeck.cards.slice(0, payload), ...state.editDeck.cards.slice(payload + 1)]
                 }
             };
-        case ActionTypes.CLEAR_NEW_DECK:
+        case ActionTypes.CLEAR_EDIT_DECK:
             return {
                 ...state,
-                newDeck: {
+                editDeck: {
                     cards: []
                 }
             };

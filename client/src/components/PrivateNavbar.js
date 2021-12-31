@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Navbar, Container, Nav, NavDropdown, Button, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import FolderForm from './FolderForm';
-import isAuth from '../services/isAuth';
 
 const PrivateNavbar = () => {
     const [showAddFolder, setShowAddFolder] = useState(false);
@@ -13,12 +12,7 @@ const PrivateNavbar = () => {
 
     const handleNewDeck = (e) => {
         e.preventDefault();
-
-        if(isAuth()) {
-            navigate('/new-deck');
-        } else {
-            navigate('/');
-        }
+        return navigate('/decks/new');
     }
 
     return(

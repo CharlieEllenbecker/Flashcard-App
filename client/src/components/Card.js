@@ -28,7 +28,6 @@ const Card = ({ index, deckId, cardId, front, back }) => {
         <>
             <Container className="center-card" fluid>
                 <Container className="border border-primary rounded light-margin">
-
                     <Row>
                         <Col className="right-vertical-bar">
                             {front}

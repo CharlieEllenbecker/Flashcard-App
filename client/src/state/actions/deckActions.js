@@ -28,72 +28,79 @@ export const deleteCardFromSelectedDeck = (index) => {
     };
 }
 
-export const editCardFromSelectedDeck = (card) => {
+export const setCardFromSelectedDeck = (card) => {
     return {
-        type: ActionTypes.EDIT_CARD_FROM_SELECTED_DECK,
+        type: ActionTypes.SET_CARD_FROM_SELECTED_DECK,
         payload: card
     };
 }
 
-export const setNewDeckName = (name) => {
+export const setEditDeck = (deck) => {
     return {
-        type: ActionTypes.SET_NEW_DECK_NAME,
+        type: ActionTypes.SET_EDIT_DECK,
+        payload: deck
+    };
+}
+
+export const setEditDeckName = (name) => {
+    return {
+        type: ActionTypes.SET_EDIT_DECK_NAME,
         payload: name
     };
 }
 
-export const setNewDeckDescription = (description) => {
+export const setEditDeckDescription = (description) => {
     return {
-        type: ActionTypes.SET_NEW_DECK_DESCRIPTION,
+        type: ActionTypes.SET_EDIT_DECK_DESCRIPTION,
         payload: description
     };
 }
 
-export const setNewDeckFolderId = (folderId) => {
+export const setEditDeckFolderId = (folderId) => {
     return {
-        type: ActionTypes.SET_NEW_DECK_FOLDER_ID,
+        type: ActionTypes.SET_EDIT_DECK_FOLDER_ID,
         payload: folderId
     };
 }
 
-export const setNewDeckCards = (cards) => {
+export const setEditDeckCards = (cards) => {
     return {
-        type: ActionTypes.SET_NEW_DECK_CARDS,
+        type: ActionTypes.SET_EDIT_DECK_CARDS,
         payload: cards
     };
 }
 
-export const addNewDeckCard = (card) => {
+export const addEditDeckCard = (card) => {
     return {
-        type: ActionTypes.ADD_NEW_DECK_CARD,
+        type: ActionTypes.ADD_EDIT_DECK_CARD,
         payload: card
     };
 }
 
-export const editNewDeckCardFront = (card) => {
+export const setEditDeckCardFront = (card) => {
     return {
-        type: ActionTypes.EDIT_NEW_DECK_CARD_FRONT,
+        type: ActionTypes.SET_EDIT_DECK_CARD_FRONT,
         payload: card
     };
 }
 
-export const editNewDeckCardBack = (card) => {
+export const setEditDeckCardBack = (card) => {
     return {
-        type: ActionTypes.EDIT_NEW_DECK_CARD_BACK,
+        type: ActionTypes.SET_EDIT_DECK_CARD_BACK,
         payload: card
     };
 }
 
-export const deleteNewDeckCard = (index) => {
+export const deleteEditDeckCard = (index) => {
     return {
-        type: ActionTypes.DELETE_NEW_DECK_CARD,
+        type: ActionTypes.DELETE_EDIT_DECK_CARD,
         payload: index
     };
 }
 
-export const clearNewDeck = () => {
+export const clearEditDeck = () => {
     return {
-        type: ActionTypes.CLEAR_NEW_DECK,
+        type: ActionTypes.CLEAR_EDIT_DECK,
         payload: null
     };
 }

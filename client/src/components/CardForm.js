@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { editCardFromSelectedDeck } from '../state/actions/deckActions';
+import { setCardFromSelectedDeck } from '../state/actions/deckActions';
 
 const CardForm = ({ handleCloseModal, deckId, cardId, index, currentFront, currentBack }) => {
     const [editCardInput, setEditCardInput] = useState({ front: currentFront, back: currentBack });
@@ -29,7 +29,7 @@ const CardForm = ({ handleCloseModal, deckId, cardId, index, currentFront, curre
             .then(response => {
                 console.log('Edit Card Response: ', response);
                 clearInputs();
-                dispatch(editCardFromSelectedDeck({
+                dispatch(setCardFromSelectedDeck({
                     index: index,
                     front: response.data.front,
                     back: response.data.back

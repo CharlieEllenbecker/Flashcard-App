@@ -1,23 +1,16 @@
 import { useEffect } from 'react';
-import { Button } from 'react-bootstrap';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setSelectedDeck } from '../state/actions/deckActions';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
-import Card from './Card';
+import StudyCard from './StudyCard';
 
-const Deck = () => {
+const StudyDeck = () => {
     const { selectedDeck } = useSelector((state) => state.deckReducer);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { id } = useParams();
-
-    const handleNavigateToEditDeck = (e) => {
-        e.preventDefault();
-        navigate(`/decks/edit/${id}`);
-    }
 
     const fetchDeck = async () => {
         await axios
@@ -37,10 +30,9 @@ const Deck = () => {
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
-                <Button variant="primary" onClick={handleNavigateToEditDeck}>Edit Deck</Button>
                 {selectedDeck.cards.length > 0 ?
                     <div>
-                        {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
+                        {selectedDeck.cards.map((c, i) => <StudyCard key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
                     </div> :
                     <h2>No Cards in this Deck!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
             </Page>
@@ -48,4 +40,4 @@ const Deck = () => {
     );
 }
 
-export default Deck;
+export default StudyDeck;
