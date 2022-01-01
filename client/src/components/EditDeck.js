@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Container, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -14,6 +14,7 @@ const EditDeck = () => {
     const [canDeleteCard, setCanDeleteCard] = useState(false);
     const { editDeck } = useSelector((state) => state.deckReducer);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const location = useLocation();
     const { id } = useParams();
 
@@ -47,12 +48,18 @@ const EditDeck = () => {
         }
     }
 
+    const handleSaveDeck = (e) => {
+        e.preventDefault();
+        location.pathname === '/decks/new' ? postDeck() : updateDeck();
+    }
+
     const fetchEditDeck = async () => {
         await axios
             .get(`/api/decks/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                 console.log('Get Edit Deck Response: ', response);
-                dispatch(setEditDeck(response.data));              
+                dispatch(setEditDeck(response.data));
+                navigate(`/decks/${id}`);
             })
             .catch(error => {
                 console.error('Error: ', error.response.data)
@@ -69,6 +76,24 @@ const EditDeck = () => {
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                 console.log('Create Deck Response: ', response);
+                dispatch(clearEditDeck());
+                navigate(`/decks/${id}`);
+            })
+            .catch(error => {
+                console.error('Error: ', error.response.data)
+                setErrorMessage(error.response.data);
+            });
+    }
+
+    const updateDeck = async () => {
+        await axios
+            .put(`/api/decks/${id}`, {
+                name: editDeck.name,
+                description: editDeck.description,
+                cards: editDeck.cards.map(({ _id, ...rest }) => rest)
+            }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
+            .then(response => {
+                console.log('Update Deck Response: ', response);
                 dispatch(clearEditDeck());
             })
             .catch(error => {
@@ -102,7 +127,7 @@ const EditDeck = () => {
                 </Container>
             </Page>
             <Container className="move-create-deck-button-right" fluid>
-                <Button variant="success" onClick={postDeck}>Create Deck</Button>
+                <Button variant="success" onClick={handleSaveDeck}>Save Deck</Button>
             </Container>
             {errorMessage && <p>{errorMessage}</p>}
         </>

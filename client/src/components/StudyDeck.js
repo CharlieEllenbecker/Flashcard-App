@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -8,9 +9,24 @@ import PrivateNavbar from'./PrivateNavbar';
 import StudyCard from './StudyCard';
 
 const StudyDeck = () => {
+    const [hasNextCard, setHasNextCard] = useState(false);
+    const [hasPrevCard, setHasPrevCard] = useState(false);
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);    // prevent being able to study if there are no cards in the deck (can't click button)
     const { selectedDeck } = useSelector((state) => state.deckReducer);
     const dispatch = useDispatch();
     const { id } = useParams();
+
+    const handlePrevCard = (e) => {
+        e.preventDefault();
+        setCurrentCardIndex(currentCardIndex - 1);
+        currentCardIndex !== 0 ? setHasPrevCard(true) : setHasPrevCard(false);
+    }
+
+    const handleNextCard = (e) => {
+        e.preventDefault();
+        setCurrentCardIndex(currentCardIndex + 1);
+        currentCardIndex !== selectedDeck.cards.length - 1 ? setHasNextCard(true) : setHasNextCard(false);
+    }
 
     const fetchDeck = async () => {
         await axios
@@ -30,11 +46,14 @@ const StudyDeck = () => {
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
-                {selectedDeck.cards.length > 0 ?
-                    <div>
-                        {selectedDeck.cards.map((c, i) => <StudyCard key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
-                    </div> :
-                    <h2>No Cards in this Deck!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
+                {hasPrevCard && <Button variant="primary" onClick={handlePrevCard}>Prev</Button>}
+                {selectedDeck.cards.length !== 0 && <StudyCard
+                    key={selectedDeck.cards[currentCardIndex]._id}
+                    index={currentCardIndex} deckId={id}
+                    cardId={selectedDeck.cards[currentCardIndex]._id}
+                    front={selectedDeck.cards[currentCardIndex].front}
+                    back={selectedDeck.cards[currentCardIndex].back} />}
+                {hasNextCard && <Button variant="primary" onClick={handleNextCard}>Next</Button>}
             </Page>
         </>
     );
