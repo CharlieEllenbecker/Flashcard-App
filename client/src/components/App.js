@@ -8,7 +8,6 @@ import EditDeck from './EditDeck';
 import Folder from './Folder';
 import Deck from './Deck';
 import StudyDeck from './StudyDeck';
-import isAuth from '../services/isAuth';	// this doesn't need to be imported here
 
 const App = () => {
   return (
@@ -16,28 +15,28 @@ const App = () => {
 	  	<BrowserRouter>
 			<Routes>
 				<Route exact path="/" element={<PublicHome />} />
-				<Route path="/dashboard" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/dashboard" element={<PrivateRoute />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
 				</Route>
-				<Route path="/folders" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/folders" element={<PrivateRoute />}>
 						<Route exact path="/folders" element={<AllFolders showNavbar={true} />} />
 				</Route>
-				<Route path="/decks" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/decks" element={<PrivateRoute />}>
 						<Route exact path="/decks" element={<AllDecks showNavbar={true} />} />
 				</Route>
-				<Route path="/decks/new" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}> {/* TODO: for edit deck, new deck is not the way to go, param is probably needed */}
+				<Route path="/decks/new" element={<PrivateRoute />}>
 						<Route exact path="/decks/new" element={<EditDeck />} />
 				</Route>
-				<Route path="/decks/edit/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}> {/* TODO: for edit deck, new deck is not the way to go, param is probably needed */}
+				<Route path="/decks/edit/:id" element={<PrivateRoute />}>
 						<Route exact path="/decks/edit/:id" element={<EditDeck />} />
 				</Route>
-				<Route path="/folders/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/folders/:id" element={<PrivateRoute />}>
 						<Route exact path="/folders/:id" element={<Folder />} />
 				</Route>
-				<Route path="/decks/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/decks/:id" element={<PrivateRoute />}>
 						<Route exact path="/decks/:id" element={<Deck />} />
 				</Route>
-				<Route path="/decks/study/:id" element={<PrivateRoute isAuth={isAuth()} redirectTo="/"/>}>
+				<Route path="/decks/study/:id" element={<PrivateRoute />}>
 						<Route exact path="/decks/study/:id" element={<StudyDeck />} />
 				</Route>
 				<Route path="*" element={() => "404 NOT FOUND"} />	{/* TODO: Make into a redirect? */}
