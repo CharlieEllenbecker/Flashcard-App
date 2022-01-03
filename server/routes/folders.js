@@ -12,8 +12,8 @@ const router = express.Router();
     GET - Get all folders
 */
 router.get('/', auth, async (req, res) => {
-    const userId = decodeJwt(req.header('x-auth-token'));
-    const folders = await Folder.find({ userId: userId }).sort('name');
+    const userId = decodeJwt(req.header('x-auth-token'))._id;
+    const folders = await Folder.find({ userId: userId }).select(['-userId']).sort('name');
     return res.status(200).send(folders);
 });
 
@@ -27,8 +27,7 @@ router.post('/', auth, async (req, res) => {
     }
 
     req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
-    let folder = new Folder(_.pick(req.body, ['name', 'description', 'userId']));
-    folder = await folder.save();
+    const folder = await new Folder(_.pick(req.body, ['name', 'description', 'userId'])).save();    // TODO: exclude the userId
 
     return res.status(200).send(folder);
 });
@@ -37,7 +36,7 @@ router.post('/', auth, async (req, res) => {
     GET - The decks in the folder with the given id
 */
 router.get('/:id', [auth, validateObjectIds], async (req, res) => {
-    const folder = await Folder.findById(req.params.id);
+    const folder = await Folder.findById(req.params.id).select(['-userId']);
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
@@ -57,7 +56,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     }
     
     req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
-    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'userId']), { new: true });
+    const folder = await Folder.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'userId']), { new: true });   // TODO: exclude the userId
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
@@ -69,7 +68,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     DELETE - Delete the folder with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
-    const folder = await Folder.findByIdAndDelete(req.params.id);
+    const folder = await Folder.findByIdAndDelete(req.params.id);   // TODO: exclude the userId
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }

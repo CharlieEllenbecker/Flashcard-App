@@ -12,7 +12,7 @@ const router = express.Router();
 */
 router.get('/', auth, async (req, res) => {
     const userId = decodeJwt(req.header('x-auth-token'))._id;
-    const decks = await Deck.find({ userId: userId }).sort('name');
+    const decks = await Deck.find({ userId: userId }).select(['-userId']).sort('name');
     return res.status(200).send(decks);
 });
 
@@ -26,8 +26,7 @@ router.post('/', auth, async (req, res) => {
     }
 
     req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
-    let deck = new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']));
-    deck = await deck.save();
+    const deck = await new Deck(_.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId'])).save();   // TODO: exclude the userId
 
     return res.status(200).send(deck);
 });
@@ -36,7 +35,7 @@ router.post('/', auth, async (req, res) => {
     GET - The deck with the given id
 */
 router.get('/:id', [auth, validateObjectIds], async (req, res) => {
-    const deck = await Deck.findById(req.params.id);
+    const deck = await Deck.findById(req.params.id).select(['-userId']);
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -54,7 +53,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     }
     
     req.body.userId = decodeJwt(req.header('x-auth-token'))._id;
-    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']) , { new: true });
+    const deck = await Deck.findByIdAndUpdate(req.params.id, _.pick(req.body, ['name', 'description', 'folderId', 'cards', 'userId']) , { new: true }); // TODO: exclude the userId
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }
@@ -66,7 +65,7 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
     DELETE - Delete the deck with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
-    const deck = await Deck.findByIdAndDelete(req.params.id);
+    const deck = await Deck.findByIdAndDelete(req.params.id);   // TODO: exclude the userId
     if (!deck) {
         return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
     }

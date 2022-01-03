@@ -2,17 +2,18 @@
 
 To Get Running:
   - Install MongoDB
-  - Run MongoDB Daemon
-    - Ex. >'mongod' and press enter
-    - Extra: to view data in the database, download MongoDBCompass
+  - Open a terminal in your C: drive
+    - Run MongoDB Daemon
+      - Ex. >'mongod' and press enter
+      - Extra: to view data in the database, download MongoDBCompass
 
   - Open another terminal in the \flashcard-app\server root directory
     - Install the node packages
       - Ex. >'npm i' or 'npm install' and press enter (windows)
       - Ex. >'sudo npm i' or 'sudo npm install' and press enter (mac)
     - Set the JWT Private Key
-      - Ex. >'set flashcard-app_jwtPrivateKey=<privateKeyHere>' and press enter (windows)
-      - Ex. >'export flashcard-app_jwtPrivateKey=<privateKeyHere>' and press enter (mac)
+      - Ex. >'set flashcard-app_jwtPrivateKey=privateKeyHere' and press enter (windows)
+      - Ex. >'export flashcard-app_jwtPrivateKey=privateKeyHere' and press enter (mac)
     - Run tests
       - Ex. >'npm test' or 'npm run test' and press enter (windows)
       - Ex. >'sudo npm test' or 'sudo npm run test' and press enter (mac)
@@ -29,7 +30,7 @@ To Get Running:
       - Ex. >'npm start' or 'npm run start' and press enter (windows)
       - Ex. >'sudo npm start' or 'sudo npm run start' and press enter (mac)
 
-  - Once the database, the server, and the client is all running, visit port localhost:3000 in a browser and view the application.
+  - Once the database, the server, and the client are all running, visit port localhost:3000 in a browser and view the application.
 
 MERN stack: MongoDB/Mongoose, Express.js, React.js, Node.js
 

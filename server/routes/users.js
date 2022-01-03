@@ -10,7 +10,7 @@ const router = express.Router();
     Get - Get user info
 */
 router.get('/me', auth, async (req, res) => {
-    const user = await User.findById(req.user._id).select(['-password']);
+    const user = await User.findById(req.user._id).select(['-_id', '-password']);
     return res.status(200).send(user);
 });
 
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    return res.status(200).header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
+    return res.status(200).header('x-auth-token', token).send(_.pick(user, ['email']));
 });
 
 module.exports = router;
