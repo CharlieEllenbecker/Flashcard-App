@@ -5,6 +5,15 @@ import '../styles/styles.css';
 const CustomCard = ({ type, img, id, name, description, }) => {
 	const navigate = useNavigate();
 
+	// Synchronous code
+	let buttonMessage;
+	if(type === 'folder') {
+		buttonMessage = 'Open Folder';
+	} else if(type === 'deck') {
+		buttonMessage = 'Open Deck';
+	}
+
+
 	const handleNavigate = (e) => {
 		e.preventDefault();
 
@@ -22,7 +31,7 @@ const CustomCard = ({ type, img, id, name, description, }) => {
 				<Card.Body>
 					<Card.Title>{name}</Card.Title>
 					<Card.Text>{description}</Card.Text>
-					<Button variant="primary" onClick={handleNavigate}>Go somewhere</Button>
+					<Button variant="primary" onClick={handleNavigate}>{buttonMessage}</Button>
 				</Card.Body>
 			</Card>
 		</div>

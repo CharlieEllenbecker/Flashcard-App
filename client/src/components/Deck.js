@@ -42,8 +42,10 @@ const Deck = () => {
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
-                <Button variant="primary" onClick={handleNavigateToEditDeck}>Edit Deck</Button>
-                <Button variant="primary" onClick={handleNavigateToStudyDeck}>Study Deck</Button>
+                <div className="deck-properties">
+                    <Button variant="primary" onClick={handleNavigateToEditDeck}>Edit Deck</Button>
+                    <Button variant="primary" onClick={handleNavigateToStudyDeck}>Study Deck</Button>
+                </div>
                 {selectedDeck.cards.length > 0 ?
                     <div>
                         {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}

@@ -27,5 +27,29 @@
 }
 
 .right-vertical-bar {
-    border-right: 1px solid #0d6efd!important
+    border-right: 1px solid #0d6efd!important;
+}
+
+.flashcard {
+    display: flex;
+    justify-content: center;
+}
+
+.front {
+    flex: 1;
+}
+
+.back {
+    flex: 1;
+}
+
+.properties {
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+
+.deck-properties {
+    display: flex;
+    justify-content: end;
 }

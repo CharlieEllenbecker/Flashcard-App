@@ -59,7 +59,6 @@ const EditDeck = () => {
             .then(response => {
                 console.log('Get Edit Deck Response: ', response);
                 dispatch(setEditDeck(response.data));
-                navigate(`/decks/${id}`);
             })
             .catch(error => {
                 console.error('Error: ', error.response.data)
@@ -76,7 +75,7 @@ const EditDeck = () => {
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                 console.log('Create Deck Response: ', response);
-                dispatch(clearEditDeck());
+                dispatch(clearEditDeck());  // TODO: is this even needed?
                 navigate(`/decks/${id}`);
             })
             .catch(error => {
@@ -95,6 +94,7 @@ const EditDeck = () => {
             .then(response => {
                 console.log('Update Deck Response: ', response);
                 dispatch(clearEditDeck());
+                navigate(`/decks/${id}`);
             })
             .catch(error => {
                 console.error('Error: ', error.response.data)
@@ -106,7 +106,7 @@ const EditDeck = () => {
         const tempIsNew = location.pathname === '/decks/new';
         setIsNew(tempIsNew);
         tempIsNew ? addStartingCards() : fetchEditDeck();
-    }, [])
+    }, []);
 
     return(
         <>

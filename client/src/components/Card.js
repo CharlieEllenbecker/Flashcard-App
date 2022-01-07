@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
+import { Container, Button, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { deleteCardFromSelectedDeck } from '../state/actions/deckActions';
@@ -26,24 +26,20 @@ const Card = ({ index, deckId, cardId, front, back }) => {
     
     return(
         <>
-            <Container className="center-card" fluid>
-                <Container className="border border-primary rounded light-margin">
-                    <Row>
-                        <Col className="right-vertical-bar">
-                            {front}
-                        </Col>
-                        <Col className="right-vertical-bar">
-                            {back}
-                        </Col>
-                        <Col>
+            <div className="center-card">
+                <Container className="border border-primary rounded light-margin flashcard">
+                    <div className="front right-vertical-bar">{front}</div>
+                    <div className="back">{back}</div>
+                    <div className="properties">
+                        <div className="edit">
                             <Button variant="primary" onClick={handleDeleteCard}>Delete</Button>
-                        </Col>
-                        <Col>
+                        </div>
+                        <div className="delete">
                             <Button variant="primary" onClick={handleOpenCardModal}>Edit</Button>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 </Container>
-            </Container>
+            </div>
 
             <Modal
                 show={showEditCard}
