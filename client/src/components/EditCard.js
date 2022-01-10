@@ -7,7 +7,6 @@ const EditCard = ({ index, front, back, canDelete }) => {
 
     const handleChange = (e) => {
         e.preventDefault();
-
         if(e.target.name === 'front') {
             dispatch(setEditDeckCardFront({
                 index: index,
@@ -23,7 +22,6 @@ const EditCard = ({ index, front, back, canDelete }) => {
 
     const handleDeleteCard = (e) => {
         e.preventDefault();
-
         dispatch(deleteEditDeckCard(index));
     }
 

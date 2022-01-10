@@ -40,7 +40,6 @@ const EditDeck = () => {
 
     const handleChange = (e) => {
         e.preventDefault();
-
         if(e.target.name === 'name') {
             dispatch(setEditDeckName(e.target.value));
         } else if(e.target.name === 'description') {

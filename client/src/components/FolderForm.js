@@ -21,11 +21,8 @@ const FolderForm = ({ handleCloseModal }) => {
 		setFolderInput({});
 	}
 
-    const postFolder = async (e) => {
+    const handlePostFolder = async (e) => {
         e.preventDefault();
-
-        console.log(folderInput);
-
         await axios
             .post('/api/folders', {
                 name: folderInput.name,
@@ -52,7 +49,7 @@ const FolderForm = ({ handleCloseModal }) => {
                     <Form.Label>Folder Description</Form.Label>
                     <Form.Control id="folder-description" name="description" type="text" placeholder="Enter Description (optional)" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={postFolder}>
+                <Button variant="primary" type="submit" onClick={handlePostFolder}>
                     Create Folder
                 </Button>
             </Form>

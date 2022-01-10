@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
-import { setSelectedDeck } from '../state/actions/deckActions';
+import { useParams } from 'react-router-dom';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
 import StudyCard from './StudyCard';
@@ -11,9 +9,10 @@ import StudyCard from './StudyCard';
 const StudyDeck = () => {
     const [hasNextCard, setHasNextCard] = useState(false);
     const [hasPrevCard, setHasPrevCard] = useState(false);
-    const [currentCardIndex, setCurrentCardIndex] = useState(0);    // prevent being able to study if there are no cards in the deck (can't click button)
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);    // TODO: prevent being able to study if there are no cards in the deck (can't click button)
+    // current card should be stored in redux as a refresh would be detrimental...
+    // in this case localstorage would be needed
     const { selectedDeck } = useSelector((state) => state.deckReducer);
-    const dispatch = useDispatch();
     const { id } = useParams();
 
     const handlePrevCard = (e) => {
@@ -28,18 +27,8 @@ const StudyDeck = () => {
         currentCardIndex !== selectedDeck.cards.length - 1 ? setHasNextCard(true) : setHasNextCard(false);
     }
 
-    const fetchDeck = async () => {
-        await axios
-            .get(`/api/decks/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
-            .then(response => {
-                console.log('Get Deck Response: ', response);
-                dispatch(setSelectedDeck(response.data));
-            })
-            .catch(error => console.error('Error: ', error.response.data));
-    }
-
     useEffect(() => {
-        fetchDeck();
+        setHasNextCard(currentCardIndex < selectedDeck.cards.length - 1);  // TODO: will need to be changed with the utilization of redux...
     }, []);
 
     return(

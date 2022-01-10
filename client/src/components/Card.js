@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { deleteCardFromSelectedDeck } from '../state/actions/deckActions';
 import CardForm from './CardForm';
+import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 
 const Card = ({ index, deckId, cardId, front, back }) => {
     const [showEditCard, setShowEditCard] = useState(false);
@@ -12,9 +13,8 @@ const Card = ({ index, deckId, cardId, front, back }) => {
     const handleOpenCardModal = () => setShowEditCard(true);
     const handleCloseCardModal = () => setShowEditCard(false);
 
-    const handleDeleteCard = async (e) => { // fix so that this endpoint returns the deleted card and add actions to redux
+    const handleDeleteCard = async (e) => {
         e.preventDefault();
-
         await axios
             .delete(`/api/cards/${deckId}/${cardId}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
@@ -32,10 +32,14 @@ const Card = ({ index, deckId, cardId, front, back }) => {
                     <div className="back">{back}</div>
                     <div className="properties">
                         <div className="edit">
-                            <Button variant="primary" onClick={handleDeleteCard}>Delete</Button>
+                            <Button variant="primary" onClick={handleDeleteCard}>
+                                <FaRegTrashAlt />
+                            </Button>
                         </div>
                         <div className="delete">
-                            <Button variant="primary" onClick={handleOpenCardModal}>Edit</Button>
+                            <Button variant="primary" onClick={handleOpenCardModal}>
+                                <FaRegEdit />
+                            </Button>
                         </div>
                     </div>
                 </Container>

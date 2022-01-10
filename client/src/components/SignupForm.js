@@ -24,7 +24,6 @@ const SignupForm = ({ handleCloseModal }) => {
 
     const signup = async (e) => {
 		e.preventDefault();
-
 		if(!(signupInput.email && signupInput.password && signupInput['confirm-email'] && signupInput['confirm-password']) || 
             (signupInput.email.normalize() !== signupInput['confirm-email'].normalize() || signupInput.password.normalize() !== signupInput['confirm-password'].normalize())) {
 			setErrorMessage('Please check if your email or password is typed in correctly');

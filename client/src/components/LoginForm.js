@@ -22,7 +22,6 @@ const LoginForm = ({ handleCloseModal }) => {
 
 	const login = async (e) => {
 		e.preventDefault();
-
 		if(!(state.email && state.password)) {
 			setErrorMessage('Please check if your email or password is typed in correctly');
 			return;

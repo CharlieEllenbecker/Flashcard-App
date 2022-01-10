@@ -7,6 +7,7 @@ import { setSelectedDeck } from '../state/actions/deckActions';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
 import Card from './Card';
+import { FaEdit } from 'react-icons/fa';
 
 const Deck = () => {
     const { selectedDeck } = useSelector((state) => state.deckReducer);
@@ -43,7 +44,9 @@ const Deck = () => {
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
                 <div className="deck-properties">
-                    <Button variant="primary" onClick={handleNavigateToEditDeck}>Edit Deck</Button>
+                    <Button variant="primary" onClick={handleNavigateToEditDeck}>
+                        <FaEdit />
+                    </Button>
                     <Button variant="primary" onClick={handleNavigateToStudyDeck}>Study Deck</Button>
                 </div>
                 {selectedDeck.cards.length > 0 ?

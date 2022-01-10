@@ -16,7 +16,6 @@ const CustomCard = ({ type, img, id, name, description, }) => {
 
 	const handleNavigate = (e) => {
 		e.preventDefault();
-
 		if(type === 'folder') {
 			navigate(`/folders/${id}`);
 		} else if(type === 'deck') {
