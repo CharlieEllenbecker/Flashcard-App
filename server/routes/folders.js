@@ -35,17 +35,20 @@ router.post('/', auth, async (req, res) => {
 });
 
 /*
-    GET - The decks in the folder with the given id
+    GET - The folder with the given id
 */
 router.get('/:id', [auth, validateObjectIds], async (req, res) => {
-    const folder = await Folder.findById(req.params.id).select(['-userId']).sort('name');
+    let folder = await Folder.findById(req.params.id).select(['-userId']).sort('name');
     if (!folder) {
         return res.status(404).send(`The folder with the given id ${req.params.id} does not exist.`);
     }
 
-    const decks = await Deck.find({ folderId: req.params.id }).sort('name');
+    const decks = await Deck.find({ folderId: req.params.id }).select(['-folderId', '-cards']).sort('name');
 
-    return res.status(200).send(decks);
+    folder = folder.toObject();
+    folder.decks = decks;
+
+    return res.status(200).send(folder);
 });
 
 /*

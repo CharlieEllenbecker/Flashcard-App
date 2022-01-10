@@ -14,9 +14,30 @@ export const addFolder = (folder) => {
     };
 }
 
-export const setSelectedFolderDecks = (decks) => {
+export const setSelectedFolder = (folder) => {
     return {
-        type: ActionTypes.SET_SELECTED_FOLDER_DECKS,
-        payload: decks
+        type: ActionTypes.SET_SELECTED_FOLDER,
+        payload: folder
     };
 }
+//
+// export const setSelectedFolderName = (name) => {
+//     return {
+//         type: ActionTypes.SET_SELECTED_FOLDER_NAME,
+//         payload: name
+//     };
+// }
+
+// export const setSelectedFolderDescription = (description) => {
+//     return {
+//         type: ActionTypes.SET_SELECTED_FOLDER_DESCRIPTION,
+//         payload: description
+//     };
+// }
+
+// export const setSelectedFolderDecks = (decks) => {
+//     return {
+//         type: ActionTypes.SET_SELECTED_FOLDER_DECKS,
+//         payload: decks
+//     };
+// }

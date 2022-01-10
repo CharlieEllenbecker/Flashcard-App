@@ -3,7 +3,9 @@ import ActionTypes from '../actions/actionTypes';
 const initailState = {
     folders: [],
     newFolder: {},
-    selectedFolderDecks: [] // make into selected folder instead as it may be good to contain more data (fix backend first)
+    selectedFolder: {
+        decks: []
+    }
 };
 
 const folderReducer = (state = initailState, { type, payload }) => {
@@ -18,11 +20,36 @@ const folderReducer = (state = initailState, { type, payload }) => {
                 ...state,
                 folders: [...state.folders, payload]
             };
-        case ActionTypes.SET_SELECTED_FOLDER_DECKS:
+        case ActionTypes.SET_SELECTED_FOLDER:
             return {
                 ...state,
-                selectedFolderDecks: payload
+                selectedFolder: payload
             };
+
+        // case ActionTypes.SET_SELECTED_FOLDER_NAME:
+        //     return {
+        //         ...state,
+        //         selectedFolder: {
+        //             ...state.selectedFolder,
+        //             name: payload
+        //         }
+        //     };
+        // case ActionTypes.SET_SELECTED_FOLDER_DESCRIPTION:
+        //     return {
+        //         ...state,
+        //         selectedFolder: {
+        //             ...state.selectedFolder,
+        //             description: payload
+        //         }
+        //     };
+        // case ActionTypes.SET_SELECTED_FOLDER_DECKS:
+        //     return {
+        //         ...state,
+        //         selectedFolder: {
+        //             ...state.selectedFolder,
+        //             decks: payload
+        //         }
+        //     };
         default:
             return state;
     }

@@ -19,7 +19,7 @@ const PublicNavbar = () => {
                 <Container>
                     <Navbar.Brand as={Link} to="/dashboard">Flashcard-App</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">                         {/* TODO: NEEDED? */}
+                    <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Button variant="primary" onClick={handleShowLogin}>
                                 Login

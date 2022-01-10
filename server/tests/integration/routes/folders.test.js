@@ -165,7 +165,9 @@ describe('/api/folders', () => {
                 .send();
         
             expect(res.status).toBe(200);
-            expect(res.body).toEqual([]);
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', folder.name);
+            expect(res.body).toHaveProperty('decks');
         });
 
         it('should return a populated array of decks if valid id is passed', async () => {
@@ -208,9 +210,9 @@ describe('/api/folders', () => {
                 .send();
         
             expect(res.status).toBe(200);
-            expect(res.body.length).toBe(2);
-            expect(res.body.some(d => d.name === 'deck1'));
-            expect(res.body.some(d => d.name === 'deck2'));
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', folder.name);
+            expect(res.body).toHaveProperty('decks');
         });
     });
     

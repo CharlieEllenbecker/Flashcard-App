@@ -75,7 +75,7 @@ const EditDeck = () => {
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
                 console.log('Create Deck Response: ', response);
-                dispatch(clearEditDeck());  // TODO: is this even needed?
+                dispatch(clearEditDeck());
                 navigate(`/decks/${id}`);
             })
             .catch(error => {

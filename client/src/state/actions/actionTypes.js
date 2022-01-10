@@ -1,7 +1,10 @@
 const ActionTypes = {
     SET_FOLDERS: 'setFolders',
     ADD_FOLDER: 'addFolder',
-    SET_SELECTED_FOLDER_DECKS: 'setSelectedFolderDecks',
+    SET_SELECTED_FOLDER: 'setSelectedFolder',
+    // SET_SELECTED_FOLDER_NAME: 'setSelectedFolderName',
+    // SET_SELECTED_FOLDER_DESCRIPTION: 'setSelectedFolderDescription',
+    // SET_SELECTED_FOLDER_DECKS: 'setSelectedFolderDecks',
     SET_DECKS: 'setDecks',
     ADD_DECK: 'addDeck',
     SET_SELECTED_DECK: 'setSelectedDeck',

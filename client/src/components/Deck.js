@@ -50,7 +50,7 @@ const Deck = () => {
                     <div>
                         {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
                     </div> :
-                    <h2>No Cards in this Deck!</h2>}	{/* TODO: make nicer (maybe add an edit deck button) */}
+                    <h2>No Cards in this Deck!</h2>}
             </Page>
         </>
     );
