@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
@@ -23,8 +23,13 @@ const StudyDeck = () => {
 
     const handleNextCard = (e) => {
         e.preventDefault();
+        
+        if(currentCardIndex + 1 !== selectedDeck.cards.length - 1) {
+            setHasNextCard(true);
+        } else {
+            setHasNextCard(false);
+        }
         setCurrentCardIndex(currentCardIndex + 1);
-        currentCardIndex !== selectedDeck.cards.length - 1 ? setHasNextCard(true) : setHasNextCard(false);
     }
 
     useEffect(() => {
