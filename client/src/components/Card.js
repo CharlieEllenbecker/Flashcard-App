@@ -27,7 +27,7 @@ const Card = ({ index, deckId, cardId, front, back }) => {
     return(
         <>
             <div className="center-card">
-                <Container className="border border-primary rounded light-margin flashcard">
+                <Container className="border border-primary rounded light-margin flashcard center">
                     <div className="front right-vertical-bar">{front}</div>
                     <div className="back">{back}</div>
                     <div className="side-buttons">

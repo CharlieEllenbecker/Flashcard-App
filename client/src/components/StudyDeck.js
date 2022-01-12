@@ -12,8 +12,9 @@ import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 const StudyDeck = () => {
     const [hasNextCard, setHasNextCard] = useState(false);
     const [hasPrevCard, setHasPrevCard] = useState(false);
+    const { isStudying } = useSelector((state) => state.deckReducer);
     const { selectedDeck } = useSelector((state) => state.deckReducer);
-    const { currentCardIndex } = useSelector((state) => state.deckReducer.selectedDeck);
+    const { currentCardIndex } = useSelector((state) => state.deckReducer);
     const { id } = useParams();
     const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ const StudyDeck = () => {
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
-                <div className="study-card">
+                <div className="center">
                     {hasPrevCard &&
                         <Button className="side-buttons" variant="primary" onClick={handlePrevCard}>
                             <FaArrowLeft />

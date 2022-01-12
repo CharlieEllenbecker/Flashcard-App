@@ -121,11 +121,11 @@ const EditDeck = () => {
                 </Form>
                 <span>Cards</span>
                 {editDeck.cards.map((c, i) => <EditCard key={i} index={i} front={c.front} back={c.back} canDelete={canDeleteCard} />)}
-                <Container className="center-add-card-button" fluid>
+                <Container className="center light-padding" fluid>
                     <Button variant="primary" onClick={handleAddEditDeckCard}>Add Card</Button>
                 </Container>
             </Page>
-            <Container className="move-create-deck-button-right" fluid>
+            <Container className="center light-padding" fluid>
                 <Button variant="success" onClick={handleSaveDeck}>Save Deck</Button>
             </Container>
             {errorMessage && <p>{errorMessage}</p>}

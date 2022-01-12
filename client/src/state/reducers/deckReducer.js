@@ -6,9 +6,9 @@ const initialState = {
         cards: []
     },
     selectedDeck: {
-        currentCardIndex: 0,
         cards: []
-    }
+    },
+    currentCardIndex: 0
 };
 
 const deckReducer = (state = initialState, { type, payload }) => {
@@ -31,10 +31,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
         case ActionTypes.SET_CURRENT_CARD_INDEX:
             return {
                 ...state,
-                selectedDeck: {
-                    ...state.selectedDeck,
-                    currentCardIndex: payload
-                }
+                currentCardIndex: payload
             };
         case ActionTypes.DELETE_CARD_FROM_SELECTED_DECK:
             return {

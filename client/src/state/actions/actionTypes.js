@@ -17,7 +17,7 @@ const ActionTypes = {
     SET_EDIT_DECK_CARD_FRONT: 'setEditDeckCardFront',
     SET_EDIT_DECK_CARD_BACK: 'setEditDeckCardBack',
     DELETE_EDIT_DECK_CARD: 'delete  tDeckCard',
-    CLEAR_EDIT_DECK: 'clearEditDeck'
+    CLEAR_EDIT_DECK: 'clearEditDeck',
 };
 
 export default ActionTypes;

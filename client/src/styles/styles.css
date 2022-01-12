@@ -9,15 +9,7 @@
 	margin: 4px;
 }
 
-.center-add-card-button {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
-.move-create-deck-button-right {
-    display: flex;
-    justify-content: right;
+.light-padding {
     padding: 10px;
 }
 
@@ -31,19 +23,26 @@
     margin: 20px;
 }
 
-.flashcard {
+.center {
     display: flex;
-    justify-content: center;
-    background-color: azure;
     align-items: center;
+    justify-content: center;
+}
+
+.flashcard {
+    background-color: azure;
 }
 
 .front {
     flex: 1;
+    flex-grow: 1;
+    overflow-y: 1;
 }
 
 .back {
     flex: 1;
+    flex-grow: 1;
+    overflow-y: 1;
 }
 
 .side-buttons {
@@ -58,7 +57,6 @@
 }
 
 .study-card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-width: 400px;
+    min-height: 300px;
 }

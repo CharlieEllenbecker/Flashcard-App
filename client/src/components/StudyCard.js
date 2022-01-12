@@ -13,7 +13,7 @@ const StudyCard = ({ index, deckId, cardId, front, back }) => {
     return(
         <>
             <Container className="center-card" fluid>
-                <Container className="border border-primary rounded light-margin flashcard">
+                <Container className="border border-primary rounded light-margin flashcard study-card center">
                     {showFront ?
                         <div className="front right-vertical-bar">{front}</div> :
                         <div className="back right-vertical-bar">{back}</div>}
