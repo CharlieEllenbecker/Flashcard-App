@@ -21,6 +21,13 @@ export const setSelectedDeck = (deck) => {
     };
 }
 
+export const setCurrentCardIndex = (index) => {
+    return {
+        type: ActionTypes.SET_CURRENT_CARD_INDEX,
+        payload: index
+    };
+}
+
 export const deleteCardFromSelectedDeck = (index) => {
     return {
         type: ActionTypes.DELETE_CARD_FROM_SELECTED_DECK,

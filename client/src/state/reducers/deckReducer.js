@@ -1,11 +1,12 @@
 import ActionTypes from '../actions/actionTypes';
 
-const initialState = {  // maybe it might be a good idea to make models for the front end? (convert to typescript)
+const initialState = {
     decks: [],
     editDeck: {
         cards: []
     },
     selectedDeck: {
+        currentCardIndex: 0,
         cards: []
     }
 };
@@ -26,6 +27,14 @@ const deckReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 selectedDeck: payload
+            };
+        case ActionTypes.SET_CURRENT_CARD_INDEX:
+            return {
+                ...state,
+                selectedDeck: {
+                    ...state.selectedDeck,
+                    currentCardIndex: payload
+                }
             };
         case ActionTypes.DELETE_CARD_FROM_SELECTED_DECK:
             return {

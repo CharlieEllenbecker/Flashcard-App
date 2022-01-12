@@ -30,7 +30,7 @@ const Card = ({ index, deckId, cardId, front, back }) => {
                 <Container className="border border-primary rounded light-margin flashcard">
                     <div className="front right-vertical-bar">{front}</div>
                     <div className="back">{back}</div>
-                    <div className="properties">
+                    <div className="side-buttons">
                         <div className="edit">
                             <Button variant="primary" onClick={handleDeleteCard}>
                                 <FaRegTrashAlt />

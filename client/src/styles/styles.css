@@ -46,7 +46,7 @@
     flex: 1;
 }
 
-.properties {
+.side-buttons {
     flex-direction: column;
     justify-content: center;
     align-self: center;
@@ -55,4 +55,10 @@
 .deck-properties {
     display: flex;
     justify-content: end;
+}
+
+.study-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
