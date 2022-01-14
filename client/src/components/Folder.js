@@ -67,6 +67,7 @@ const Folder = () => {
 						<div className="center right">
 							<Button variant="danger" onClick={handleShowConfirmDelete}>Delete</Button>
 						</div>
+						<br/>
 						{showDecks ?
 							<div className="card-grid">
 								{selectedFolder.decks.map(d => <CustomCard key={d._id} type="deck" img={deck} id={d._id} name={d.name} description={d.description} />)}

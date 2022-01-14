@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { setSelectedDeck } from '../state/actions/deckActions';
+import { setSelectedDeck, deleteSelectedDeck } from '../state/actions/deckActions';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
 import Card from './Card';
@@ -12,10 +12,14 @@ import { FaEdit } from 'react-icons/fa';
 
 const Deck = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const { selectedDeck } = useSelector((state) => state.deckReducer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+
+    const handleShowConfirmDelete = () => setShowConfirmDelete(true);
+    const handleCloseConfirmDelete = () => setShowConfirmDelete(false);
 
     const handleNavigateToEditDeck = (e) => {
         e.preventDefault();
@@ -25,6 +29,20 @@ const Deck = () => {
     const handleNavigateToStudyDeck = (e) => {
         e.preventDefault();
         navigate(`/decks/study/${id}`);
+    }
+
+    const handleDeleteDeck = async (e) => {
+        e.preventDefault();
+        await axios
+            .delete(`/api/decks/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
+            .then(response => {
+                console.log('Delete Deck Response: ', response);
+                dispatch(deleteSelectedDeck());
+                navigate('/dashboard');
+            })
+            .catch(error => {
+                console.error('Error: ', error.response.data);
+            })
     }
 
     const fetchDeck = async () => {
@@ -49,10 +67,14 @@ const Deck = () => {
     return(
         <>
             <PrivateNavbar />
-            <Page title={selectedDeck.name} description={selectedDeck.description}>
-                {isLoading ?
-                    <LoadingSpinner /> :
-                    <>
+            {isLoading ?
+                <LoadingSpinner /> :
+                <>
+                    <Page title={selectedDeck.name} description={selectedDeck.description}>
+                        <div className="center right">
+                            <Button variant="danger" onClick={handleShowConfirmDelete}>Delete</Button>
+                        </div>
+                        <br/>
                         <div className="deck-properties">
                             <Button variant="primary" onClick={handleNavigateToEditDeck}>
                                 <FaEdit />
@@ -64,8 +86,21 @@ const Deck = () => {
                                 {selectedDeck.cards.map((c, i) => <Card key={c._id} index={i} deckId={selectedDeck._id} cardId={c._id} front={c.front} back={c.back} />)}
                             </div> :
                             <h2>No Cards in this Deck!</h2>}
-                    </>}
-            </Page>
+
+                        <Modal
+							show={showConfirmDelete}
+							onHide={handleCloseConfirmDelete}
+						>
+							<Modal.Header closeButton>
+								<Modal.Title>Are you sure you want to delete this deck?</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								<Button variant="primary" onClick={handleCloseConfirmDelete}>Cancel</Button>
+								<Button variant="danger" onClick={handleDeleteDeck}>Delete</Button>
+							</Modal.Body>
+						</Modal>
+                    </Page>
+                </>}
         </>
     );
 }

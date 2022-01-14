@@ -28,6 +28,14 @@ const deckReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 selectedDeck: payload
             };
+        case ActionTypes.DELETE_SELECTED_DECK:
+            return {
+                ...state,
+                decks: state.decks.filter(d => d._id !== state.selectedDeck._id),
+                selectedDeck: {
+                    cards: []
+                }
+            };
         case ActionTypes.SET_CURRENT_CARD_INDEX:
             return {
                 ...state,
