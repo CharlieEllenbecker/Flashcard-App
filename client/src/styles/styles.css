@@ -29,6 +29,14 @@
     justify-content: center;
 }
 
+.right {
+    justify-content: right;
+}
+
+.left {
+    justify-content: left;
+}
+
 .flashcard {
     background-color: azure;
 }

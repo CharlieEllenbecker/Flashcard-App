@@ -20,3 +20,10 @@ export const setSelectedFolder = (folder) => {
         payload: folder
     };
 }
+
+export const deleteSelectedFolder = () => {
+    return {
+        type: ActionTypes.DELETE_SELECTED_FOLDER,
+        payload: null
+    };
+}

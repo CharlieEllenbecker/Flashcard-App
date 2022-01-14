@@ -25,6 +25,14 @@ const folderReducer = (state = initailState, { type, payload }) => {
                 ...state,
                 selectedFolder: payload
             };
+        case ActionTypes.DELETE_SELECTED_FOLDER:
+            return {
+                ...state,
+                folders: state.folders.filter(f => f._id !== state.selectedFolder._id),
+                selectedFolder: {
+                    decks: []
+                }
+            };
         default:
             return state;
     }
