@@ -7,8 +7,10 @@ import { setEditDeck, setEditDeckName, setEditDeckDescription, addEditDeckCard, 
 import PrivateNavbar from './PrivateNavbar';
 import Page from './Page';
 import EditCard from './EditCard';
+import LoadingSpinner from './LoadingSpinner';
 
 const EditDeck = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [canDeleteCard, setCanDeleteCard] = useState(false);
@@ -49,23 +51,27 @@ const EditDeck = () => {
 
     const handleSaveDeck = (e) => {
         e.preventDefault();
-        location.pathname === '/decks/new' ? postDeck() : updateDeck();
+        location.pathname === '/decks/new' ? createDeck() : updateDeck();
     }
 
     const fetchEditDeck = async () => {
+        setIsLoading(true);
         await axios
             .get(`/api/decks/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
+                setIsLoading(false);
                 console.log('Get Edit Deck Response: ', response);
                 dispatch(setEditDeck(response.data));
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error('Error: ', error.response.data)
                 setErrorMessage(error.response.data);
             });
     }
 
-    const postDeck = async () => {
+    const createDeck = async () => {
+        setIsLoading(true);
         await axios
             .post('/api/decks', {
                 name: editDeck.name,
@@ -73,17 +79,20 @@ const EditDeck = () => {
                 cards: editDeck.cards
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
+                setIsLoading(false);
                 console.log('Create Deck Response: ', response);
                 dispatch(clearEditDeck());
                 navigate(`/decks/${id}`);
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error('Error: ', error.response.data)
                 setErrorMessage(error.response.data);
             });
     }
 
     const updateDeck = async () => {
+        setIsLoading(true);
         await axios
             .put(`/api/decks/${id}`, {
                 name: editDeck.name,
@@ -91,11 +100,13 @@ const EditDeck = () => {
                 cards: editDeck.cards.map(({ _id, ...rest }) => rest)
             }, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
             .then(response => {
+                setIsLoading(false);
                 console.log('Update Deck Response: ', response);
                 dispatch(clearEditDeck());
                 navigate(`/decks/${id}`);
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error('Error: ', error.response.data)
                 setErrorMessage(error.response.data);
             });
@@ -111,23 +122,27 @@ const EditDeck = () => {
         <>
             <PrivateNavbar />
             <Page title={isNew ? "New Deck Page" : "Edit Deck Page"}>
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Deck Name</Form.Label>
-                        <Form.Control id="deck-name" name="name" type="text" defaultValue={editDeck.name} placeholder="Enter Name" onChange={handleChange} />
-                        <Form.Label>Deck Description</Form.Label>
-                        <Form.Control id="deck-description" name="description" type="text" defaultValue={editDeck.description} placeholder="Enter Description (optional)" onChange={handleChange} />
-                    </Form.Group>
-                </Form>
-                <span>Cards</span>
-                {editDeck.cards.map((c, i) => <EditCard key={i} index={i} front={c.front} back={c.back} canDelete={canDeleteCard} />)}
-                <Container className="center light-padding" fluid>
-                    <Button variant="primary" onClick={handleAddEditDeckCard}>Add Card</Button>
-                </Container>
+                {isLoading ?
+                    <LoadingSpinner /> :
+                    <>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Deck Name</Form.Label>
+                                <Form.Control id="deck-name" name="name" type="text" defaultValue={editDeck.name} placeholder="Enter Name" onChange={handleChange} />
+                                <Form.Label>Deck Description</Form.Label>
+                                <Form.Control id="deck-description" name="description" type="text" defaultValue={editDeck.description} placeholder="Enter Description (optional)" onChange={handleChange} />
+                            </Form.Group>
+                        </Form>
+                        <span>Cards</span>
+                        {editDeck.cards.map((c, i) => <EditCard key={i} index={i} front={c.front} back={c.back} canDelete={canDeleteCard} />)}
+                        <div className="center light-padding" fluid>
+                            <Button variant="primary" onClick={handleAddEditDeckCard}>Add Card</Button>
+                        </div>
+                    </>}
             </Page>
-            <Container className="center light-padding" fluid>
+            <div className="center light-padding" fluid>
                 <Button variant="success" onClick={handleSaveDeck}>Save Deck</Button>
-            </Container>
+            </div>
             {errorMessage && <p>{errorMessage}</p>}
         </>
     );

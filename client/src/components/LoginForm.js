@@ -20,7 +20,7 @@ const LoginForm = ({ handleCloseModal }) => {
 		setState({});
 	}
 
-	const login = async (e) => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
 		if(!(state.email && state.password)) {
 			setErrorMessage('Please check if your email or password is typed in correctly');
@@ -58,7 +58,7 @@ const LoginForm = ({ handleCloseModal }) => {
 					<Form.Label>Password</Form.Label>
 					<Form.Control id="login-password" name="password" type="password" placeholder="Password" onChange={handleChange} />
 				</Form.Group>
-				<Button variant="primary" type="submit" onClick={login}>
+				<Button variant="primary" type="submit" onClick={handleLogin}>
 					Login
 				</Button>
 			</Form>

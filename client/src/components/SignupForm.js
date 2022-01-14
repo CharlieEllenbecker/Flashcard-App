@@ -22,7 +22,7 @@ const SignupForm = ({ handleCloseModal }) => {
 		setSignupInput({});
 	}
 
-    const signup = async (e) => {
+    const handleSignup = async (e) => {
 		e.preventDefault();
 		if(!(signupInput.email && signupInput.password && signupInput['confirm-email'] && signupInput['confirm-password']) || 
             (signupInput.email.normalize() !== signupInput['confirm-email'].normalize() || signupInput.password.normalize() !== signupInput['confirm-password'].normalize())) {
@@ -65,7 +65,7 @@ const SignupForm = ({ handleCloseModal }) => {
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control id="confirm-password" name="confirm-password" type="password" placeholder="Confirm password" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={signup}>
+                <Button variant="primary" type="submit" onClick={handleSignup}>
                     Signup
                 </Button>
             </Form>

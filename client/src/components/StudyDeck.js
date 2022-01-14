@@ -49,20 +49,18 @@ const StudyDeck = () => {
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
                 <div className="center">
-                    {hasPrevCard &&
-                        <Button className="side-buttons" variant="primary" onClick={handlePrevCard}>
-                            <FaArrowLeft />
-                        </Button>}
+                    <Button className="side-buttons" variant={hasPrevCard ? "primary" : "secondary"} onClick={handlePrevCard} disabled={!hasPrevCard}>
+                        <FaArrowLeft />
+                    </Button>
                     {selectedDeck.cards.length !== 0 && <StudyCard
                         key={selectedDeck.cards[currentCardIndex]._id}
                         index={currentCardIndex} deckId={id}
                         cardId={selectedDeck.cards[currentCardIndex]._id}
                         front={selectedDeck.cards[currentCardIndex].front}
                         back={selectedDeck.cards[currentCardIndex].back} />}
-                    {hasNextCard &&
-                        <Button className="side-buttons" variant="primary" onClick={handleNextCard}>
-                            <FaArrowRight />    
-                        </Button>}
+                    <Button className="side-buttons" variant={hasNextCard ? "primary" : "secondary"} onClick={handleNextCard} disabled={!hasNextCard}>
+                        <FaArrowRight />    
+                    </Button>
                 </div>
             </Page>
         </>
