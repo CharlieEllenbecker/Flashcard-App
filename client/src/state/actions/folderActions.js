@@ -27,3 +27,17 @@ export const deleteSelectedFolder = () => {
         payload: null
     };
 }
+
+export const setAvaliableDecks = (decks) => {
+    return {
+        type: ActionTypes.SET_AVALIABLE_DECKS,
+        payload: decks
+    };
+}
+
+export const setAnAvaliableDeck = (deck) => {
+    return {
+        type: ActionTypes.SET_AN_AVALIABLE_DECK,
+        payload: deck
+    };
+}

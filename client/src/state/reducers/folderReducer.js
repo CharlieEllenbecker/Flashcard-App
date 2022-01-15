@@ -2,10 +2,10 @@ import ActionTypes from '../actions/actionTypes';
 
 const initailState = {
     folders: [],
-    newFolder: {},
     selectedFolder: {
-        decks: []
-    }
+        decks: [],
+    },
+    avaliableDecks: []
 };
 
 const folderReducer = (state = initailState, { type, payload }) => {
@@ -32,6 +32,16 @@ const folderReducer = (state = initailState, { type, payload }) => {
                 selectedFolder: {
                     decks: []
                 }
+            };
+        case ActionTypes.SET_AVALIABLE_DECKS:
+            return {
+                ...state,
+                avaliableDecks: payload
+            };
+        case ActionTypes.SET_AN_AVALIABLE_DECK:
+            return {
+                ...state,
+                avaliableDecks: state.avaliableDecks.map((ad, i) => i === payload.index ? { ...ad, added: payload.added } : ad)
             };
         default:
             return state;

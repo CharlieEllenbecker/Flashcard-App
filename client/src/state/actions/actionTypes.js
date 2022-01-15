@@ -3,6 +3,8 @@ const ActionTypes = {
     ADD_FOLDER: 'addFolder',
     SET_SELECTED_FOLDER: 'setSelectedFolder',
     DELETE_SELECTED_FOLDER: 'deleteSelectedFolder',
+    SET_AVALIABLE_DECKS: 'setAvaliableDecks',
+    SET_AN_AVALIABLE_DECK: 'setAnAvaliableDeck',
     SET_DECKS: 'setDecks',
     ADD_DECK: 'addDeck',
     SET_SELECTED_DECK: 'setSelectedDeck',

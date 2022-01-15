@@ -15,8 +15,8 @@ const StudyCard = ({ index, deckId, cardId, front, back }) => {
             <Container className="center-card" fluid>
                 <Container className="border border-primary rounded light-margin flashcard study-card center">
                     {showFront ?
-                        <div className="front right-vertical-bar">{front}</div> :
-                        <div className="back right-vertical-bar">{back}</div>}
+                        <div className="card-text right-vertical-bar">{front}</div> :
+                        <div className="card-text right-vertical-bar">{back}</div>}
                     <Button variant="primary" onClick={handleFlip}>
                         <BsArrowRepeat />
                     </Button>

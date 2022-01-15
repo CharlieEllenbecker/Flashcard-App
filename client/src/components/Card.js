@@ -28,8 +28,8 @@ const Card = ({ index, deckId, cardId, front, back }) => {
         <>
             <div className="center-card">
                 <Container className="border border-primary rounded light-margin flashcard center">
-                    <div className="front right-vertical-bar">{front}</div>
-                    <div className="back">{back}</div>
+                    <div className="card-text right-vertical-bar">{front}</div>
+                    <div className="card-text">{back}</div>
                     <div className="side-buttons">
                         <div className="edit">
                             <Button variant="primary" onClick={handleDeleteCard}>
