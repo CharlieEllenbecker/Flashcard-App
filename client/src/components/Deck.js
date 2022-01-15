@@ -87,6 +87,8 @@ const Deck = () => {
                             </div> :
                             <h2>No Cards in this Deck!</h2>}
 
+                            {/* TODO: add the folder to be viewed and allow the user to remove from the foler or add to folders */}
+
                         <Modal
 							show={showConfirmDelete}
 							onHide={handleCloseConfirmDelete}

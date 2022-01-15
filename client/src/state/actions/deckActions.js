@@ -1,6 +1,6 @@
 import ActionTypes from './actionTypes';
 
-export const setDecks = (decks) => {
+export const setDecks = (decks) => {    // TODO: define parameters better...
     return {
         type: ActionTypes.SET_DECKS,
         payload: decks

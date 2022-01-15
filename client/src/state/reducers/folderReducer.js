@@ -25,6 +25,14 @@ const folderReducer = (state = initailState, { type, payload }) => {
                 ...state,
                 selectedFolder: payload
             };
+        case ActionTypes.ADD_SELECTED_FOLDER_DECK:
+            return {
+                ...state,
+                selectedFolder: {
+                    ...state.selectedFolder,
+                    decks: [...state.selectedFolder.decks, payload]
+                }
+            };
         case ActionTypes.DELETE_SELECTED_FOLDER:
             return {
                 ...state,
@@ -41,7 +49,7 @@ const folderReducer = (state = initailState, { type, payload }) => {
         case ActionTypes.SET_AN_AVALIABLE_DECK:
             return {
                 ...state,
-                avaliableDecks: state.avaliableDecks.map((ad, i) => i === payload.index ? { ...ad, added: payload.added } : ad)
+                avaliableDecks: state.avaliableDecks.map((ad, i) => i === payload.index ? { ...ad, isAdded: payload.isAdded } : ad)
             };
         default:
             return state;

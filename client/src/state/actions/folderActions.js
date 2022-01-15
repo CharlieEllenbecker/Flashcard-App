@@ -1,6 +1,6 @@
 import ActionTypes from './actionTypes';
 
-export const setFolders = (folders) => {
+export const setFolders = (folders) => {    // TODO: define parameters better...
     return {
         type: ActionTypes.SET_FOLDERS,
         payload: folders
@@ -18,6 +18,13 @@ export const setSelectedFolder = (folder) => {
     return {
         type: ActionTypes.SET_SELECTED_FOLDER,
         payload: folder
+    };
+}
+
+export const addSelectedFolderDeck = (deck) => {
+    return {
+        type: ActionTypes.ADD_SELECTED_FOLDER_DECK,
+        payload: deck
     };
 }
 
