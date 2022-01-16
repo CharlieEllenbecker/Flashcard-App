@@ -3,12 +3,13 @@ import { Button, Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { setSelectedDeck, deleteSelectedDeck } from '../state/actions/deckActions';
+import { setSelectedDeck } from '../state/actions/deckActions';
 import Page from './Page';
 import PrivateNavbar from'./PrivateNavbar';
 import Card from './Card';
 import LoadingSpinner from './LoadingSpinner';
 import { FaEdit } from 'react-icons/fa';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const Deck = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -29,20 +30,6 @@ const Deck = () => {
     const handleNavigateToStudyDeck = (e) => {
         e.preventDefault();
         navigate(`/decks/study/${id}`);
-    }
-
-    const handleDeleteDeck = async (e) => {
-        e.preventDefault();
-        await axios
-            .delete(`/api/decks/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
-            .then(response => {
-                console.log('Delete Deck Response: ', response);
-                dispatch(deleteSelectedDeck());
-                navigate('/dashboard');
-            })
-            .catch(error => {
-                console.error('Error: ', error.response.data);
-            })
     }
 
     const fetchDeck = async () => {
@@ -72,7 +59,7 @@ const Deck = () => {
                 <>
                     <Page title={selectedDeck.name} description={selectedDeck.description}>
                         <div className="center right">
-                            <Button variant="danger" onClick={handleShowConfirmDelete}>Delete</Button>
+                            <Button variant="danger" onClick={handleShowConfirmDelete}>Delete Deck</Button>
                         </div>
                         <br/>
                         <div className="deck-properties">
@@ -87,20 +74,7 @@ const Deck = () => {
                             </div> :
                             <h2>No Cards in this Deck!</h2>}
 
-                            {/* TODO: add the folder to be viewed and allow the user to remove from the foler or add to folders */}
-
-                        <Modal
-							show={showConfirmDelete}
-							onHide={handleCloseConfirmDelete}
-						>
-							<Modal.Header closeButton>
-								<Modal.Title>Are you sure you want to delete this deck?</Modal.Title>
-							</Modal.Header>
-							<Modal.Body>
-								<Button variant="primary" onClick={handleCloseConfirmDelete}>Cancel</Button>
-								<Button variant="danger" onClick={handleDeleteDeck}>Delete</Button>
-							</Modal.Body>
-						</Modal>
+                        <ConfirmDeleteModal type="deck" handleClose={handleCloseConfirmDelete} shouldShow={showConfirmDelete} />
                     </Page>
                 </>}
         </>

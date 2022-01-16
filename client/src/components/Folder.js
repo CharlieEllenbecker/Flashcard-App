@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { setSelectedFolder, deleteSelectedFolder, setAvaliableDecks, addSelectedFolderDeck } from '../state/actions/folderActions';
+import { setSelectedFolder, setAvaliableDecks, addSelectedFolderDeck } from '../state/actions/folderActions';
 import PrivateNavbar from './PrivateNavbar';
 import CustomCard from './CustomCard';
 import Page from './Page';
 import deck from '../images/deck.png';
 import LoadingSpinner from './LoadingSpinner';
 import AddDeck from './AddDeck';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const Folder = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -20,27 +21,11 @@ const Folder = () => {
 	const { avaliableDecks } = useSelector((state => state.folderReducer));
 	const dispatch = useDispatch();
     const { id } = useParams();
-	const navigate = useNavigate();
 
 	const handleShowConfirmDelete = () => setShowDeleteModal(true);
 	const handleCloseConfirmDelete = () => setShowDeleteModal(false);
 	const handleShowAddDecks = () => setShowAddDecks(true);
 	const handleCloseAddDecks = () => setShowAddDecks(false);
-
-	const handleDeleteFolder = async (e) => {
-		e.preventDefault();
-		handleCloseConfirmDelete();
-		await axios
-			.delete(`/api/folders/${id}`, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
-			.then(response => {
-				console.log('Delete Folder Response: ', response);
-				dispatch(deleteSelectedFolder());
-				navigate('/dashboard');
-			})
-			.catch(error => {
-				console.error('Error: ', error.response.data);
-			});
-	}
 
 	const handleAddDecks = (e) => {
 		e.preventDefault();
@@ -113,7 +98,7 @@ const Folder = () => {
 					<Page title={selectedFolder.name} description={selectedFolder.description}>
 						<div className="center right">
 							<Button variant="primary" onClick={handleShowAddDecks}>Add Decks</Button>
-							<Button variant="danger" onClick={handleShowConfirmDelete}>Delete</Button>
+							<Button variant="danger" onClick={handleShowConfirmDelete}>Delete Folder</Button>
 						</div>
 						<br/>
 						{showDecks ?
@@ -136,18 +121,7 @@ const Folder = () => {
 							</Modal.Body>
 						</Modal>
 
-						<Modal	// TODO: make this delete modal and the delete deck modal as one component
-							show={showConfirmDelete}
-							onHide={handleCloseConfirmDelete}
-						>
-							<Modal.Header closeButton>
-								<Modal.Title>Are you sure you want to delete this folder?</Modal.Title>
-							</Modal.Header>
-							<Modal.Body>
-								<Button variant="primary" onClick={handleCloseConfirmDelete}>Cancel</Button>
-								<Button variant="danger" onClick={handleDeleteFolder}>Delete</Button>
-							</Modal.Body>
-						</Modal>
+						<ConfirmDeleteModal type="folder" handleClose={handleCloseConfirmDelete} shouldShow={showConfirmDelete} />
 					</Page>
 				</>}
 		</>
