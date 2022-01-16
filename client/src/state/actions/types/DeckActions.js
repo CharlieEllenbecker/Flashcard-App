@@ -1,12 +1,4 @@
-const ActionTypes = {
-    SET_FOLDERS: 'setFolders',
-    ADD_FOLDER: 'addFolder',
-    SET_SELECTED_FOLDER: 'setSelectedFolder',
-    ADD_SELECTED_FOLDER_DECK: 'addSelectedFolderDeck',
-    DELETE_SELECTED_FOLDER_DECK: 'deleteSelectedFolderDeck',
-    DELETE_SELECTED_FOLDER: 'deleteSelectedFolder',
-    SET_AVALIABLE_DECKS: 'setAvaliableDecks',
-    SET_AN_AVALIABLE_DECK: 'setAnAvaliableDeck',
+const DeckActions = {
     SET_DECKS: 'setDecks',
     ADD_DECK: 'addDeck',
     SET_SELECTED_DECK: 'setSelectedDeck',
@@ -23,7 +15,7 @@ const ActionTypes = {
     SET_EDIT_DECK_CARD_FRONT: 'setEditDeckCardFront',
     SET_EDIT_DECK_CARD_BACK: 'setEditDeckCardBack',
     DELETE_EDIT_DECK_CARD: 'delete  tDeckCard',
-    CLEAR_EDIT_DECK: 'clearEditDeck',
+    CLEAR_EDIT_DECK: 'clearEditDeck'
 };
 
-export default ActionTypes;
+export default DeckActions;

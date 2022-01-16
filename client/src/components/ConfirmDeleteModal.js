@@ -21,7 +21,7 @@ const ConfirmDeleteModal = ({ type, handleClose, shouldShow }) => {
             })
             .catch(error => {
                 console.error('Error: ', error.response.data);
-            })
+            });
     }
 
     const handleDeleteFolder = async (e) => {

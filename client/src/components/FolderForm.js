@@ -49,9 +49,8 @@ const FolderForm = ({ handleCloseModal }) => {
                     <Form.Label>Folder Description</Form.Label>
                     <Form.Control id="folder-description" name="description" type="text" placeholder="Enter Description (optional)" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={handlePostFolder}>
-                    Create Folder
-                </Button>
+                <Button variant="primary" onClick={handleCloseModal}>Cancel</Button>
+                <Button variant="primary" type="submit" onClick={handlePostFolder}>Create Folder</Button>
             </Form>
             {errorMessage && <p>{errorMessage}</p>}
         </>

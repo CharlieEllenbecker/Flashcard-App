@@ -1,120 +1,120 @@
-import ActionTypes from './actionTypes';
+import DeckActions from './types/DeckActions';
 
 export const setDecks = (decks) => {    // TODO: define parameters better...
     return {
-        type: ActionTypes.SET_DECKS,
+        type: DeckActions.SET_DECKS,
         payload: decks
     };
 }
 
 export const addDeck = (deck) => {
     return {
-        type: ActionTypes.ADD_DECK,
+        type: DeckActions.ADD_DECK,
         payload: deck
     };
 }
 
 export const setSelectedDeck = (deck) => {
     return {
-        type: ActionTypes.SET_SELECTED_DECK,
+        type: DeckActions.SET_SELECTED_DECK,
         payload: deck
     };
 }
 
 export const deleteSelectedDeck = () => {
     return {
-        type: ActionTypes.DELETE_SELECTED_DECK,
+        type: DeckActions.DELETE_SELECTED_DECK,
         payload: null
     };
 }
 
 export const setCurrentCardIndex = (index) => {
     return {
-        type: ActionTypes.SET_CURRENT_CARD_INDEX,
+        type: DeckActions.SET_CURRENT_CARD_INDEX,
         payload: index
     };
 }
 
 export const deleteCardFromSelectedDeck = (index) => {
     return {
-        type: ActionTypes.DELETE_CARD_FROM_SELECTED_DECK,
+        type: DeckActions.DELETE_CARD_FROM_SELECTED_DECK,
         payload: index
     };
 }
 
 export const setCardFromSelectedDeck = (card) => {
     return {
-        type: ActionTypes.SET_CARD_FROM_SELECTED_DECK,
+        type: DeckActions.SET_CARD_FROM_SELECTED_DECK,
         payload: card
     };
 }
 
 export const setEditDeck = (deck) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK,
+        type: DeckActions.SET_EDIT_DECK,
         payload: deck
     };
 }
 
 export const setEditDeckName = (name) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_NAME,
+        type: DeckActions.SET_EDIT_DECK_NAME,
         payload: name
     };
 }
 
 export const setEditDeckDescription = (description) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_DESCRIPTION,
+        type: DeckActions.SET_EDIT_DECK_DESCRIPTION,
         payload: description
     };
 }
 
 export const setEditDeckFolderId = (folderId) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_FOLDER_ID,
+        type: DeckActions.SET_EDIT_DECK_FOLDER_ID,
         payload: folderId
     };
 }
 
 export const setEditDeckCards = (cards) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_CARDS,
+        type: DeckActions.SET_EDIT_DECK_CARDS,
         payload: cards
     };
 }
 
 export const addEditDeckCard = (card) => {
     return {
-        type: ActionTypes.ADD_EDIT_DECK_CARD,
+        type: DeckActions.ADD_EDIT_DECK_CARD,
         payload: card
     };
 }
 
 export const setEditDeckCardFront = (card) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_CARD_FRONT,
+        type: DeckActions.SET_EDIT_DECK_CARD_FRONT,
         payload: card
     };
 }
 
 export const setEditDeckCardBack = (card) => {
     return {
-        type: ActionTypes.SET_EDIT_DECK_CARD_BACK,
+        type: DeckActions.SET_EDIT_DECK_CARD_BACK,
         payload: card
     };
 }
 
 export const deleteEditDeckCard = (index) => {
     return {
-        type: ActionTypes.DELETE_EDIT_DECK_CARD,
+        type: DeckActions.DELETE_EDIT_DECK_CARD,
         payload: index
     };
 }
 
 export const clearEditDeck = () => {
     return {
-        type: ActionTypes.CLEAR_EDIT_DECK,
+        type: DeckActions.CLEAR_EDIT_DECK,
         payload: null
     };
 }

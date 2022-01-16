@@ -1,4 +1,4 @@
-import ActionTypes from '../actions/actionTypes';
+import DeckActions from './types/DeckActions';
 
 const initialState = {
     decks: [],
@@ -13,22 +13,22 @@ const initialState = {
 
 const deckReducer = (state = initialState, { type, payload }) => {
     switch(type) {
-        case ActionTypes.SET_DECKS:
+        case DeckActions.SET_DECKS:
             return {
                 ...state,
                 decks: payload
             };
-        case ActionTypes.ADD_DECK:
+        case DeckActions.ADD_DECK:
             return {
                 ...state,
                 decks: [...state.decks, payload]
             };
-        case ActionTypes.SET_SELECTED_DECK:
+        case DeckActions.SET_SELECTED_DECK:
             return {
                 ...state,
                 selectedDeck: payload
             };
-        case ActionTypes.DELETE_SELECTED_DECK:
+        case DeckActions.DELETE_SELECTED_DECK:
             return {
                 ...state,
                 decks: state.decks.filter(d => d._id !== state.selectedDeck._id),
@@ -36,12 +36,12 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: []
                 }
             };
-        case ActionTypes.SET_CURRENT_CARD_INDEX:
+        case DeckActions.SET_CURRENT_CARD_INDEX:
             return {
                 ...state,
                 currentCardIndex: payload
             };
-        case ActionTypes.DELETE_CARD_FROM_SELECTED_DECK:
+        case DeckActions.DELETE_CARD_FROM_SELECTED_DECK:
             return {
                 ...state,
                 selectedDeck: {
@@ -49,7 +49,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: [...state.selectedDeck.cards.slice(0, payload), ...state.selectedDeck.cards.slice(payload + 1)]
                 }
             };
-        case ActionTypes.SET_CARD_FROM_SELECTED_DECK:
+        case DeckActions.SET_CARD_FROM_SELECTED_DECK:
             return {
                 ...state,
                 selectedDeck: {
@@ -57,32 +57,32 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: state.selectedDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front, back: payload.back } : c)
                 }
             };
-        case ActionTypes.SET_EDIT_DECK:
+        case DeckActions.SET_EDIT_DECK:
             return {
                 ...state,
                 editDeck: payload
             };
-        case ActionTypes.SET_EDIT_DECK_NAME:
+        case DeckActions.SET_EDIT_DECK_NAME:
             return {
                 ...state,
                 editDeck: { ...state.editDeck, name: payload }
             };
-        case ActionTypes.SET_EDIT_DECK_DESCRIPTION:
+        case DeckActions.SET_EDIT_DECK_DESCRIPTION:
             return {
                 ...state,
                 editDeck: { ...state.editDeck, description: payload }
             };
-        case ActionTypes.SET_EDIT_DECK_FOLDER_ID:
+        case DeckActions.SET_EDIT_DECK_FOLDER_ID:
             return {
                 ...state,
                 editDeck: { ...state.editDeck, folderId: payload }
             };
-        case ActionTypes.SET_EDIT_DECK_CARDS:
+        case DeckActions.SET_EDIT_DECK_CARDS:
             return {
                 ...state,
                 editDeck: { ...state.editDeck, cards: payload }
             };
-        case ActionTypes.ADD_EDIT_DECK_CARD:
+        case DeckActions.ADD_EDIT_DECK_CARD:
             return {
                 ...state,
                 editDeck: { 
@@ -90,7 +90,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: [...state.editDeck.cards, payload]
                 }
             };
-        case ActionTypes.SET_EDIT_DECK_CARD_FRONT:
+        case DeckActions.SET_EDIT_DECK_CARD_FRONT:
             return {
                 ...state,
                 editDeck: { 
@@ -98,7 +98,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: state.editDeck.cards.map((c, i) => i === payload.index ? { ...c, front: payload.front } : c)
                 }
             };
-        case ActionTypes.SET_EDIT_DECK_CARD_BACK:
+        case DeckActions.SET_EDIT_DECK_CARD_BACK:
             return {
                 ...state,
                 editDeck: { 
@@ -106,7 +106,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: state.editDeck.cards.map((c, i) => i === payload.index ? { ...c, back: payload.back } : c)
                 }
         };
-        case ActionTypes.DELETE_EDIT_DECK_CARD:
+        case DeckActions.DELETE_EDIT_DECK_CARD:
             return {
                 ...state,
                 editDeck: {
@@ -114,7 +114,7 @@ const deckReducer = (state = initialState, { type, payload }) => {
                     cards: [...state.editDeck.cards.slice(0, payload), ...state.editDeck.cards.slice(payload + 1)]
                 }
             };
-        case ActionTypes.CLEAR_EDIT_DECK:
+        case DeckActions.CLEAR_EDIT_DECK:
             return {
                 ...state,
                 editDeck: {
