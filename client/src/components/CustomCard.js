@@ -1,11 +1,14 @@
 import { Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { deleteSelectedFolderDeck } from '../state/actions/folderActions';
 import '../styles/styles.css';
 
-const CustomCard = ({ type, img, id, name, description, }) => {
+const CustomCard = ({ index, type, img, id, name, description, cards, showDeleteDeck }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	// Synchronous code
 	let buttonMessage;
 	if(type === 'folder') {
 		buttonMessage = 'Open Folder';
@@ -13,6 +16,18 @@ const CustomCard = ({ type, img, id, name, description, }) => {
 		buttonMessage = 'Open Deck';
 	}
 
+	const handleRemoveDeck = async (e) => {
+		e.preventDefault();
+		await axios
+			.put(`/api/decks/from-folder/${id}`, {}, { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
+			.then(response => {
+				console.log('Put Deck Response: ', response);
+				dispatch(deleteSelectedFolderDeck(index));
+			})
+			.catch(error => {
+				console.error('Error: ', error.response.data);
+			});
+	}
 
 	const handleNavigate = (e) => {
 		e.preventDefault();
@@ -31,6 +46,8 @@ const CustomCard = ({ type, img, id, name, description, }) => {
 					<Card.Title>{name}</Card.Title>
 					<Card.Text>{description}</Card.Text>
 					<Button variant="primary" onClick={handleNavigate}>{buttonMessage}</Button>
+					{type === 'deck' && showDeleteDeck &&
+						<Button variant="danger" onClick={handleRemoveDeck}>Remove</Button>}
 				</Card.Body>
 			</Card>
 		</div>

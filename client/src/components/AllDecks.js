@@ -41,7 +41,7 @@ const AllDecks = ({ showNavbar }) => {
 				{isLoading ?
 					<LoadingSpinner /> :
 					<div className="card-grid">
-						{decks.map(d => <CustomCard key={d._id} type="deck" img={deck} id={d._id} name={d.name} description={d.description} />)}
+						{decks.map((d, i) => <CustomCard key={d._id} index={i} type="deck" img={deck} id={d._id} name={d.name} description={d.description} cards={d.cards} showDeleteDeck={false} />)}
 					</div>}
 			</Page>
 		</>

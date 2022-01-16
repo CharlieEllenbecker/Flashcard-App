@@ -28,6 +28,13 @@ export const addSelectedFolderDeck = (deck) => {
     };
 }
 
+export const deleteSelectedFolderDeck = (index) => {
+    return {
+        type: ActionTypes.DELETE_SELECTED_FOLDER_DECK,
+        payload: index
+    };
+}
+
 export const deleteSelectedFolder = () => {
     return {
         type: ActionTypes.DELETE_SELECTED_FOLDER,

@@ -97,8 +97,11 @@ const Folder = () => {
 
 	useEffect(() => {
 		fetchFolder();
-		setShowDecks(selectedFolder.decks.length > 0);
 		fetchFolderlessDecks();
+	}, []);
+
+	useEffect(() => {
+		setShowDecks(selectedFolder.decks.length > 0);
 	}, [selectedFolder.decks.length]);
 
 	return(
@@ -109,17 +112,15 @@ const Folder = () => {
 				<>
 					<Page title={selectedFolder.name} description={selectedFolder.description}>
 						<div className="center right">
+							<Button variant="primary" onClick={handleShowAddDecks}>Add Decks</Button>
 							<Button variant="danger" onClick={handleShowConfirmDelete}>Delete</Button>
 						</div>
 						<br/>
 						{showDecks ?
 							<div className="card-grid">
-								{selectedFolder.decks.map(d => <CustomCard key={d._id} type="deck" img={deck} id={d._id} name={d.name} description={d.description} />)}
+								{selectedFolder.decks.map((d, i) => <CustomCard key={d._id} index={i} type="deck" img={deck} id={d._id} name={d.name} description={d.description} cards={d.cards} showDeleteDeck={true} />)}
 							</div> :
-							<h2>No Decks In This Folder!</h2>}	{/* TODO: make nicer (maybe add an add deck button) */}
-						<div className="center">
-							<Button variant="primary" onClick={handleShowAddDecks}>Add Decks</Button>
-						</div>
+							<h2>No Decks In This Folder!</h2>}
 
 						<Modal
 							show={showAddDecks}

@@ -33,6 +33,14 @@ const folderReducer = (state = initailState, { type, payload }) => {
                     decks: [...state.selectedFolder.decks, payload]
                 }
             };
+        case ActionTypes.DELETE_SELECTED_FOLDER_DECK:
+            return {
+                ...state,
+                selectedFolder: {
+                    ...state.selectedFolder,
+                    decks: [...state.selectedFolder.decks.slice(0, payload), ...state.selectedFolder.decks.slice(payload + 1)]
+                }
+            };
         case ActionTypes.DELETE_SELECTED_FOLDER:
             return {
                 ...state,

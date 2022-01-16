@@ -64,6 +64,21 @@ router.put('/:id', [auth, validateObjectIds], async (req, res) => {
 });
 
 /*
+    PUT - Remove the deck with the given id from the folder
+*/
+router.put('/from-folder/:id', [auth, validateObjectIds], async (req, res) => {
+    let deck = await Deck.findById(req.params.id).select(['-userId']);
+
+    if (!deck) {
+        return res.status(404).send(`The deck with the given id ${req.params.id} does not exist.`);
+    }
+    deck.folderId = undefined;
+    deck = await deck.save();
+
+    return res.status(200).send(deck);
+});
+
+/*
     DELETE - Delete the deck with the given id
 */
 router.delete('/:id', [auth, validateObjectIds], async (req, res) => {
