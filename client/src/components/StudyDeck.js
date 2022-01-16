@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setSelectedDeck, setCurrentCardIndex } from '../state/actions/deckActions';
 import Page from './Page';
@@ -12,10 +12,10 @@ import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 const StudyDeck = () => {
     const [hasNextCard, setHasNextCard] = useState(false);
     const [hasPrevCard, setHasPrevCard] = useState(false);
-    const { isStudying } = useSelector((state) => state.deckReducer);
     const { selectedDeck } = useSelector((state) => state.deckReducer);
     const { currentCardIndex } = useSelector((state) => state.deckReducer);
     const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handlePrevCard = (e) => {
@@ -26,6 +26,11 @@ const StudyDeck = () => {
     const handleNextCard = (e) => {
         e.preventDefault();
         dispatch(setCurrentCardIndex(currentCardIndex + 1));
+    }
+
+    const handleBackToDeck = (e) => {
+        e.preventDefault();
+        navigate(`/decks/${id}`);
     }
 
     const fetchDeck = async () => {
@@ -48,6 +53,9 @@ const StudyDeck = () => {
         <>
             <PrivateNavbar />
             <Page title={selectedDeck.name} description={selectedDeck.description}>
+                <div className="center right">
+                    <Button variant="primary" onClick={handleBackToDeck}>Back To Deck</Button>
+                </div>
                 <div className="center">
                     <Button className="side-buttons" variant={hasPrevCard ? "primary" : "secondary"} onClick={handlePrevCard} disabled={!hasPrevCard}>
                         <FaArrowLeft />
