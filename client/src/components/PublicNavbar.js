@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navbar, Container, Nav, Button, Modal } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
@@ -17,14 +17,14 @@ const PublicNavbar = () => {
         <>
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand as={Link} to="/dashboard">Flashcard-App</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/">Flashcard-App</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <div className="center right">
-                                <Button variant="primary" onClick={handleShowLogin}>Login</Button>
-                                <Button variant="primary" onClick={handleShowSignup}>Signup</Button>
-                            </div>
+                            <NavDropdown title="Login/Signup" id="basic-nav-dropdown">
+                                <NavDropdown.Item variant="primary" onClick={handleShowLogin}>Login</NavDropdown.Item>
+                                <NavDropdown.Item variant="primary" onClick={handleShowSignup}>Signup</NavDropdown.Item>
+                            </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

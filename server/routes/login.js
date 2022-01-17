@@ -1,4 +1,5 @@
 const { User, validate} = require('../models/user');
+const auth = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const express = require('express');
@@ -28,5 +29,38 @@ router.post('/', async (req, res) => {
 
     return res.status(200).header('x-auth-token', token).send(_.pick(user, ['email']));
 });
+
+/*
+    GET - Verify the user is authenticated
+*/
+router.get('/is-auth', auth, async (req, res) => {
+    return res.status(200);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

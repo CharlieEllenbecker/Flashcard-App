@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button, Modal } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import FolderForm from './FolderForm';
 
@@ -13,6 +13,12 @@ const PrivateNavbar = () => {
     const handleNewDeck = (e) => {
         e.preventDefault();
         return navigate('/decks/new');
+    }
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('x-auth-token');
+        navigate('/');
     }
 
     return(
@@ -29,6 +35,9 @@ const PrivateNavbar = () => {
                                 <NavDropdown.Item variant="primary" onClick={handleOpenFolderModal}>New Folder</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item variant="primary" onClick={handleNewDeck}>New Deck</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Settings" id="basic-nav-dropdown">
+                                <NavDropdown.Item variant="primary" onClick={handleLogout}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

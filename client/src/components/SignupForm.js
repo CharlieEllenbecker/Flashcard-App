@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import isAuth from '../services/isAuth';
 
 const SignupForm = ({ handleCloseModal }) => {
     const [signupInput, setSignupInput] = useState({});
@@ -40,9 +39,7 @@ const SignupForm = ({ handleCloseModal }) => {
 				localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
 				clearInputs();
                 handleCloseModal();
-                if(isAuth()) {
-					navigate('/dashboard');
-				}
+				navigate('/dashboard');
 			})
 			.catch(error => {
 				console.error('Error: ', error.response.data);
