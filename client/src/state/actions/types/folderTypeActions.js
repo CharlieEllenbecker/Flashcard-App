@@ -6,7 +6,8 @@ const FolderActions = {
     DELETE_SELECTED_FOLDER_DECK: 'deleteSelectedFolderDeck',
     DELETE_SELECTED_FOLDER: 'deleteSelectedFolder',
     SET_AVALIABLE_DECKS: 'setAvaliableDecks',
-    SET_AN_AVALIABLE_DECK: 'setAnAvaliableDeck'
+    SET_AVALIABLE_DECK: 'setAvaliableDeck',
+    DELETE_AVALIABLE_DECK: 'deleteAvaliableDeck'
 };
 
 export default FolderActions;

@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { setSelectedFolder, setAvaliableDecks, addSelectedFolderDeck } from '../state/actions/folderActions';
+import { setSelectedFolder, setAvaliableDecks, addSelectedFolderDeck, deleteAvaliableDeck } from '../state/actions/folderActions';
 import PrivateNavbar from './PrivateNavbar';
 import CustomCard from './CustomCard';
 import Page from './Page';
@@ -14,6 +14,7 @@ import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const Folder = () => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [addDecksLoading, setAddDecksLoading] = useState(false);
 	const [showDecks, setShowDecks] = useState(false);
 	const [showConfirmDelete, setShowDeleteModal] = useState(false);
 	const [showAddDecks, setShowAddDecks] = useState(false);
@@ -24,7 +25,10 @@ const Folder = () => {
 
 	const handleShowConfirmDelete = () => setShowDeleteModal(true);
 	const handleCloseConfirmDelete = () => setShowDeleteModal(false);
-	const handleShowAddDecks = () => setShowAddDecks(true);
+	const handleShowAddDecks = () => {
+		fetchFolderlessDecks()
+		setShowAddDecks(true);
+	};
 	const handleCloseAddDecks = () => setShowAddDecks(false);
 
 	const handleAddDecks = (e) => {
@@ -36,6 +40,13 @@ const Folder = () => {
 		decks.forEach(d => d.cards = d.cards.map(({ _id, ...rest }) => rest));
 		decks.forEach(d => d.folderId = selectedFolder._id);
 		decks.forEach(d => addDeck(d));
+
+		const tempDecks = avaliableDecks;
+		tempDecks.forEach(ad => {
+			if(ad.isAdded) {
+				deleteAvaliableDeck(ad._id);
+			}
+		});
 		setIsLoading(false);
 	}
 
@@ -52,15 +63,18 @@ const Folder = () => {
 	}
 
 	const fetchFolderlessDecks = async () => {
+		setAddDecksLoading(true);
 		await axios
 			.get('/api/decks', { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
 			.then(response => {
+				setAddDecksLoading(false);
 				console.log('Get Decks Response: ', response);
 				let decks = response.data.filter(d => d.folderId === undefined);
 				decks = decks.map(d => ({ ...d, isAdded: false }));
 				dispatch(setAvaliableDecks(decks));
 			})
 			.catch(error => {
+				setAddDecksLoading(false);
 				console.error('Error: ', error.response.data);	// TODO: add error message to the page?
 			});
 	}
@@ -82,7 +96,6 @@ const Folder = () => {
 
 	useEffect(() => {
 		fetchFolder();
-		fetchFolderlessDecks();
 	}, []);
 
 	useEffect(() => {
@@ -115,9 +128,13 @@ const Folder = () => {
 								<Modal.Title>Select the decks to be added to the folder</Modal.Title>
 							</Modal.Header>
 							<Modal.Body>
-								{avaliableDecks.map((ad, i) => <AddDeck key={ad._id} index={i} name={ad.name} isAdded={ad.isAdded} />)}
-								<Button variant="primary" onClick={handleCloseAddDecks}>Cancel</Button>
-								<Button variant="success" onClick={handleAddDecks}>Add Decks</Button>
+								{addDecksLoading ?
+									<LoadingSpinner /> :
+									<>
+										{avaliableDecks.map((ad, i) => <AddDeck key={ad._id} index={i} name={ad.name} isAdded={ad.isAdded} />)}
+										<Button variant="danger" onClick={handleCloseAddDecks}>Cancel</Button>
+										<Button variant="success" onClick={handleAddDecks}>Add Decks</Button>
+									</>}
 							</Modal.Body>
 						</Modal>
 

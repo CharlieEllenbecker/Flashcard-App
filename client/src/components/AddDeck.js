@@ -1,12 +1,12 @@
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { setAnAvaliableDeck } from '../state/actions/folderActions';
+import { setAvaliableDeck } from '../state/actions/folderActions';
 
 const AddDeck = ({ index, name, isAdded }) => {
     const dispatch = useDispatch();
 
     const handleChangeAdded = () => {
-        dispatch(setAnAvaliableDeck({
+        dispatch(setAvaliableDeck({
             index: index,
             isAdded: !isAdded
         }));
@@ -14,12 +14,12 @@ const AddDeck = ({ index, name, isAdded }) => {
 
     return (
         <>
-            <div className="add-deck">
+            <Container className="border border-primary rounded light-margin center">
                 <div className="card-text right-vertical-bar">{name}</div>
-                <div className="card-text">
+                <div className="card-text center right">
                     <Button variant="primary" onClick={handleChangeAdded}>{isAdded ? '-' : '+'}</Button>
                 </div>
-            </div>
+            </Container>
         </>
     );
 }

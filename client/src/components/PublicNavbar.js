@@ -21,12 +21,10 @@ const PublicNavbar = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Button variant="primary" onClick={handleShowLogin}>
-                                Login
-                            </Button>
-                            <Button variant="primary" onClick={handleShowSignup}>
-                                Signup
-                            </Button>
+                            <div className="center right">
+                                <Button variant="primary" onClick={handleShowLogin}>Login</Button>
+                                <Button variant="primary" onClick={handleShowSignup}>Signup</Button>
+                            </div>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

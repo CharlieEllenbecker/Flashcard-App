@@ -54,10 +54,15 @@ const folderReducer = (state = initailState, { type, payload }) => {
                 ...state,
                 avaliableDecks: payload
             };
-        case FolderActions.SET_AN_AVALIABLE_DECK:
+        case FolderActions.SET_AVALIABLE_DECK:
             return {
                 ...state,
                 avaliableDecks: state.avaliableDecks.map((ad, i) => i === payload.index ? { ...ad, isAdded: payload.isAdded } : ad)
+            };
+        case FolderActions.DELETE_AVALIABLE_DECK:
+            return {
+                ...state,
+                avaliableDecks: state.avaliableDecks.filder(ad => ad._id !== payload)
             };
         default:
             return state;

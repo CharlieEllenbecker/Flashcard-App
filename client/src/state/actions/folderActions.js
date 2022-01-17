@@ -49,9 +49,16 @@ export const setAvaliableDecks = (decks) => {
     };
 }
 
-export const setAnAvaliableDeck = (deck) => {
+export const setAvaliableDeck = (deck) => {
     return {
-        type: FolderActions.SET_AN_AVALIABLE_DECK,
+        type: FolderActions.SET_AVALIABLE_DECK,
         payload: deck
+    };
+}
+
+export const deleteAvaliableDeck = (deckId) => {
+    return {
+        type: FolderActions.DELETE_AVALIABLE_DECK,
+        payload: deckId
     };
 }
