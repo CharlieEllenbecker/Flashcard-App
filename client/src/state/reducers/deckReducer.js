@@ -1,4 +1,4 @@
-import DeckActions from './types/DeckActions';
+import DeckActions from '../actions/types/deckTypeActions';
 
 const initialState = {
     decks: [],

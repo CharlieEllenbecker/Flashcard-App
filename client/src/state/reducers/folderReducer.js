@@ -1,4 +1,4 @@
-import FolderActions from './types/FolderActions';
+import FolderActions from '../actions/types/folderTypeActions';
 
 const initailState = {
     folders: [],

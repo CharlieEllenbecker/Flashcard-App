@@ -65,9 +65,10 @@ const SignupForm = ({ handleCloseModal }) => {
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control id="confirm-password" name="confirm-password" type="password" placeholder="Confirm password" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={handleSignup}>
-                    Signup
-                </Button>
+				<div className="center right">
+					<Button variant="danger" onClick={handleCloseModal}>Cancel</Button>
+					<Button variant="primary" type="submit" onClick={handleSignup}>Signup</Button>
+				</div>
             </Form>
             {errorMessage && <p>{errorMessage}</p>}
         </>

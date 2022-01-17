@@ -58,9 +58,10 @@ const LoginForm = ({ handleCloseModal }) => {
 					<Form.Label>Password</Form.Label>
 					<Form.Control id="login-password" name="password" type="password" placeholder="Password" onChange={handleChange} />
 				</Form.Group>
-				<Button variant="primary" type="submit" onClick={handleLogin}>
-					Login
-				</Button>
+				<div className="center right">
+					<Button variant="danger" onClick={handleCloseModal}>Cancel</Button>
+					<Button variant="primary" type="submit" onClick={handleLogin}>Login</Button>
+				</div>
 			</Form>
 			{errorMessage && <p>{errorMessage}</p>}
 		</>

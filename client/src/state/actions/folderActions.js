@@ -1,4 +1,4 @@
-import FolderActions from './types/FolderActions';
+import FolderActions from './types/folderTypeActions';
 
 export const setFolders = (folders) => {    // TODO: define parameters better...
     return {

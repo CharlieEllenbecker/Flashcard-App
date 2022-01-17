@@ -45,9 +45,11 @@ const CustomCard = ({ index, type, img, id, name, description, cards, showDelete
 				<Card.Body>
 					<Card.Title>{name}</Card.Title>
 					<Card.Text>{description}</Card.Text>
-					<Button variant="primary" onClick={handleNavigate}>{buttonMessage}</Button>
-					{type === 'deck' && showDeleteDeck &&
-						<Button variant="danger" onClick={handleRemoveDeck}>Remove</Button>}
+					<div className="center right">
+						<Button variant="primary" onClick={handleNavigate}>{buttonMessage}</Button>
+						{type === 'deck' && showDeleteDeck &&
+							<Button variant="danger" onClick={handleRemoveDeck}>Remove</Button>}
+					</div>
 				</Card.Body>
 			</Card>
 		</div>

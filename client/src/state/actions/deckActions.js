@@ -1,4 +1,4 @@
-import DeckActions from './types/DeckActions';
+import DeckActions from './types/deckTypeActions';
 
 export const setDecks = (decks) => {    // TODO: define parameters better...
     return {

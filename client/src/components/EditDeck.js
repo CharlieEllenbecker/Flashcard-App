@@ -35,6 +35,11 @@ const EditDeck = () => {
         setCanDeleteCard(editDeck.cards.length > 2);
     }
 
+    const handleBackToDeck = (e) => {
+        e.preventDefault();
+        navigate(`/decks/${id}`);
+    }
+
     const handleAddEditDeckCard = (e) => {
         e.preventDefault();
         addEmptyCard();
@@ -141,6 +146,7 @@ const EditDeck = () => {
                     </>}
             </Page>
             <div className="center light-padding" fluid>
+                <Button variant="danger" onClick={handleBackToDeck}>Cancel</Button>
                 <Button variant="success" onClick={handleSaveDeck}>Save Deck</Button>
             </div>
             {errorMessage && <p>{errorMessage}</p>}

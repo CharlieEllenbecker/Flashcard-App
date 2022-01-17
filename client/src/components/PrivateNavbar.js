@@ -26,9 +26,9 @@ const PrivateNavbar = () => {
                             <Nav.Link as={Link} to="/folders">Folders</Nav.Link>
                             <Nav.Link as={Link} to="/decks">Decks</Nav.Link>
                             <NavDropdown title="Create" id="basic-nav-dropdown">
-                                <Button variant="primary" onClick={handleOpenFolderModal}>New Folder</Button>
+                                <NavDropdown.Item variant="primary" onClick={handleOpenFolderModal}>New Folder</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <Button variant="primary" onClick={handleNewDeck}>New Deck</Button>
+                                <NavDropdown.Item variant="primary" onClick={handleNewDeck}>New Deck</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

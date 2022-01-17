@@ -52,9 +52,8 @@ const CardForm = ({ handleCloseModal, deckId, cardId, index, currentFront, curre
                     <Form.Label>Back</Form.Label>
                     <Form.Control id="card-back" name="back" type="text" defaultValue={currentBack} placeholder="Enter Back" onChange={handleChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={editCard}>
-                    Save Changes
-                </Button>
+                <Button variant="danger" onClick={handleCloseModal}>Cancel</Button>
+                <Button variant="primary" type="submit" onClick={editCard}>Save Changes</Button>
             </Form>
             {errorMessage && <p>{errorMessage}</p>}
         </>
