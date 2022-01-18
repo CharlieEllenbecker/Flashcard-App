@@ -1,14 +1,11 @@
 import axios from 'axios';
 
-const isAuth = async () => {    // TODO: Fix the promise handling
-    console.log('This code is being run');
-
+const isAuth = async () => {
     const token = localStorage.getItem('x-auth-token');
-    if (token === null) {
-        return false;
-    }
+    console.log('Token: ', token);
 
-    return await axios
+    const fetchIsAuth = async () => {
+        await axios
         .get('/api/login/is-auth', { headers: { 'x-auth-token': token } })
         .then(response => {
             console.log('Get Is Auth Response: ', response);
@@ -19,6 +16,15 @@ const isAuth = async () => {    // TODO: Fix the promise handling
             localStorage.removeItem('x-auth-token');
             return false;
         });
+    }
+
+    if (token === null) {
+        console.log('Your mom is null');
+        return false;
+    } else {
+        const auth = await fetchIsAuth();
+        return auth;
+    }
 }
 
 export default isAuth;

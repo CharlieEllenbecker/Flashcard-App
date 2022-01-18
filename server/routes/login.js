@@ -37,30 +37,4 @@ router.get('/is-auth', auth, async (req, res) => {
     return res.status(200);
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = router;

@@ -1,17 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
-import isAuth from '../services/isAuth';
+import axios from 'axios';
 
 const PrivateRoute = () => {
+    const [isAuth, setIsAuth] = useState(false);
     const location = useLocation();
 
-    const checkIsAuth = () => {
-        const auth = isAuth();
-        console.log('Is Augh In Route: ', auth);
-        return auth;
+    const fetchIsAuth = async () => {
+        await axios
+        .get('/api/login/is-auth', { headers: { 'x-auth-token': localStorage['x-auth-token'] } })
+        .then(response => {
+            console.log('Get Is Auth Response: ', response);
+            setIsAuth(true);
+        })
+        .catch(error => {
+            console.error('Error: ', error);
+            localStorage.removeItem('x-auth-token');
+            setIsAuth(false);
+        });
     }
+
+    useEffect(() => {
+        fetchIsAuth();
+    }, []);
     
     return (
-        checkIsAuth() ? <Outlet /> : <Navigate to="/" state={{ from: location }} />
+        <>
+            {isAuth ? <Outlet /> : <Navigate to="/" state={{ from: location }} />}
+        </>
     );
 }
 
