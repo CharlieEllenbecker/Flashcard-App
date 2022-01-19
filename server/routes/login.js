@@ -33,8 +33,8 @@ router.post('/', async (req, res) => {
 /*
     GET - Verify the user is authenticated
 */
-router.get('/is-auth', auth, async (req, res) => {
-    return res.status(200);
+router.get('/is-auth', auth, (req, res) => {
+    return res.status(200).send();
 });
 
 module.exports = router;

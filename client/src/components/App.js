@@ -15,7 +15,7 @@ const App = () => {
 	  	<BrowserRouter>
 			<Routes>
 				<Route exact path="/" element={<PublicHome />} />
-				<Route path="/dashboard" element={<PrivateRoute />}>
+				<Route path="/dashboard" element={<PrivateRoute route="/dashboard" />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
 				</Route>
 				<Route path="/folders" element={<PrivateRoute />}>
